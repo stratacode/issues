@@ -1,0 +1,22 @@
+#!/bin/sh
+
+STARTTIME=`date "+%s"`
+echo 'Starting time: ' `date`
+
+set -e
+
+test/scripts/runDemoAll
+
+test/scripts/runJS
+
+test/scripts/runSelect
+
+test/scripts/runMisc
+
+test/scripts/runIncrCompile
+
+ENDTIME=`date "+%s"`
+RUNTIME=`expr $ENDTIME - $STARTTIME`
+
+echo 'AllAuto: run time: ' `date -j -f "%s" $RUNTIME "+%M:%S"`
+echo 'Ending time: ' `date` 

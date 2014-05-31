@@ -1,0 +1,41 @@
+<% if (!overrideField && !overrideGet) { %>
+   <%=fieldModifiers%> <%=variableTypeName%> <%=lowerClassName%>;
+<% } %>
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>(boolean doInit) {
+<% if (overrideGet) { %>
+   <%=variableTypeName%> <%=lowerClassName%> = super.get<%=upperClassName%>();
+<% } %>
+   if (<%=lowerClassName%> == null) {
+      <%=variableTypeName%> _t = <%=lowerClassName%> = <% if (typeIsComponentClass) { %><%=typeClassName%>.new<%=typeBaseName%>(false)<% } else { %>new <%=typeName%>(<%=rootName%>)<% } %>;
+<% if (overrideGet) { %>
+      set<%=upperClassName%>(<%=lowerClassName%>);
+<% } %>
+     _t._preInit();
+     <%=propertyAssignments%>
+     java.util.List _children = java.util.Arrays.asList(<%=childrenNames%>);
+     for (Object _child:_children) {
+        if (_child instanceof org.mortbay.jetty.Connector)
+           _t.addConnector((org.mortbay.jetty.Connector) _child);
+        else if (_child instanceof org.mortbay.jetty.Handler)
+           _t.addHandler((org.mortbay.jetty.Handler)_child);
+        else if (_child instanceof org.mortbay.jetty.security.UserRealm)
+           _t.addUserRealm((org.mortbay.jetty.security.UserRealm)_child);
+        else if (_child instanceof org.mortbay.component.LifeCycle)
+           _t.addLifeCycle((org.mortbay.component.LifeCycle)_child);
+     }
+     if (doInit) {
+       _t._init();
+       try {
+          _t._start();
+          _t.start(); // Call the handler's start method
+       }
+       catch (Exception exc) {
+          throw new IllegalArgumentException(exc);
+       }
+     }
+     return _t;
+  }
+  else 
+     return <%=lowerClassName%>;
+}
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>() { return get<%=upperClassName%>(true); }

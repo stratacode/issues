@@ -1,0 +1,4 @@
+
+object Component2 extends Component1 {
+   int fum;
+}

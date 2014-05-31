@@ -1,0 +1,9 @@
+/**
+ * The top level object which gets executed as part of the application
+ * initialization.  Pops up a dialog with all the available quiz
+ * names, allowing the user to pick one; then proceeds to display the
+ * main AppFrame.
+ */
+@MainInit
+public object TakeQuizMain {
+}

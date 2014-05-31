@@ -1,0 +1,46 @@
+#!/bin/csh
+
+cd ..
+
+set verbose
+#
+# Compile only
+#
+#ccake -a catTest/jpaCat 
+#
+
+#
+# Create the simpleCatalog database
+#
+#ccake -a catTest/jpaCat catTest/cfg/wideTest -rs "jpaCat.JPACatalogManager" -c 
+
+#
+# Repositories use simpleCatalog2 database cause the id formats are different.
+# (could be fixed by supplying the id to createItem but learned that too late)
+# in RTEST/config/ReposCatService.properties, set createDatabase=true, then run;
+#
+#catTest/runReposTest catTest/jpaCat catTest/cfg/wideTest
+
+#
+# One query - enable SQL tracing for jpa
+#
+#ccake -a catTest/jpaCat catTest/cfg/wideTest catTest/cfg/onequery -rs "jpaCat.JPACatalogManager"  > catTest/logs/openjpa-query.log
+#ccake -a catTest/hibCat catTest/cfg/wideTest catTest/cfg/onequery -rs "jpaCat.JPACatalogManager" > catTest/logs/hib-query.log
+#catTest/runReposTest catTest/reposCat catTest/cfg/wideTest catTest/cfg/onequery >&! catTest/logs/repos-query.log
+
+#
+# Run the tests
+#
+
+ccake -a catTest/jpaCat catTest/cfg/wideTest  catTest/cfg/shortTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.short
+ccake -a catTest/jpaCat catTest/cfg/wideTest  -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.normal
+ccake -a catTest/jpaCat catTest/cfg/wideTest catTest/cfg/replay -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.replay
+
+ccake -a catTest/hibCat catTest/cfg/wideTest catTest/cfg/shortTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.short
+ccake -a catTest/hibCat catTest/cfg/wideTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.normal
+ccake -a catTest/hibCat catTest/cfg/wideTest catTest/cfg/replay -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.replay
+
+catTest/runReposTest catTest/reposCat catTest/cfg/wideTest catTest/cfg/shortTest >&! catTest/logs/repos.short
+catTest/runReposTest catTest/reposCat catTest/cfg/wideTest >&! catTest/logs/repos.normal
+catTest/runReposTest catTest/reposCat catTest/cfg/wideTest catTest/cfg/replay >&! catTest/logs/repos.replay
+

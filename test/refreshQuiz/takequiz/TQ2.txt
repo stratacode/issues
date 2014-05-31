@@ -1,0 +1,48 @@
+/**
+ * The swing AppFrame which leads you through taking a particular
+ * quiz.
+ */
+public class TakeQuiz extends AppFrame {
+   size = SwingUtil.dimension(400, 490);
+   xpad = 10;
+   ypad = 10;
+
+   // Used by text areas and their scroll panes
+   static int textAreaMaxHeight = 100;
+   static int scrollPaneYpad = 12;
+   static Border textAreaBorder = BorderFactory.createCompoundBorder
+      (BorderFactory.createLineBorder(Color.GRAY), BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+   // Should we insert linebreaks into question/answer text?
+   boolean insertLinebreaksInText = true;
+
+   // Maximum number of characters in a line of question text
+   int lineWidth = 55;
+
+   // State that changes as we advance through the questions
+   int questionIndex = 0;
+   boolean questionAnswered = false;
+   int currentScore = 0;
+
+   // State set by the caller and/or derived from above
+   Quiz quiz;
+   int numQuestions := quiz.questions.size();
+   // TODO: check the case where numQuestions = 0
+   Question currentQuestion := quiz.questions.get(questionIndex);
+
+   // Set the title of the window to reflect the quiz name
+   title := "Quiz: " + quiz.name;
+
+   // Display the current question number and score
+   object questionLabel extends JLabel {
+      text := "Question " + (questionIndex + 1);
+      location := SwingUtil.point(xpad, ypad);
+      size := preferredSize;
+   }
+   object scoreLabel extends JLabel {
+      text := "Current score: " + currentScore + " of " + numQuestions;
+      location := SwingUtil.point(windowWidth - xpad - preferredSize.width, ypad);
+      size := preferredSize;
+   }
+
+}

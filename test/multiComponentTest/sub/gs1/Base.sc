@@ -1,0 +1,6 @@
+
+
+@Component
+Base {
+   int foo;
+}

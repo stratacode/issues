@@ -1,0 +1,56 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## StrataCode with GWT
+
+GWT is Google's framework which compiles Java to Javascript.  This framework was built before StrataCode's own Java to Javascript engine.  It only reached the proof of concept phase before it was discontinued for several reasons:  
+
+Dynamic programming should be easy with Javascript as a runtime because it's dynamic but not with GWT.  The Javascript code does not generate real types in Javascript code, obfuscates names, optimizes out code, and so patching that easily seems too complex.  There's no usable Javascript apis for the generated code.
+
+You cannot plug regular Java code into the simulator very easily given the class loader design.  There was no easy way SC's dynamic code engine could fit.  The compile times of GWT are very long.
+
+Even to implement data binding, we had to generate code for all bindable properties and methods because there's no reflection.  This meant code sizes would be bigger with GWT than without.  It's not clear the GWT optimizations would get any of this back substantially. 
+
+Instead of finishing GWT, we now have the web framework and a new Java to JS engine built on StrataCode.  
+
+Nonethless, the GWT implementation could be resurrected and made into a decent integration if anyone wanted, despite the long compile times and lack of dynammic programming.  I haven't been testing the GWT version so there's no doubt some tweaking required to get this to work again.
+
+GWT applications extend the gwt.main layer.  
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>package sc.example.unitConverter;
+
+public example.unitConverter.gwtui extends model, gwt.main {
+
+
+}
+<% ) %>
+
+<%= MarkDownPage.markDown(%>
+
+Annotation your GWTModule class with the @GWTModule annotation.
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("example/unitConverter/gwtui","UnitConverter.sc") %>
+
+<%= MarkDownPage.markDown(%>
+
+The gwt.main layer defines a default index.html file.  It includes the GWT script tags that load the compiled javascript files and defines an empty body.  
+
+Object children are by defalt added to the body tag of the page so there's nothing else we need to do.  If you define your own index.html file to override the default, you can define HTML tags with id elements that match the object names.    
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

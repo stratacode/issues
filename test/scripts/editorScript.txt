@@ -1,0 +1,10 @@
+AnalyzeSituation {
+}
+
+cmd.waitForUI(10000);
+
+DisplayResults {
+}
+
+cmd.waitForUI(10000);
+cmd.quit();

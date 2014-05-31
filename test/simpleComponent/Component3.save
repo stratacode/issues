@@ -1,0 +1,8 @@
+import v.obj.Component;
+
+@Component
+object Component3 {
+   int baz;
+
+   Component1 c1 = Component1;
+}

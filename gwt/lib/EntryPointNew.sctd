@@ -1,0 +1,18 @@
+/** Template for an EntryPoint.  Th _init method initializes the layerCake elements.  It is called first thing in onModuleLoad via CompilerSettings.onInitMethod  */
+private void _init() {
+  <%=typeName%> <%=lowerClassName%> = this;
+  <%=propertyAssignments%>
+  
+  java.util.List _children = java.util.Arrays.asList(<%=childrenNames%>);
+  java.util.List _childNames = java.util.Arrays.asList(<%=childObjNames%>);
+  int i = 0;
+  for (Object _child:_children) {
+      if (_child instanceof com.google.gwt.user.client.ui.Widget) {
+         String childName = (String) _childNames.get(i++);
+         com.google.gwt.user.client.ui.RootPanel panel = com.google.gwt.user.client.ui.RootPanel.get(childName);
+         if (panel == null)
+            panel = com.google.gwt.user.client.ui.RootPanel.get();
+         panel.add((com.google.gwt.user.client.ui.Widget) _child);
+      }
+  }
+}

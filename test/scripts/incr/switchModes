@@ -1,0 +1,35 @@
+#!/bin/sh
+
+STARTTIME=`date "+%s"`
+echo 'Starting switchModes: ' `date`
+
+set -e
+
+# Start: FormView/CodeView js-editor ------
+
+# first build it from scratch
+sc -a -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -a -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+sc -ta -ee editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -ee -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+
+
+# ------
+
+ENDTIME=`date "+%s"`
+RUNTIME=`expr $ENDTIME - $STARTTIME`
+
+echo 'Run time: ' `date -j -f "%s" $RUNTIME "+%M:%S"`
+echo 'Ending time: ' `date` 

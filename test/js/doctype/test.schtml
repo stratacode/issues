@@ -1,0 +1,7 @@
+<%! int foo; %>
+<!DOCTYPE html>
+<html>
+<body>
+Hello with a doctype.
+</body>
+</html>

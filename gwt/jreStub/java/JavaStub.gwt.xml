@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='javaStub'>
+
+  <inherits name="scstub.TypeStub"/>
+
+  <!-- Specify the paths for translatable code                    -->
+  <source>
+     <include name="**.java"/>
+  </source>
+
+</module>

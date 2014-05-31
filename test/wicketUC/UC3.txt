@@ -1,0 +1,71 @@
+public class UnitConverter extends CWebPage {
+   static class Converter implements java.io.Serializable {
+      double value1, value2;
+      String unit1, unit2;
+      String title;
+      public String toString() {
+         return title; 
+      }
+   }
+   
+   object converters extends ComponentList<Converter> {
+      object temperature extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 9.0 / 5.0 + 32; 
+         unit1 = "Celcius";
+         unit2 = "Farenheit";
+         title = "Temperature";
+      }
+      object distance extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 0.62137119;
+         unit1 = "Kilometers";
+         unit2 = "Miles";
+         title = "Distance";
+      }
+      object speed extends Converter {
+         title = "Speed";
+         value1 = 0;
+         value2 :=: value1 * 1.609344;
+         unit1 = "Miles per hour";
+         unit2 = "Kilometers per hour";
+      }
+   }
+
+   // Converts the value strings to/from numbers.  numberToString to defines
+   // a reverse method so it can be used in 2-way bindings.
+   transient object numberConverter extends sc.util.NumberConverter {
+   }
+
+   int currentConverterIndex = 0;
+   Converter currentConverter = converters.get(currentConverterIndex);
+
+   object feedback extends FeedbackPanel {
+      outputMarkupId = true;
+   }
+
+   object unitConverterForm extends CForm<UnitConverter> {
+      object converterChoice extends CDropDownChoice {
+         choiceValues = converters;
+         currentValue :=: currentConverter;
+         selectionChangedNotifications = true;
+      }
+
+      object unit1Label extends CLabel {
+         textValue := currentConverter.unit1;
+      }
+      object unit1Field extends CTextField<Double> {
+         required = true;
+         type = Double.class;
+         fieldValue :=: currentConverter.value1;
+      }
+      object unit2Label extends CLabel {
+         textValue := currentConverter.unit2;
+      }
+      object unit2Field extends CTextField<Double> {
+         required = true;
+         type = Double.class;
+         fieldValue :=: currentConverter.value2;
+      }
+   }
+}

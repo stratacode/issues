@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -e
+
+rm -rf unitDemo
+sc < test/scripts/ds2-script.txt
+
+sh test/scripts/run-all-compiled-demo
+
+# NOTE: Something that compiles the sc.servlet.tag library must be compiled before the doc
+
+# The documentation 
+sc -a doc.core < test/scripts/wait10.txt
+
+sc -ni -a test/multiComponentTest/subsub
+
+# Run with just GetSet interpreted
+sc -ni -a -dynone test.GetSet  -t "sc.*"
+# Run with both GetSet and GetSetBase interpreted
+sc -ni -a -dynone test.GetSetBase test.GetSet -t "sc.*"
+# Run compiled
+sc -ni -a test.GetSet -t "sc.*"
+sc -ni -a -dynone test.simpleBinding -r "sc.*"
+sc -ni -a test.simpleBinding -r "sc.*"
+
+# Tests mixed compiled/dynamic modes
+sc -ni -a test/dyn -r "test.*"
+
+sc -a example/quiz/wicket/makequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+sc -a -dynone example/quiz/wicket/makequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+
+sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/scripts/editorScript.txt
+
+sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt

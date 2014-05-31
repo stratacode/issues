@@ -1,0 +1,8 @@
+#!/bin/csh
+
+set verbose
+ccake -a -d /atg/home/locallib $* 
+
+cd /atg/home
+bin/startNucleus -m DAS:LITTLECAT:RTEST
+

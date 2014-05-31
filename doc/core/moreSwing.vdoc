@@ -1,0 +1,226 @@
+<%! object moreSwing extends util { %>
+<%= header("More Info on Swing UnitConverter","moreSwing") %>
+
+<%= markDown(%>
+
+## Notes and Exercises on the Swing Sample
+
+Exercise: remove the dynamic attribute from all three unitDemo layers: swingui, extendedModel, and model and run the application.  First:
+<code><pre>
+   sc unitDemo/swingui
+</pre></code>
+This both compiles and runs the application.  Now run it again with:
+<code><pre>
+   unitDemo/swingui/build/swingmain
+</pre></code>
+StrataCode generates the swingmain script to run your application.  With no dynamic layers, the only dependencies added by the StrataCode system are the data binding utilities.
+
+Note: StrataCode generates the swingmain script from the @MainSettings annotation in this file:
+
+<div class="filename">file: swing/core/Main.sc</div>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.swing.Main",
+%>@MainSettings(produceScript=true,execName="swingmain")
+public static void main(String[] args) {
+   //...
+}
+<% ) %>
+
+A "produceJar" option will produce a .jar file and the script changes to use the jar file instead of the class files.  StrataCode uses that to build both the sc script and sc.jar file.
+
+Note: More info about this sample.  Location is bound to an expression involving the xpad, etc. styling properties on the AppFrame.  The width component of the size is computed from the windowSize and centers the control in the window. The height is based on the preferredSize which swing will pick for you.  The SwingUtil.point and SwingUtil.dimension are static functions which just do a "new Point(x,y)" and "new Dimension(x,y)" calls.  You could also use "new Point(..)" here but the wrapper methods hide some casts due to swing's mixed use of ints and doubles.
+
+The items property of the JComboBox specifies the values to display in the list.  Initialize that set to be the same as the converters value.  For this sample, the list is not dynamic so no binding is required here.
+
+The combo box selects the converter to use by using a binding call to the standard List.get method for the selected index of the choice:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>Converter currentConverter := converters.get(converterChoice.selectedIndex);
+<% ) %>
+
+The currentConverter field is updated each time the combo boxes selected index changes through the forward-only method binding.  
+
+(You also could just bind to converterChoice.selectedItem but that again requires a cast because JComboBox does not use generic types).
+
+The baseline property is designed to ensure the label's text and the field's text are aligned properly.  Swing does not do this for you automatically unfortunately - again a nice row component would eliminate this but it is nice that you can do this with data binding.  
+
+As the label's text changes, its preferredSize changes.  Since the label's text will change each time you select a new converter you need to account for that at runtime.  As that changes, data binding resizes the label and the field in two steps.  First by binding the label's size to its preferredSize:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>size := preferredSize;
+<% ) %>
+
+then by binding the field's location to an expression including the label's preferredSize's width.  
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>location := SwingUtil.point(xpad + unit1Label.preferredSize.width + gap, row1y);
+<% ) %>
+
+You then bind the field's size to the window's width minus the size of the label and padding:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>size := SwingUtil.dimension(windowWidth - unit1Label.size.width - xpad - 2*gap, preferredSize.height);
+<% ) %>
+
+Finally in this snippet, you bind the text to the currentConverter's value1 property:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter.unit1Field",
+%>text :=: numberConverter.numberToString(currentConverter.value1);
+<% ) %>
+
+Since value1 is a double and text is a String you can't just connect them directly just as you could not assign them directly in Java.  Instead you use the numberConverter component's numberToString method.  This is a normal Java method which does the obvious - converts the double to a String but it needs a reverse method to be usable in a bi-directional binding.  
+
+Here's the definition of that method and that annotation:
+
+<div class="filename">file: util/NumberConverter.sc</div>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.util.NumberConverter",
+%>//...
+@BindSettings(reverseMethod="numberToString")
+public double stringToNumber(String value) {
+   //...
+}
+ 
+@BindSettings(reverseMethod="stringToNumber")
+public String numberToString(double number) {
+    //...
+}
+<% ) %>
+
+Without that annotation, you would get a compile time error if you use the method in a reverse binding.
+
+Finally you have the error label.  The numberConverter component provides an error property which you bind to to properly display the error for the last conversion performed.
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>object errorLabel extends JLabel {
+   // The number converter provides an error when an invalid number is supplied
+   text := numberConverter.error;
+   location := SwingUtil.point(xpad, unit2Field.location.y + unit2Field.size.height + ypad + baseline);
+   size := preferredSize;
+}
+<% ) %>
+
+## Running the Interpreter
+
+You can run your application with and without the StrataCode language engine.  If you run these scripts manually, the only StrataCode classes used are some data binding code and a few type utilities.  StrataCode has a small impact on the footprint of your runtime in the general case.  It generates Java code and gets out of the way.  If however, you want to use its interpreted features you can use dynamic layers and use the full power of StrataCode's language engine at runtime as well.  In this mode, StrataCode add dynamic layers after the compiled layers.  The compiled layers are regular .class files loaded as normal by the JVM.  The interpreted layers contain dynamic source descriptions - which can be read, executed, modified, and written by the StrataCode language engine.  To further simplify things, there is only one program to both compile and run StrataCode apps in this mode - the "sc" program.  It figures out what has changed, compiles that, then runs your main automatically.
+
+<code><pre>
+   sc example.unitConverter.swingui
+</pre></code>
+
+or to force dynamic mode for just the swingui layer:
+
+<code><pre>
+   sc -dyn example.unitConverter.swingui
+</pre></code>
+
+or for model, extendedModel and swingui to by dynamic:
+
+<code><pre>
+   sc -dyn example.unitConverter.swingui example.unitConverter.model
+</pre></code>
+
+Layers inherit the build state of their previous layers but only if those layers were built independently.  By default layers are compiled into a single build directory, aggregating the compiled versions of all files into one directory.  To compile a layer only use 
+<code><pre>
+    sc -c layerName
+</pre></code>
+
+At that point, subsequent layers will not need recompile those files themselves.
+<p>
+When nothing changed since you compiled, only last modified times are checked, nothing is recompiled. StrataCode dependencies are designed to be comprehensive which means changing a core type may trigger lots of latter stuff to recompile.  This helps alleviate the cost of StrataCode's extra processing layer.  That same representation will drive the IDE and so should be relatively efficient. 
+<p>
+After the application compiles, starts and runs, you'll see the StrataCode command interpreter prompt:
+
+<code><pre>
+    (sc.example.unitConverter) ->
+</pre></code>
+
+Now go to the UnitConverter type.  Here you can use "tab" completion 
+
+The prompt switched to "object:" as now the current type is an object.  It would say "class:sc.example.unitConverter.UnitConverter" if it were a class.  To get back to the mode where you have no type, just type "}" followed by enter just as though you were in StrataCode code.
+<p>
+What can you do in the command interpreter?  You can tab complete most expressions, use history etc.  The special "cmd" object is useful so check out its methods with "cmd.&lt;TAB&gt;", in particular the methods starting with "print" and "list" - printListeners, printBindings, etc.  These print and list StrataCode definitions.  Of course the command interpreter also accepts StrataCode declarations, statements and expressions.  Expressions are evaluated and displayed to the console.  Declarations and statements are used to build a modify statement the interpreter's current layer.   When you start the interpreter with "-i" this model lives in memory and is for diagnostics only but soon the -e option will let you edit layers stored in the file system.
+<p>
+Inside the UnitConverter object you can change colors:
+<code><pre>
+    (object:sc.example.unitConverter.UnitConverter) -> background = Color.BLUE;
+    (object:sc.example.unitConverter.UnitConverter) -> foreground = Color.WHITE;
+</pre></code>
+The properties are changed, not appended.   Be careful, if you make changes in the command interpreter and close the component, it saves that file in that component overriding those changes.  You can use the -i option to make temporary changes or use cmd.createLayer() to put those changes in a new layer if you don't like this behavior.  Use cmd.up() and cmd.down() to move up or down the layer stack.   The $ prompt is used to indicate layers above or below your current layer.
+<p>
+At any point use cmd.print() to print the current model.  You can use cmd.print("name") to print the definition of a child field, method, or type.  Use cmd.listObjects(), cmd.listMethods(), etc. 
+
+## One More Layer
+
+For the final layer, just to see a slightly larger example, add a diagnostic set of tools that help to interactively style the component.  This layer is called "adjust".  The file is:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("example/unitConverter/adjust","UnitConverter.sc",
+%>UnitConverter extends AdjustableAppFrame {
+   sliderY := (int) errorLabel.location.y + (int)errorLabel.size.height + ypad;
+}
+<% ) %>
+
+This file overrides the base class again and binds one property to set the location for the controls to be below the error label. 
+
+You can run the final version with:
+
+    sc example.unitConverter.adjust -r sc.swing.main -i
+
+The interesting code for these changes is in the AdjustableAppFrame class in the swing/core.  It starts by extending AppFrame - the old base class - a requirement since layers only add, they don't remove stuff:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("swing/core", "AdjustableAppFrame.sc",
+%>public class AdjustableAppFrame extends AppFrame {
+   xpad := xpadSlider.value;
+   ypad := ypadSlider.value;
+   gap := gapSlider.value;
+   baseline := baselineSlider.value;
+   //  ... sliders and color chooser follow
+}
+<% ) %>
+
+This first part binds the existing xpad, ypad, gap and baseline properties to sliders defined below.  The sliders are defined using expressions to compute their size and position as and look similar to code used above.  The choice and color chooser are a bit more interesting:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.swing.AdjustableAppFrame",
+%>public object colorChoice extends JToggleButton {
+   size := preferredSize;
+   location := SwingUtil.point((windowWidth - preferredSize.width - 2*xpad)/2, xpadSlider.location.y + xpadSlider.size.height + ypad);
+   text := selected ? "Foreground color" : "Background color";
+}
+ 
+public object colorChooser extends JColorChooser {
+   size := SwingUtil.dimension(preferredSize.width, preferredSize.height-100);;
+   location := SwingUtil.point(xpad, colorChoice.location.y + colorChoice.size.height);
+
+   color :=: colorChoice.selected ? AdjustableAppFrame.this.foreground : AdjustableAppFrame.this.background;
+   previewPanel = new JPanel();
+}
+<% ) %>
+
+The data binding expressions for colorChoice.text shows a "question mark" expression being used in a one-way binding:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.swing.AdjustableAppFrame.colorChoice",
+%>text := selected ? "Foreground color" : "Background color";
+<% ) %>
+
+When the selected value of the button changes, its text changes to one of the values.  And the colorChooser.color shows a bi-directional question mark operator:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.swing.AdjustableAppFrame.colorChooser",
+%>color :=: colorChoice.selected ? AdjustableAppFrame.this.foreground : AdjustableAppFrame.this.background;
+<% ) %>
+
+When the choice's selected property changes, its value is used to select either the app frame foreground or background to use to set "color".  And when the widget changes the color property, the colorChoice.selected value selects which of the the frame's foreground or background properties that should be set.
+
+StrataCode's tooling support is not yet complete but you can see how you can easily record changes to an application and keep those changes isolated in an easy to read and modify declarative layer.  Since StrataCode makes declarative changes to the layer, even if you add fields or make a compiled change, the restart will show those changes making the entire lifecycle of a sc application easy for admins, designers, and analysts to manage.
+
+When intepreting layers, changes are made immediately in most cases.  When you extend a new compiled type or override a new compiled method, the stub class which implements the ability for a dynamic object to extend a compiled type will need to change and a recompile is required.
+
+StrataCode dynamic layers give rapid, immediate workflows or 'refresh' support when possible. Instead of parsing XML, break out a set of properties in a layer for your customization, properties etc.  StrataCode gives you the option of applying these state layers compile time, immediate, or refresh time.  Look at the StrataCode example.unitConverter.style layer for a sample of a simple declarative layer like the one built in this getting started.
+
+For another sample, see the layers/doc directory.  This doc is built using StrataCode.  Check out the doc.sc for an advanced use of the layer definition file and for lots of examples of the template language.  To build the documentation, from the layers directory run "sc doc".
+
+For more information, read more [details](details.html).
+
+<% ) %>
+
+<%= footer("More Info on Swing UnitConverter","moreSwing") %>
+<% } %>

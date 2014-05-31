@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <%! 
+        String yourName = "";  
+        boolean enabled = true;  
+    %>
+    <div>
+      <label>Name:</label>
+      <input type="text" value=":=: yourName" placeholder="Enter a name here" disabled=":= !enabled">
+      <hr>
+      <div><h1>Hello <%= yourName %>!</h1></div>
+
+      <button clickCount="=: enabled=!enabled"><%= enabled ? "Disable" : "Enable" %></button>
+    </div>
+  </body>
+</html>

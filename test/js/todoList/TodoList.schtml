@@ -1,0 +1,63 @@
+<html>
+   <%! 
+      class TodoItem {
+         String text;
+         boolean done;
+
+         TodoItem(String t, boolean d) {
+             text = t;
+             done = d;
+         }
+      }
+      ArrayList<TodoItem> todos = {
+         new TodoItem("learn StrataCode", true),
+         new TodoItem("build a StrataCode app", false)
+      };
+
+      String todoText = "";
+ 
+      void addTodo() {
+         todos.add(new TodoItem(todoText, false));
+      }
+ 
+      int getRemaining(List<TodoItem> todoList, boolean doneFlag) {
+         int count = 0;
+         for (TodoItem todo: todoList) {
+            if (!todo.done)
+               count++;
+         }
+         return count;
+      }
+
+      int getSize(List<TodoItem> list) {
+         return list.size();
+      }
+
+      void archive() {
+         ArrayList<TodoItem> newTodos = new ArrayList<TodoItem>();
+         for (TodoItem todo: todos) {
+            if (!todo.done) 
+               newTodos.add(todo);
+         }
+         todos = newTodos;
+      }
+  %>
+ 
+  <body>
+    <h2>Todo</h2>
+    <div id="todoControl">
+      <span><%= getRemaining(todos) %> of <%= getSize(todos) %> remaining</span>
+      [ <a href="#" clickCount="=: archive()">archive</a> ]
+      <ul>
+        <li repeat=":= todos" repeatVarName="todo">
+          <input type="checkbox" checked=":=: todo.done">
+          <span class='<%= "done-" + todo.done %>'><%= todo.text%></span>
+        </li>
+      </ul>
+      <form submitCount="=: addTodo()" action="#">
+        <input type="text" value=":=: todoText" size="30" placeholder="add new todo here">
+        <input type="submit" value="add">
+      </form>
+    </div>
+  </body>
+</html>

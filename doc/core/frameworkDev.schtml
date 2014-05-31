@@ -1,0 +1,155 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Introduction
+
+StrataCode lets you build powerful frameworks easily by exposing just the right set of hinge points.  Your layer definition file specifies jar files required for your project in the layer's class path.  Import classes for subsequent layers.  Flexible mapping of "a.b" to get/set in both compiled and dynamic modes.  Automatic data binding event injection.  Mark classes that need component initialization semantics with the @Component annotation.  Customize framework features via interpreted code in your layer definition file.  Register handlers for annotations.  Associate compile-time code templates with classes for operations like object creation, the new operator, getX/setX conversion handling.  Support dynamic updates of code in development which is later compiled to production.
+
+A StrataCode framework mainly consists of one or more layers, wrapper classes which inject data binding events, annotation layers which can set compile-time annotations on any class.  These annotations typically control how those classes are used - including, adding the @Component attribute, marking properties as bindable, constant, or adding code templates for how "object" tags or scopes are interpreted (see @CompilerSettings, @Constant, @Bindable, @BindSettings for details on the StrataCode annotations).
+
+The swing integration provides examples of both annotation layers and the wrapper layer.  Annotation layers are called "meta" by convention. 
+
+## Annotation Layers
+
+An annotation layer allows you to add annotations to pre-compiled Java classes without generating a new type or wrapper class in the system.  The annotations affect how the pre-compiled class is used.
+
+For example, the AWT annotation layer is quite simple.   It annotates the classes java.awt.Point and java.awt.Dimension.  These are objects which hold the x, y, width and height properties in awt.  But since they do not send PropertyChange events, StrataCode can't monitor their changes.  Instead, the swing system adds binding events for the location and size parent objects.  Ordinarily StrataCode warns you about binding expressions to properties which do not fire events.  To avoid these, the awt/meta layer marks these properties constant from StrataCode's perspective with the @Constant annotation.  StrataCode will not let you set their values and won't give you a warning about the lack of a binding event when you use them in a binding expression.
+
+Here's the awt.meta layer definition:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>package java.awt;
+
+awt.meta {
+   annotationLayer = true;
+}
+<% ) %>
+
+and the files which annotate the Point and Dimension classes:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("awt/meta","Point.sc",
+%>Point {
+   override @Constant x;
+   override @Constant y;
+}
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("awt/meta","Dimension.sc",
+%>Dimension {
+   override @Constant width;
+   override @Constant height;
+}  
+<% ) %>
+
+The swing layer has its own annotation layer:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("swing/meta","meta.sc", true) %>
+
+An annotation layer can also set the @Component annotation on any class.  This permits you to use the component initialization semantics without adding a wrapper layer of classes.  Swing classes like JMenu, which do not require a wrapper class for data binding events, are defined in the annotation layer to avoid creating a wrapper class.   In this example, anyone using a regular JMenu class will initialize it with component semantics using the specified code templates.
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("swing/meta","JMenu.sc") %>
+
+## The Swing Core Layer
+
+The Swing core layer injects data binding into Swing using simple wrapper classes for most components.  A few properties are added and event listeners fire change events. 
+
+Here's the layer definition file:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("swing/core","core.sc", true) %>
+
+<%= MarkDownPage.markDown(%>
+
+Processing is added for resource files with the png and gif suffix.  These files are copied into the build dir unless overridden replaced in a subsequent layer.
+
+The MainInit annotation is defined.  All classes tagged with @MainInit are put into a type group called mainInit.  This type group is evaluated in the code template for the Main.sc class.  For incremental builds, a dependency is added so Main.sc is regenerated if elements are added or removed from the type group.
+
+These imports are exposed both to classes in the layer and for users of the layer without an explicit import.  A subsequent layer could choose to not inherit imports at all with inheritImports=false.  If you want to use imports internally only, not expose them to extended layers, set exportImports=false.
+
+The wrapper class for a primitive component sets the @Component attribute, and triggers a change event for the "preferredSize" property when the text changes:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("swing/core", "JLabel.sc") %>
+
+<%= MarkDownPage.markDown(%>
+
+The JPanel class associates template objects which add sub-objects as children.  By default, data binding is used so the default layout is also set:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("swing/core", "JPanel.sc",
+%>@Component
+@CompilerSettings(objectTemplate="javax.swing.JComponentInit", newTemplate="sc.swing.JComponentNew")
+public class JPanel extends javax.swing.JPanel {
+   layout = null;
+}
+<% ) %>
+
+<% ) %>
+<%= MarkDownPage.markDown(%>
+
+The JComponentInit template set via CompilerSettings is used to define a code snippet inserted into the declaring class when an object tag is used of that type.  It is passed an object which contains all of the properties you need to evaluate.  Here's the template for the swing component:
+<% ) %>
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleFileNoTypeErrors("swing/meta","JComponentInit.sctd") %>
+
+<%= MarkDownPage.markDown(%>
+
+See sc.lang.java.ObjectDefinitionParameters for the object passed to the init or new templates.
+
+The JComponentNew.sctd file is used when you mark a class with @Component.  It generates a newX method for each constructor and rewrites all uses of the constructor for this class to use newX instead.
+
+The rest of the swing components are mostly thin wrappers adding binding properties where necessary.  In one case, it calls invalidate/validate after a size property has changed as swing failed to detect that itself.
+
+To integrate data binding with the Swing event thread, the listeners will use sendDelayedEvent, and processStatement to put the event delivery and script commands back on the swing thread. 
+
+## Android View Example
+
+Android View components do not have a zero argument constructor.  Instead they must be created with a Context parameter.  To support this pattern with the "object" operator, you can use the enclosing root level Activity object as the context for any children created inside of it.  
+
+First, associate the View class with the ViewObj code template:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("android/meta","view/View.sc") %>
+
+The propagateConstructor parameter specifies that the constructor which takes the Context parameter is propagated to any subclasses unless those subclasses define that constructor explicitly.  This eliminates the need to have to manually copy a trivial constructor into each class.
+
+Then specify a code template which uses the rootName variable as the first parameter to the constructor:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleFileNoTypeErrors("android/meta","view/ViewObj.sctd") %>
+
+## Main Settings
+
+One of the sad features of Java is that after you compile your program, you are left with the frustrating task of trying to find the right class path and main class to run it.  StrataCode helps by supporting the @MainSettings annotation, typically set on a framework class so it's transparent to the application developer.  It generates a ".sh" script to run your application.  It also will generate a "main.jar" file which you can use to package it up for you.  The script works for either compiled or interpreted execution.  You can enable debugging, set JVM parameters, or produce a jar file via MainSettings.
+
+The swing layer's main provides an example of how to use this feature:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFileNoTypeErrors("swing/core","Main.sc") %>
+
+<%= MarkDownPage.markDown(%>
+
+Also check out how StrataCode's own compiler's main is defined (since StrataCode builds StrataCode).
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class LayeredSystem {
+   //...
+   @MainSettings(produceJar=true,produceScript=true,execName="sc",debug=true)
+   public static void main(String[] args) {
+   }
+}
+<% ) %>
+
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

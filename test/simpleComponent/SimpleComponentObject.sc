@@ -1,0 +1,2 @@
+@Component object SimpleComponentObject {
+}

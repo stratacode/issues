@@ -1,0 +1,239 @@
+<%@ import sc.lang.html.Element; %>
+<html>
+<head title="StrataCode Programming Language"/>
+<body>
+
+<div id="content" extends="DocContent">
+
+   <div class="tagBox">
+      <div class="tagline">A New Life For Java</div>
+      <div class="taglineTwo">StrataCode is the language that changes everything.</div>
+      <div class="intro">
+        It enables universal customization and the deepest level of integration - all with easy to use layers.
+        The entire team works better together - StrataCode empowers software developers and business users alike.
+      </div>
+   </div>
+
+   <div class="tagGraphic">
+      <center>
+         <a class="videoLink" href="videos.html"><img src="./images/screen1-small.png" height="172"><br>Watch the intro videos</a>
+      </center>
+   </div>
+
+   &nbsp;
+   <p>
+   <div class="newRow"/>
+
+   <%! 
+      Element[][] detailBoxRows = {
+          {javaDetail, featDetail, jsDetail},
+          {layerDetail, ruleDetail, syncDetail},
+          {htmlDetail, liveDetail, bizDetail}
+      };
+   %>
+
+   <div id="InfoBox" abstract="true" 
+        class=':= "infoBox " + (detailBox.visible ? "infoBoxSelected" : "")'
+        clickEvent="=: updateVisible()">
+      <%! 
+         Element detailBox; 
+         int rowIndex; 
+
+         void updateVisible() {
+            Element[] peers = detailBoxRows[rowIndex];
+            for (Element peer:peers)
+               if (peer != detailBox && peer.visible)
+                  peer.visible = false;
+            detailBox.visible = !detailBox.visible;
+         }
+      %>
+   </div>
+
+   <div extends="InfoBox" id="javaBox" detailBox="= javaDetail" rowIndex="= 0">
+      <div class="infoBoxTitle">Java extensions</div>
+      Code-preprocessor, incremental changes to code for readability.
+   </div>
+
+   <div extends="InfoBox" id="featBox" detailBox="= featDetail" rowIndex="= 0">
+      <div class="infoBoxTitle">New Features</div>
+      Properties, data binding, objects, multiple inheritance, and more.
+   </div>
+
+   <div extends="InfoBox" id="jsBox" detailBox="= jsDetail" rowIndex="= 0">
+      <div class="infoBoxTitle">Java to Javascript</div> 
+      Robust, efficient Java in the browser.  Produces readable, usable Javascript.
+   </div>
+
+   <div class="newRow"/>
+
+   <div id="BaseDetailBox" abstract="true" class="detailBox" visible="false">
+      <%! int columnIndex = 0; %> 
+      <div id="openArrowContainer" style="position: relative; width: 0px; height: 0px">
+         <div class="openArrow" style='= " left: " + (columnIndex * 300 + 128) + "px"'/>
+      </div>
+      <img src="./images/closeBox.png" style="float: right" clickEvent="=: BaseDetailBox.this.visible = false">
+   </div>
+
+   <div extends="BaseDetailBox" id="javaDetail">
+      <div id="boxTitle" class="infoBoxTitle">Open Source Java Extensions</div>
+      <ul>
+         <li>Reads and runs like Java.  And runs in the browser after converting to Javascript.
+         <li>Keeps Java's strengths: libraries, code completion, find usages, edit time errors, refactoring, runtime speed, standard syntax, etc.
+         <li>Supports all of Java's syntax and can be used to easily customize existing Java applications.   
+      </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="featDetail" columnIndex="= 1">
+      <span class="infoBoxTitle">New Features</span> - Just the right additions to Java for more concise code that's easier to read and write. 
+      <ul>
+         <li>Real properties in Java: automatic, customizable getX/setX conversion.
+         <li>Data binding operators for Java expressions: forward :=, reverse =:, and bi-directional :=:.  Easy, fast, customizable.
+         <li>New 'object' operator and @Component annotation: manage object graphs and configuration with Java types, Java syntax.
+         <li>Layer level imports, public, and other annotations.  Robustness of Java but more manageable with less code.
+         <li>Automated build, run framework with concise and flexible framework development hooks for synchronizing compile time and runtime assets.
+         <li>Multiple inheritance: interfaces with instance properties and property assignments (method support coming soon!).  
+      </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="jsDetail" columnIndex="= 2">
+      <span class="infoBoxTitle">Java to Javascript</span> - Run your Java code in the browser, easily and efficiently. 
+      <ul>
+         <li>Java to Javascript: readable JS code, usable JS objects, debuggable without a simulator</li>
+         <li>Best Java translation yet - APIs calleable from Javascript</li>
+         <li>Customizable via annotations, framework hooks, and pluggable code-templates</li>
+         <li>Supports many standard Java classes: ArrayList, HashMap, LinkedHashMap, etc.</li>
+         <li>Libraries, modules, automatic dependency detection and ordering</li>
+         <li>Code patching for live code updates (coming soon!)</li>
+      </ul>
+   </div>
+
+   <div extends="InfoBox" id="layerBox" detailBox="= layerDetail" rowIndex="= 1">
+      <div class="infoBoxTitle">Customization with Layers</div>
+      Groundbreaking improvement to object-oriented design.
+   </div>
+
+   <div extends="InfoBox" id="ruleBox" detailBox="= ruleDetail" rowIndex="= 1">
+      <div class="infoBoxTitle">Rules</div>
+      Allows business and technical users to customize applications.
+   </div>
+
+   <div extends="InfoBox" id="syncBox"  detailBox="= syncDetail" rowIndex="= 1">
+      <div class="infoBoxTitle">Data Synchronization</div>
+      Simply build a new breed of highly efficient and functional client/server applications.
+   </div>
+
+   <div class="newRow"/>
+
+   <div extends="BaseDetailBox" id="layerDetail">
+      <div class="infoBoxTitle">Customization with Layers</div>
+      <ul>                                                                                                
+        <li>A powerful new language for universal customization, without any upfront design.
+        <li>Cut and paste refactoring of code and programs, without breaking compatibility.
+        <li>Photoshop-like organization of code, files, and data.
+        <li>Layers are interchangeable modules that can do more: you can simply modify features to avoid copying
+
+        <li>With StrataCode, you manage code more effectively:
+            <ul><li>Separate business rules and configuration from code </li>
+                <li>Partition client from server with overlapping code that runs on both</li>
+                <li>Share code between Desktop, browser, and mobile code bases</li>
+                <li>Separate code based on dependencies for maximum reuse</li> 
+            </ul>
+        </li>
+        <li>Layers for workflow, testing, customization, A/B testing.  Complements version control for updates.</li>
+        <li><a href="aboutLayers.html">More on layers</a>.
+      </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="ruleDetail" columnIndex="= 1">
+      <span class="infoBoxTitle">Rules</span> - Empower business user customization with IT in control but out of the way.
+         <ul>
+            <li>The ultimate tool for organizing forms: the right fields in front of the right people. 
+            <li>Excel-like rules, customizing today's Java apps with auto-complete, errors and diagnostics, deployable at enterprie scale. 
+            <li>Useful for styles, user interface to model (MVVM), localization, administration, and more.
+         </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="syncDetail" columnIndex="= 2">
+      <span class="infoBoxTitle">Data Synchronization</span> - Let's you write code in a normal way, and scales up to complex data models supporting a rich feature set.
+      <ul><li>Use StrataCode synchronization to build client/server apps with almost no explicit coding.  
+          <li>Put the parts of your types you want to synchronize into separate layers. 
+          <li>StrataCode generates code to track property changes automatically.  
+          <li>When your client or server syncs, those changes are put into a runtime layer and applied on the other side.  
+          <li>You can run methods easily when values change using data binding.  
+          <li>Methods can run on client, server or both.  This is no toy!  It's easy to use. (<a href="syncFramework.html">more info</a>).
+      </ul>
+   </div>
+
+   <div extends="InfoBox" id="htmlBox" detailBox="= htmlDetail" rowIndex="= 2">
+      <div class="infoBoxTitle">HTML Templates</div>
+      Dynamic HTML templates with unparalleled flexibility and performance.
+   </div>
+
+
+   <div extends="InfoBox" id="liveBox" detailBox="= liveDetail" rowIndex="= 2">
+      <div class="infoBoxTitle">Live Programming</div>
+      Live, real-time programming for business and technical users.
+   </div>
+
+   <div extends="InfoBox" id="bizBox" detailBox="= bizDetail" rowIndex="= 2">
+      <div class="infoBoxTitle">Better for Business</div>
+      Saves time and money.
+   </div>
+
+   <div class="newRow"/>
+
+   <div extends="BaseDetailBox" id="htmlDetail">
+      <span class="infoBoxTitle">HTML Templates</span> - the best features of the best template engines all in one.
+      <ul>
+         <li>Java objects for tags - inheritance, interfaces, multiple inheritance with flexible 'tag' and 'attribute' merge.
+         <li>Generate static HTML, stand-alone JS apps or full-featured client/server applications.
+         <li>Evaluate tag content on client for dynamic updates.  Evaluate others on the server for load time and SEO.  Or evaluate tags on both for the best of both worlds.
+         <li>Build stateless apps for simplicity or easily build stateful apps for efficiency, lots of features, without losing robustness (e.g. bookmarkable, stateful refresh, and client-based session-failover)
+         <li>Client/server API for DOM with data binding
+         <li>Customize templates with layers:
+            <ul>
+               <li>Tools that support non-destructive editing for building layers (see transparent layers)</li>
+               <li>Tag-by-tag changes: replace, append attributes and body</li>
+               <li>Replace file-by-file</li>
+               <li>Robust like Java cause the template generates an inuitive Java class</li>
+            </ul>
+         </li>
+      </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="liveDetail" columnIndex="= 1">
+      <span class="infoBoxTitle">Live Programming</span> - On-the-fly changes for rapid development.
+      <ul>
+         <li>StrataCode implements two runtimes in one virtual machine, partitioned by layers.  Dynamic layers live on top of compiled layers. You can make more types of changes even in a stateful application, without having to restart.  
+         <li>One command: build, run, change or refresh, restart as needed: run sc with a list of layers.</li>
+         <li>Customizable interactive business user tooling framework to manage layers, objects, properties, excel-like rules.</li>
+         <li>Compile dynamic layers when done developing for optimum deployment.</li>
+      </ul>
+   </div>
+
+   <div extends="BaseDetailBox" id="bizDetail" columnIndex="= 2">
+      <div class="infoBoxTitle">Better for Business</div>
+      <ul>
+         <li>Ideal for enterprise apps such as ERP, eCommerce, content management, CRM, personalized websites, etc. that need product evolution and customization for mission critical systems.</li>
+         <li>StrataCode does for software development and integration what Excel did for the accounting world.</li>
+         <li>Even sophisticated business users can manage software changes, and merge or "layer" software programs as needed </li>
+         <li>Improves collaboration between developers and business users </li>
+         <li>Developers will save valuable programming time, and corporations can save millions in consulting dollars</li>
+         <li>Allows realtime project development between software architects, graphic designers, merchandisers, programmers, business analysts, and administrators.</li>
+      </ul>
+   </div>
+
+   <div class="defaultDetailBox">
+   <p>
+<a href="about.html">Jeff Vroom</a> (jeff@jvroom.com) began realizing his vision for StrataCode five years ago.  It's now just over 100K lines of readable, easy-to-follow code, with a public preview coming soon.
+   <p>
+ It enables easy integrations.  We've already integrated with <a href="webFramework.html">Javascript</a>, <a href="webFramework.html">HTML</a>, <a href="swingCommandLine.html">Swing</a>, <a href="gettingStartedAndroid.html">Android</a>, OpenGL, <a href="moreFrameworks.html">JUnit, Servlets, Jetty</a>, OpenJPA, Hibernate, ATG, <a href="gwt.html">GWT</a>, and <a href="wicket.html">Wicket</a>.  
+   <p>
+  <a href="contact.html">Contact us</a> if you'd take it for a test spin and provide feedback - we'd really appreciate it.  Maybe you'd like to be an early adopter and contributor - or better yet, you can join our small and growing team.  Be a part of the next revolution in high-end software development!
+   </div>
+
+</div>
+
+</body>
+
+</html>

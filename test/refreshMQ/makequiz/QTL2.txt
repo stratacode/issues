@@ -1,0 +1,14 @@
+/**
+ * A panel which lists all the existing questions for a given quiz.
+ * Each individual question can be selected for editing.  New
+ * questions can be added, and existing questions can be deleted, by
+ * means of a context menu.
+ */
+public class QuestionList extends JPanel {
+   // A border around the list of questions
+   static Border questionListBorder = BorderFactory.createCompoundBorder
+      (BorderFactory.createEmptyBorder(0, 5, 5, 5), BorderFactory.createTitledBorder("Questions"));
+
+   border = questionListBorder;
+   Insets panelInsets := insets;
+}

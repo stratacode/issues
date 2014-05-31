@@ -1,0 +1,99 @@
+<html extends="DocPage">
+<head title="StrataCode Web Framework Advantages"/>
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Flexible, Strongly Typed, Mixed Client/Server Web Framework
+
+The StrataCode web framework supports an extended form of HTML that gives you the power of Java mixed with HTML.  Tags can extend other tags either in code or template form, override attributes, use data binding expressions for attributes or content for incremental refresh.  High level tag operations support repeating tags and easy ways to bind your forms to data models.
+
+## Declarative Web Framework
+
+* HTML templates can be viewed and edited in standard HTML tools
+* Data binding for declarative, readable templates with automatic, incremental refresh, and reliable caching.
+
+## Advantages
+
+* Runs on client, server or both with synchronization.  One code base.  The initial page load will return HTML showing the initial screen for speed, search etc.  Declarative client/server model with:  incremental UI refresh, sync server sync, and eventually offline.  Changes synchronized to the server so that refresh works preserving all state.
+* Layer templates and code.  Layer changes to an HTML document: replace, append, prepend DOM elements, override properties, or methods in a layer to behavior: A/B testing, or general customization. 
+* Strongly typed for compile time errors, runtime speed and tooling.
+
+## Tag APIs
+
+The default tag types, Body, Form, etc. implement a subset of the Javascript DOM API that works on both the client and the server.  For declarative changes, i.e. those which can be converted into data binding expressions, the updates are incrementally refreshed automatically as properties change.  If you need to change the HTML yourself in code, you use the DOM api and refreshes again are scheduled automatically.  You do not have to choose whether this code runs on the client or server.  That will be managed by the frameworks you have chosen.
+
+## Client/Server Transparency
+
+Most frameworks require the application code to explicitly partition itself into client and server by separating the code and managing the communication.  With StrataCode, framework layers generate code to manage the sychronization of each type.  For each type name, there may be a version that runs on the client or a version that runs on the server or both, synchronizing properties back and forth.
+
+Server layers include code that uses database operations.  Code that should run on the server for security operations.  By simply setting properties that are shared by client lsyers, you get client/server connectivity for free.
+
+For example, if you have the shared properties:
+    {
+       String queryParam
+       List<Result> results
+    }
+
+then a server layer define:
+
+    {
+       results := query(queryParam)
+    }
+
+the client sets queryParam, that change is synchronized to the server, the server updates results in the response. 
+
+To do an insert you just go the other way.  In the shared model you have:
+
+    {
+       firstName, lastName;
+       insertCount; // incremented each time the insert button is pressed
+    }
+
+in the server layer:
+
+    {
+       insertCount =: insert(firstName, lastName);
+    }
+
+or to do an update do this in the server layer:
+
+    {
+       firstName =: update();
+       lastName =: update();
+    }
+
+In the rare case you need it, you can set an ExecMode annotation to explicitly control where a given method or field lives.
+
+To support push, the server can initiate the sync over a web socket or be polled for syncs - no other changes to the model are required. 
+
+At the framework level, events can be customized to Java code snippets that are inserted into the layer definitions, letting you build efficient, incremental synchronization even for complex data structures.  That code gets converted automatically to Javascript so you get efficient, high-level IPC injected at the framework level.
+
+This same framework could similarly build very efficient .NET and IOS integrations.
+
+## One Template Language, Different Ways to Evaluate 
+
+StrataCode templates can run in three different ways:
+
+* After the system has been built, for static templates, an html file is generated.
+* In response to a request the server evaluates the template.  The template may either be compiled or interpreted.  The template object can be session-scoped, and stored as a smart-cache for the content.  As properties change, the cache is invalidated, and changes incrementally sync'd back to the server.  When nothing has changed, the template can be served directly from memory as one long string.  When the browser refreshes, all session state that has been synchronized is preserved.
+* After being converted to Javascript, the template is evaluated when the Javascript file is loaded.On the client side, the template wires itself to the DOM elements.  Any changes made to the template objects are reflected in the DOM and vice versa, incrementally.
+
+By evaluating templates on the server, search engines can index them with search engines and the browser can display them faster.  By incrementally updating them on the client, you can improve the interactivity, even for content that should be generated on the server for security reasons.
+
+## StrataCode's Java to Javascript Engine
+
+StrataCode's has a unique Java to Javascript conversion engine.  Built on the powerful StrataCode language framework, it is simple, flexible, customizable, and produces readable, usable Javascript code with intuitive type, method and property names.  Unlike GWT, you can use this Javascript code from other Javascript easily as it exposes Java types directly as Javascript types, using predictable rules.  You keep your code in Java or StrataCode using maintainable, strongly typed APIs.  
+
+Click [here](jsFramework.html) for more info on StrataCode's Javascript conversion framework.
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

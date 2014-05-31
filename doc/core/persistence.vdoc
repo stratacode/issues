@@ -1,0 +1,46 @@
+<%! object persistence extends util { %>
+<%= header("SC Persistence Framework","persistence") %>
+
+<%= markDown(%>
+
+## Overview
+
+Layers help solve problems storing and managing persistence data as well.  The StrataCode database interface looks like JPA, using similar annotations.  The primary query language is based on Java expressions optimized to efficent where clauses or evaluated in memory as possible.  Pass through queries are also supported to the underlying persistence engine.
+
+Yes, you can use StrataCode with any Java code.  But StrataCode's persistence engine is special as well:
+
+* Robust O/R mapping, 10X faster caching than Hibernate, safer/easier programming model
+* Layered data model provides simple, robust, efficient way to test, stage, deploy and manage persistent data.  Storing deltas (similar to transaction logs), merging the results as objects.
+* Strongly typed but mixed dynamic/normalized storage models with path to migrate from dynamic to normalized data models via admin.
+* Declarative persistence: query via configurable java/experssion rules, insert, update, delete with error handling via safe, declarative components.
+
+Combined, these features provide an easy to use platform to manage complex, no compromises applications.  
+
+Layers synchronize database, configuration and code changes through testing, staging, and deployment.  They provide an organizational metaphor around the UIs that is flexible and easy to manage.  Reorder layers, merge, etc.
+
+## Faster, safer than traditional persistence engines
+
+Unlike JPA, hibernate, and most existing persistence engines, instances in the SC persistence framework are thread-safe.  You store them in global caches and can read/write values from any thread.  The values stored in the fields of the cached instances are only shared read-only caches of the data.  Changes made in a transaction are stored in a thread-local transaction associated with each item until they are committed.  When you commit, the instance fields are updated in a synchronized way.  The getX method retrieves the per-transaction value first, then defaults to the field if this field is not modified for this thread.   The thread-local transaction provides an isolated transaction on top of a shared read-only cache.  The pattern is like the pattern used by clojure's transactional memory but from a traditional component-based API.
+
+In all existing JPA implementations, the need for unique instances for each thread forces a complex and brittle session-based architecture using a 2-level cache.  When you access an object graph, the objects in that graph are populated from the second level cache then discarded after the transaction.  Even read-only operations become relatively expensive in that approach as this graph is built up and torn down each time.  To reuse an instance you must attach and detach it explicitly and can only use it from one thread at a time.
+
+The major runtime cost to the StrataCode persistence engine for each operations are a couple of extra hash-table lookups for each read-only field (one for the current transaction, one to check if that field has been modified yet in this transaction).  During writes, a separate record is created to associate the new value with the current transaction.  Compared to the computational cost of persisting a database write, that's insignificant. 
+
+## Blended Dynamic/Normalized Schema
+
+Properties can either be stored as normalized columns for in-database indexing and performance, or stored as ascii object definitions for more dynamic schemas using an external index.  The layered data model supports merging together data stores.  When you use the merge metaphor, you support schema extensions as well as overriding data values.  Thus the same metaphor supports merging dynamic schemas with normalized schemas.  As an administrative task, the merge operation can support migrating data from one model to the other.
+
+When you are staging content, you frequently have to stage HTML files, database changes, and code changes at the same time.  Layers let you manage them all at once.  You can preview the changes by adding the layer via a new URL or via an A/B testing mechanism.  Combine your changes with others, etc.  Test small or major application updates before rolling them out.
+
+Developers no longer have to maintain their own SQL database.  Tests they run can use a new separate layer on some shared database.  Temporary layers can be used to make destructive automated test scenarios easy.
+
+Just as with code, layers become a powerful way to manage workflows.  
+
+## Declarative Persistence
+
+Data binding mapped to declarative persistence components provide a more flexible and configurable way to manage data and queries. Features like commit, revert, offline, client/server, etc. all implemented for you by the framework from one code base.  Declarative error handling.  All intermediate form data saved and validated on both client and server in real time.  Complete round/trip data and form management from a single customizable system.
+
+<% ) %>
+
+<%= footer("SC Persistence Framework","persistence") %>
+<% } %>

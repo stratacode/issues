@@ -1,0 +1,100 @@
+<html extends="DocPage">
+
+<body>
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Code generation for the object operator
+
+This section describes the Java code which is generated for the StrataCode "object" operator.
+
+For a top-level class (i.e. not an inner class), StrataCode creates a regular Java class and defines a static "getX" method.  This method constructs an instance of that class the first time it is called and returns that instance for every subsequent call.  When you refer to the object as a value in an expression, StrataCode converts that to a call to that getX method.  So top-level objects by default implement a static constructor pattern.  If you produced a Java library with "object" definitions, your clients could use it nicely even if they've never heard of StrataCode.  
+
+For example:
+
+<%= sc.lang.SCLanguage.INSTANCE.style(
+%>object SimpleObject {
+}
+<% ) %>
+
+turns into:
+
+<%= sc.lang.SCLanguage.INSTANCE.style(
+%>class SimpleObject {
+   static SimpleObject simpleObject;
+   static SimpleObject getSimpleObject() {
+      return simpleObject == null ? simpleObject = new SimpleObject() : simpleObject;
+   }
+}
+<% ) %>
+
+The actual contents of that getX method are determined by templates set by framework layers on a base class.  So if you need synchronization, your framework should add it in the template it defines for your core framework classes.  StrataCode also provides frameworks with capabilities to move data binding and interpreted code to a single thread so non-thread safe frameworks like swing are supported.
+
+Inner objects work a little differently than outer objects in terms of the generated code.  If you define an instance inner object, i.e. one without the "static" modifier, it defines a getX method which again constructs the object the first time it is called.  For an inner object though, it uses an instance variable in the outer class or object to store the instance.  For a static inner object, it works the same way but static variable and getX methods are used.  So a static inner object is one-per-class or global with respect to that class but an inner object is per-instance of the container.  As an optimization, if an inner object does not define fields or methods, a class is typically not created for that inner object.  Instead, initializers are put into the get method which defines the object.  This makes simple inner objects very lightweight at runtime for the typical case where you are just creating an instance of an existing class.
+
+<%= sc.lang.SCLanguage.INSTANCE.style(
+%>class SimpleInnerObject {
+   object innerObject {
+   }
+}  
+<% ) %>
+
+turns into:
+
+<%= sc.lang.SCLanguage.INSTANCE.style(
+%>class SimpleInnerObject {
+   class innerObject {
+   }
+   SimpleInnerObject.innerObject innerObject;
+   SimpleInnerObject.innerObject getInnerObject() {
+      return innerObject == null ? innerObject = new SimpleInnerObject.innerObject() : innerObject;
+   }
+}
+<% ) %>
+
+Either way, an inner object acts like a bean-style property on the outer object.
+
+## Implementation of nested objects
+
+Behind the scenes, the ComponentList specifies a code template using the CompilerSettings annotation which is used to construct object instances of that type.  In this case, the template adds each of the children to the ComponentList instance it defines in its getX method.  
+
+Here's the ComponentList.sc class:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("util","ComponentList.sc") %>
+
+The annotations refer to the two components sc.util.ComponentListNew and sc.util.ComponentListInit.  These are two code template objects defined in the ComponentListNew.sctd and ComponentListInit.sctd files in that same directory.  One is used as the code template for the "new ComponentList" operation, the other is used when you use ComponentList in an object tag though they are very similar.  Here's the new one:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleFileNoTypeErrors("util","ComponentListNew.sctd") %>
+
+This is written in the StrataCode [template language](templateLang.html).  At compile time, this template is used to generate the code for each instance of the ComponentList.  The childrenNames property is replaced with the comma separated list of java expressions which return any inner objects defined in that instance.
+
+## Recursive references in StrataCode Components
+
+If you were looking closely at the StrataCode samples, there's some magic behind the scenes.  Java does not permit you to use forward references during instance initialization.  One field initializer can only refer to a field on an object which has already been initialized.  The compiler detects some cases for you but others just don't work correctly if you mess this up.  When you mark an object with the @Component annotation, StrataCode alters the initialization semantics of that class to permit recursive object references. 
+
+Objects marked with @Component are constructed in three phases.  First the object instance is constructed and assigned to a variable used by the getX method.  Any constant fields are assigned at this time but StrataCode's generated code will not access other objects during the construction phase.  Once the object is constructed, its member variable is assigned.  At this time any references to this object can now be satisfied by calling the getX method.  The second phase is called "preInit".  This invokes any field initializers, instance initialization code, and code defined in the original object's zero-arg constructor.  So all of this code is executed in the same order as in Java preserving Java's primary contract.  This code has now moved to the preInit method so that any references triggered by running this code can resolve the creating object, allowing forward references.  The preInit method of the first component being created also invokes the preInit method's of any components referenced in it's field initialization expressions.  Following the preInit, init and start methods are called which similarly chain to their sub-components.  This provides a 3-phase creation semantics: 
+
+1. field initialization, pre-init hook: all of your field have been initialized - used by object constructors
+2. init hook: all of your referenced components have been created and their fields initialized
+3. start hook: all of your referenced components have been initialized
+
+Wny three hooks?   Well, in 90% of frameworks you don't need more but of course for complex code you may.  This should be a framework configurable item using a fixed list of hooks: init, start, validate, process, etc.
+
+A simple component class:
+<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","SimpleComponentClass.sc") %>
+
+compiles to:
+<%= sc.lang.JavaLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","build/java/SimpleComponentClass.java") %>
+
+<% ) %>
+
+A simple component object compiles to something similar but with a get<i>Name</i> method instead of a new<i>Name</i>:
+
+<%= sc.lang.JavaLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","build/java/SimpleComponentObject.java") %>
+
+     </div>
+   </div>
+</body>
+</html>

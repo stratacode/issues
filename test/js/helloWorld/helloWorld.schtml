@@ -1,0 +1,13 @@
+<html>
+  <body>
+    <div class="appFrame">
+       <%! String yourName = ""; %>
+       <div>
+         <label>Name:</label>
+         <input type="text" value=":=: yourName" placeholder="Enter a name here">
+         <hr>
+         <div><h1>Hello <%= yourName %>!</h1></div>
+       </div>
+    </div>
+  </body>
+</html>

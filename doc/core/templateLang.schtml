@@ -1,0 +1,143 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## StrataCode Template Language
+
+The template language provides the power of StrataCode for situations where you have dynamic text, such as XML or HTML files to generate in a layered fashion.  The template language provides all StrataCode features as well - get/set conversion, compiled or interpreted execution.  You can generate stateful templates, which have incremental refresh, or generate a template which is stateless - i.e. re-evaulates from scratch each time.  
+
+Even though StrataCode comes with a template language that dramatically improves the state of the art, it also works well with other web frameworks like JSP and Wicket and it's easy to add more integrations.
+
+Under the hood, the template language is a small deviation from the StrataCode language itself.  Templates are easy to read by Java programmers, strongly typed, compiled in one pass not two which gives them good errors messages.
+
+Framework developers use the template language for code snippet templates.  They also use the template language to generate xml files, improving build automation.  Templates can be turned into a java class and compiled or interpreted.  They can be treated just like source files and override or modify Java types.  
+
+Some web frameworks use a pattern called "code behind" where you write a class to define a page object that sits behind the template.  The properties and methods in the page object are available to the template.  StrataCode takes this pattern further.  It let's you weave code files, and template files in any number, each one using, extending, overriding, the previous one. 
+
+The grammar for the template language is derived from the StrataCode language.  Unlike JSP, the template is parsed with a single grammar, in a single pass making syntax errors easier to find.  The parsing rules are a bit more restrictive in some cases than JSP but the restrictions make for more readable, well structured templates. 
+
+While JSP has include tags, tag libraries and more, the template language takes a simpler approach, leveraging concepts from Java already for composition, typing etc.  While JSP tries to hide the complexity of Java via a myriad of tags, operators, attributes etc. the template language just lets you mix template strings with Java code.  You use Java operators for Java-like things.  Of course in general, you should try as hard as possible to keep your templates simple - to keep Java separate from your template code so others can read and modify it easily.  But when you do need to add properties, write a template macros, extend another template, etc. there's really no need to invent new syntax and structure when Java does everything you need in a simpler, more flexible way.
+
+Like most template languages, the template begins as content.  If your file is called "foo", it might live in the location: "foo.scxx" and defines the type foo.  The extension used depends on what format this template is producing and how it is processed.  The scxml extension lets you generate XML files at build time.
+
+The schtml file uses the HTMLLanguage which extends the TemplateLanguage grammar.  It supports all of the features of the Template language but lets you generate and update HTML on the client, server or both.
+
+The sct file works just like an sc file except that it starts out as a template.  Use that for any sc file which requires some long strings which you do not want to escape.  If you want to separate those strings from the code entirely, you can put the sct file in a different layer.
+
+Adding new template formats is simply a few lines of StrataCode code in a layer definition file to add a new TemplateProcesor.  For each extension, you specify whether the template is interpreted or compiled, what extension is produced, what directory it goes in, and what build-pass this all occurs in.
+
+To interpret a template, the parser returns a Template object.  You evaluate that template, providing an optional this object or other context, then interpret the Java code inside to produce the string.  
+
+When you compile a template, the code is transformed into a .java file and compiled.  In this case, you can provide a default extends class and any code templates associated with that class are used in the compilation.  So by extending the Servlet class, if you include the servlet.meta layer, your template automatically has request/response parameters added to the output method.  
+
+The template language uses the same basic operators as JSP but unlike JSP they cannot be mixed freely with Java.  They are only used to separate the main constructs: definitions, statements, and expressions.  This makes StrataCode templates equivalent to StrataCode class or object definitions that start out defining a content string.  With the &lt;% operator, you break into the context of code and with &gt; you return to the string.  This string gets added to a string builder in an output method:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "Hello.schtml", templateSnippets.helloTemplate) %>
+
+turns into:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class Hello {
+   public StringBuilder output() {
+      StringBuilder out = new StringBuilder();
+      out.append("Hello World");
+      return out;
+   }
+}
+<% ) %>
+
+There are three escapes taken from JSP: &lt;% %&gt; surrounds Java statements that get put into the current method.   &lt;%= java-expression %&gt; defines an expression to append to the out variable.  &lt;%= content %&gt; is equivalent to &lt;% out.append("content") %&gt;,  &lt;%! %&gt; defines the declarations chunk for this class.   The first declaration in the template file is treated differently if it is a class or a modify declaration.  In that case, it defines the class used to hold that output method.  The type of this class may define a template which affects how that class works as well.  So for example a Servlet's output method will take the request and response parameters so they can be used in the template page. 
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "Hello.schtml", templateSnippets.helloTemplate1) %>
+
+This defines a class named Hello with a single message instance variable.  When the template is evaluated that message is output.
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "Hello.schtml", templateSnippets.helloTemplate2) %>
+
+Now in a separate layer you modify the class Hello and override the initializer for the message object.  By default, the modified template generates a new output method that overrides the one in the previous class.  To include the content from the previous template, you have to evaluate super.output.  The advantage is that you can place content before and after the previous template's content.
+
+Some examples:
+
+<pre><code>&lt;%= foo + "bar" %&gt;</code></pre>
+
+The expression inside of the template is evaluated and the string value is added to the templates value.
+
+<pre><code>&lt;% for (int i = 0; i &lt; 10; i++) {%&gt;
+      element &lt%= i %&gt;
+&lt;% }%&gt;</code></pre>
+    
+&lt;% lets you inject one or more Java statements into the currently executing method.  You also use this to go back StrataCode code after completing a template definition (e.g. &lt;% } %&gt; or &lt;% ) %&gt;).
+
+<pre><code>&lt;%! int memberVariable; %&gt;</code></pre>
+
+This defines sc constructs and all &lt;%! tags must appear before any other &lt;% tags.  If the first definition is a class, object or modify definition it defines the StrataCode class for the template.  Just as with Java and StrataCode files, the type name matches the filename.  So if your file is called "foo.sctd" your first definition might look like:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors(templateSnippets.simpleExtends) %>
+
+The generated "foo" class now will extend some base class bar, letting you use methods or fields of bar in your template.  The content inside of the definitions is automatically put into the "StringBuilder output()" method.  You can layer template files just like you layer StrataCode and Java files.  By default, your template will just replace the template in the previous layer.  But if the class declaration for the template is a modify operation, you can use the previous template's definition to define the new one. 
+
+The declarations section also can be used to define methods inside of the template.  Each method can have its own template, allowing you to define multiple parameterized methods in the template file:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "foo.sct", templateSnippets.simpleMethodDecl) %>
+
+or the same thing:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "foo.sct", templateSnippets.simpleMethodDecl2) %>
+
+If this appears as the first definition in the file, it is used as the definition for the StrataCode class which contains the template.  So if your file is called "foo.sctd" your first definition might look like:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors(templateSnippets.simpleExtends) %>
+
+The generated "foo" class now will extend some base class bar, letting you use methods or fields of bar in your template.  The content inside of the definitions is automatically put into the "getFoo()" method which is generated from the template if you compile it.  Of course templates can be layered so you could modify or replace one template by a subsequent template in the layer.
+
+If that header method is defined in a file called "util", you'd refer to it from another template like this:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "foo.sct", templateSnippets.simpleMethodCall) %>
+
+or if you wanted to pass a template to that method you'd use:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "foo.sct", templateSnippets.templateMethodCall) %>
+
+and extra nesting levels work but hopefully you can avoid this in practice:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "foo.sct", templateSnippets.templateNestedMethodCall) %>
+
+The template mechanism lets you mix Java definitions with template definitions as long as the context on both sides match up.  A template definition can occur anyplace you'd expect a String value in Java so in the above example we can switch specify the first string parameter to the util.header method as a template definition.
+
+Note also that you can break up a Java expression, statement or declaration into pieces joined together by a template definition.  For example, the template body can occupy the entire method body which is a short hand for a method which returns the template as a String.  And of course a template definition can have nested Java expressions. 
+
+A variable can also be defined from a template:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors(templateSnippets.simpleVariableDecl) %>
+
+A template can extend or modify a StrataCode or java file in a previous layer or vice versa.  For example, a simple parameterized template might look like:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "formatter.schtml", templateSnippets.baseObjectTemplate) %>
+
+In a sublayer you could modify the behavior of that template by changing the values of the initializers.  If you don't need to change the content, you can do this from StrataCode code:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors("doc/core", "formatter.sc", %>formatter {
+  firstName = "Conan";
+  lastName = "OBrien";
+}
+<% ) %>
+
+You can imports types by placing this at the top of the file:
+
+<%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "formatter.schtml", templateSnippets.importTemplate) %>
+
+Essentially the template language is a very simple but powerful framework that lets you express dynamic designs simply even when the majority of the content is static.  Layering of templates provides even more flexibility.  For more examples of the template language, look at "doc" layer where StrataCode's documentation is defined.  The doc layer adds the "vdoc" extension.  This is a format which uses the StrataCode template language to generate the dynamic HTML document.  The syntax highlighting comes from utilities built with StrataCode's language engine.  
+
+Also look at WEB-INF/web.scxml in the layers: servlet/webApp and wicket/lib.  This shows how you can layer dynamic generation of XML files, driven from annotations in Java code.
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

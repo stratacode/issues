@@ -1,0 +1,4 @@
+@Component 
+class Test2 {
+
+}

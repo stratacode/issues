@@ -1,0 +1,39 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+This section describes both the basics around importing existing Java code, and at a language level, the compatibility between StrataCode code and Java code.
+
+## Importing Java Libraries
+
+StrataCode is designed to make it easy to import pre-compiled Java libraries and use them from StrataCode or Java code compiled by StrataCode.  You cannot modify these types using the modify operator, inject data binding, or use other features with them that require that StrataCode generate the code for these types.
+
+A layer definition file can append to the class path as needed to add compiled libraries to the system.  These types are automatically treated as JavaBeans by StrataCode using the get/set pattern.  You can attach metadata to individual classes using "annotation layers".  This metadata can affect the compiled code which uses that type, e.g. turning any use of a class into a component automatically.  You can mark properties as constant to eliminate data binding warnings and overhead.  You can add code templates to a type used for defining object instances or component definitions.
+
+## Compilation of Java and StrataCode 
+
+Each layer can contain a mix of Java and StrataCode files.  StrataCode will translate them all to vanilla Java files before compiling.  If your layer has Java files and you don't use any extensions, these files are passed through unmodified to the compilation phase.  The only changes made to Java files are cosmetic - add a missing "package" tag from the layer's package, add a missing public or private modifier when you mark your layer as public or private.  When dealing with pure Java files, StrataCode will still maintain class dependencies, compiling only files required to ensure your .class files are always up to date.  This makes it easy to incrementally add StrataCode to an existing Java project a file at a time, replacing Java's ant build tool.
+
+## Compatibility with Java
+
+You can simply rename a .java file with a .sc suffix and it should continue to compile and most likely will work without any changes.  StrataCode classes use and produce standard Java types.  A few changes made in the conversion from StrataCode to Java though could change the behavior.  The biggest change is that fields and references in StrataCode may be automatically converted to getX and setX methods using the JavaBean rules (unless the references are inside of the get or set method).  So if you rename a .java file to a .sc file, when it gets compiled the resulting .java file may well be a little different.  If you don't happen to use any of the modified features though, the generated .java file will be the same.  Get/Set is performed when the framework wants it to be or if you use data binding.   StrataCode makes incremental changes to the constructs which it needs and only changes the modified parts of the files it changes using its unique parser/generator system.
+
+The next biggest change is that an interface in StrataCode with non-static fields will copy those fields into each class and rewrite all accesses through the interface to use getX/setX methods.  This is StrataCode's multiple inheritance feature.  If you do not want this behavior for a given interface, do not rename it to have the .sc suffix or add static/final modifiers.  In Java, all fields in interfaces are static and final so it makes the code more consistent anyway.
+
+We have not yet dealt with Java7 and Java8 features but it will be easy to incrementally add them to StrataCode.  Inferred typing and default methods are probably the first two features we will add. 
+
+There are a few other minor compatibility problems where Java code might not compile as StrataCode.  With the object operator classes and instances are defined in the same name space.  Java allows types and variables to have the same names - you always know whether you are looking up a type or a variable and so can determine which to use based on the context.  StrataCode will treat types and variables of the same name as an error unless the variable is of that type.  So in StrataCode is legal to define two types "foo" and "bar" like this: "foo foo; bar bar;" but not like this: "foo bar; bar foo;".
+
+(Language experts out there: can you think of any other problems this change will cause?)
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

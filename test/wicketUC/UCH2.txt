@@ -1,0 +1,18 @@
+<html xmlns:wicket="http://wicket.apache.org/">
+<head>
+<title>UnitConverter on StrataCode</title>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+  <form wicket:id="unitConverterForm" id="unitConverterForm">
+    <select wicket:id="converterChoice">
+        <option>no converters</option>
+    </select>
+    <p>
+    <span wicket:id="unit1Label">unit1Label</span>
+    <input wicket:id="unit1Field" autocomplete="off"/>
+    <p>
+    <input type="submit" value="Submit" id="formsubmit"/>
+  </form>
+</body>
+</html>

@@ -1,0 +1,3 @@
+public user.model.core {
+
+}

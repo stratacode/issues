@@ -1,0 +1,6 @@
+<html>
+   <body>
+     <div id="someDiv" class="mergedClass"/>
+     <div id="newTag">some new content</div>
+   </body>
+</html>

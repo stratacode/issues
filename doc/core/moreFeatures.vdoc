@@ -1,0 +1,22 @@
+
+Multiple inheritance.  Interfaces can have fields or property initializations that are inherited by all classes that implement them.  In the future, they will have methods which get copied to the implementing classes as well.
+<p>
+Layer level package, public, imports.  Simplified array initialization.
+
+<h3>Portable</h3>
+One command to run on 5 different platforms:
+<div class="code">
+  % sc example/unitConverter/jsui<br>
+  % sc example/unitConverter/gwtui<br>
+  % sc example/unitConverter/swingui<br>
+  % sc example/unitConverter/androidui<br>
+  % sc example/unitConverter/wicketui<br>
+</div>
+Layer on fully customizable, native UIs.
+
+<h3>More Modular Programs</h3>
+Layers combined with objects and strong types give you more flexibility in building large systems, maintaining compatibility between releases, upgrading customers with new features, packaging products and features.  These are not obvious benefits but I saw them in action in hundreds of solutions using ATG's Dynamo platform.  <a href="moreModular.html">Learn more.</a>
+
+<h3>Code Sharing Between Platforms</h3>
+
+<a href="codeSharing.html">See an example</a>.

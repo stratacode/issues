@@ -1,0 +1,10 @@
+rm -rf unitDemo
+sc < test/scripts/compiled-script.txt
+# this version has swingui as compiled
+sc unitDemo/extendedModel < test/scripts/all-compiled-script2.txt
+# Note: this will not open a window and will give an error about not finding a compiled class for the UnitConverterInst
+# that's because this is a compiled layer and so we can't create an instance of it unless we recompile at that time we do that statement.
+# maybe we did that at one time?
+sc unitDemo/swingui < test/scripts/compiled-script3.txt
+sc unitDemo/swingui < test/scripts/wait2.txt
+#unitDemo/swingui/build/swingmain

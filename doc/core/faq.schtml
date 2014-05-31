@@ -1,0 +1,57 @@
+<html extends="MainPage">
+<head title="StrataCode FAQ"/>
+
+<body>
+
+   <div id="content">
+       <div id="mainContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Frequently Asked Questions
+
+### How does StrataCode integrate with all these other software programs so easily?
+
+StrataCode leverages standard Java patterns like Java Beans so you can use Java classes without modification.  You can add annotations for your classes to customize how code is generated for those classes when they are used with other StrataCode features.  For example, if your class implements some type of parent/child relationship, you can add a simple code template for that class which customizes the code generated for the object operator.
+
+StrataCode's core infrastructure is based on a very flexible parser/formatter which makes it easy to read new code formats and convert them to Java or do processing on them. Whereas most frameworks support import and export, StrataCode's model makes it easier to support synchronization - where changes move back and forth between systems more automatically.  You can use layers of code, files, and data to buffer those changes to implement workflow when this synchronization requires an explicit review/approval stage for quality control.
+
+### How does StrataCode speed development times well beyond other platforms on the market today?
+
+There are several ways StrataCode speeds development.  First of all, it offers higher level, more declarative coding patterns.  Developers can do more with less code.  By making code more declarative, it's easier for others to make changes.  Jeff's experience helped him choose the patterns he has observed make for the most solid, efficient applications.
+
+Secondly, StrataCode eliminates the need to replicate your domain model's logic throughout the application.  For each property in your domain model, most frameworks and platforms require you to replicate the logic behind that property several times, once for each layer in your system.  With StrataCode, you specify the properties and domain logic that goes with just once.  If you need more control, you annotate those properties with layers and get precise control over how the framework treats those properties.  When there's only one copy of your domain model, you can change it rapidly as your business requirements change.
+
+Thirdly, StrataCode offers live programming with code-patching in a client/server environment.  This lets you build applications incrementally, and make changes without length recompile and restart sequences.
+
+### Why are layers better than just plain inheritance?
+
+Use of inheritance always defines a new name in the name space.  Sometimes that's what you want, but other times you really want to customize the existing type.  To do that with Java today you can use dependency injection, create a new class which extends the original class, then point the component definition to your new class.  That's more work and requires up front planning which you have to get right for compatibility.
+
+And you've created a whole new name space which adds a constant multiplier to your code complexity.  You're now doing runtime mapping of those references which adds a multiplier to your testing burden and startup overhead.  And you need new tools to manage those references.
+
+Layers provide a more powerful and flexible, in-language mechanism for customization after the fact without breaking compatibility.  They work at compile time and runtime depending on how you configure them.  There's one integrated language model for seamless tooling.
+
+And if you don't want to use layers to modify types, they act just like modules.
+
+### What would make a good pilot project?
+
+A Java based platform that needs a faster, more efficient customization framework.  StrataCode's parser generator will let it parse and generate existing file formats for automated, bi-directional integrations.  Using layers, you can customize the auto-generated code letting it continue to be generated.  
+
+There will be some bumps along with using StrataCode now but projects with a year horizon would make sense today.
+
+### What about IOS?  
+
+I am keeping track of efforts to bridge Java to IOS.  If they are not there, that's one more problem StrataCode would be well suited to solve!
+
+### What about .NET?
+
+See IOS.  Could be very useful in a heterogenous Java/.NET system given that layers can tease apart platform dependencies and synchronize overlapping parts.
+
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<html>
+<body>
+<%! 
+// Template declarations - add an inner class and two fields
+class Person {
+   String name;
+   int credits;
+   Person(String n, int c) {
+      name = n;
+      credits = c;
+   }
+}
+
+Person buyer = new Person("Franklin", 250), seller = new Person("Mario", 5800); 
+%>
+
+<h2>People</h2>
+Here are the people:
+
+<!-- Define PersonTemplate an 'abstract' template meaning it is not drawn itself.  
+     It has a "data" field of type Person we can populate through attributes. -->
+<div abstract="true" id="PersonTemplate">
+  <%! Person data; %>
+  <h3><%= data.name %></h3>
+  <p id="creditsParagraph">Credits: <span><%= data.credits %></span></p>
+</div>
+
+<!-- Render the PersonTemplate tags once binding data to buyer and then again for seller -->
+<div extends="PersonTemplate" data="= buyer"/>
+<div extends="PersonTemplate" data="= seller"/>
+ 
+</body>
+</html>

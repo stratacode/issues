@@ -1,0 +1,109 @@
+/**
+ * Manages quiz data via an EntityManager.  Like EntityManager, this
+ * class is not thread-safe; a QuizDataManager instance is meant to be
+ * used by a single thread.
+ */
+public class QuizDataManager {
+   private static String PERSISTENCE_UNIT = "quizData";
+
+   // A single global entity manager factory
+   private static EntityManagerFactory factory = 
+      Persistence.createEntityManagerFactory(PERSISTENCE_UNIT);
+
+   EntityManager entityManager;
+
+   /**
+    * Lazily initializes the entity manager when we need it. 
+    */
+   public EntityManager getEntityManager() {
+      if (entityManager == null) 
+	 entityManager = factory.createEntityManager();
+      return entityManager;
+   }
+
+   /**
+    * Shuts down the entity manager.
+    */
+   public void shutdown() {
+      if (entityManager != null) {
+	 entityManager.close();
+	 entityManager = null;
+      }
+   }
+
+   /**
+    * Performs a shutdown on object cleanup, if necessary.
+    */
+   @Override 
+   protected void finalize() {
+      shutdown();
+   }
+
+   /**
+    * Retrieves the names of all the quiz objects stored in the
+    * database.
+    */
+   public List<String> getAllQuizNames() {
+      EntityTransaction tx = getEntityManager().getTransaction();
+      tx.begin();
+      try {
+	 Query query = getEntityManager().createQuery("select q.name from Quiz q");
+	 List<String> results = (List<String>) query.getResultList();
+	 tx.commit();
+	 return results;
+      }
+      catch (RuntimeException e) {
+	 if (tx.isActive())
+	    tx.rollback();
+	 throw e;
+      }
+   }
+
+   /**
+    * Finds and returns the Quiz with the given name, or null if one
+    * doesn't exist.
+    */
+   public Quiz findQuiz(String quizName) {
+      if (quizName == null)
+	 return null;
+
+      EntityTransaction tx = getEntityManager().getTransaction();
+      tx.begin();
+      try {
+         Quiz quiz = getEntityManager().find(Quiz.class, quizName);
+	 tx.commit();
+	 return quiz;
+      }
+      catch (RuntimeException e) {
+	 if (tx.isActive())
+	    tx.rollback();
+	 throw e;
+      }
+   }
+
+   /**
+    * Returns true if a quiz with the given name already exists.
+    */
+   public boolean quizExists(String quizName) {
+      return (findQuiz(quizName) != null);
+   }
+
+   /**
+    * Finds and returns the Question with the given id, or null if one
+    * doesn't exist.
+    */
+   public Question findQuestion(long questionId) {
+      EntityTransaction tx = getEntityManager().getTransaction();
+      tx.begin();
+      try {
+         Question question = getEntityManager().find(Question.class, questionId);
+	 tx.commit();
+	 return question;
+      }
+      catch (RuntimeException e) {
+	 if (tx.isActive())
+	    tx.rollback();
+	 throw e;
+      }
+   }
+}

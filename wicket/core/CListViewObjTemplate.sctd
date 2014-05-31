@@ -1,0 +1,39 @@
+<% if (!isAbstract) { %> 
+<% if (!overrideField && !overrideGet) { %>
+   <%=fieldModifiers%> <%=variableTypeName%> <%=lowerClassName%>;
+<% } %>
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>(boolean doInit) {
+<% if (overrideGet) { %>
+   <%=variableTypeName%> <%=lowerClassName%> = super.get<%=upperClassName%>();
+<% } %>
+   if (<%=lowerClassName%> == null) {
+      <%=variableTypeName%> _t = <%=lowerClassName%> = <% if (typeIsComponentClass) { %><%=typeClassName%>.new<%=typeBaseName%>(false, "<%=lowerClassName%>")<% } else { %>new <%=typeName%>("<%=lowerClassName%>")<% } %>;
+
+<% if (overrideGet) { %>
+      set<%=upperClassName%>(<%=lowerClassName%>);
+<% } %>
+     _t.preInit();
+     <%=getDynamicTypeDefinition(lowerClassName, 2)%><%=propertyAssignments%>
+     <% if (childrenNames != null && childrenNames.length() > 0) { %>
+        java.util.List _children = java.util.Arrays.asList(<%=childrenNames%>);
+        for (Object _child:_children) {
+           if (_child instanceof org.apache.wicket.Page) 
+              continue;
+           if (_child instanceof org.apache.wicket.Component)
+              <%=lowerClassName%>.add((org.apache.wicket.Component) _child);
+           else if (_child instanceof org.apache.wicket.behavior.IBehavior)
+              <%=lowerClassName%>.add((org.apache.wicket.behavior.IBehavior) _child);
+        }
+     <% } %>
+     if (doInit) {
+       _t.init();
+       _t.start();
+     }
+     return _t;
+  }
+  else 
+     return <%=lowerClassName%>;
+}
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>() { return get<%=upperClassName%>(true); }
+
+<% } %>

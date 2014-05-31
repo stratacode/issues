@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# A test which uncovered three bugs... dependencies from the first build were incorrect
+# that caused errors loading the deps on the second build and loading the wrong type
+
+STARTTIME=`date "+%s"`
+echo 'Starting todoDynFail: ' `date`
+
+set -e
+
+rm -rf /jjv/layers/editor/js/mixin/dynbuild
+
+sc -a -ta -dyn test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
+
+touch example/todo/jsui/TodoList.schtml
+touch example/todo/model/TodoList.sc
+
+sc -v -ta js/schtml jetty/schtml -dyn example/todo/data editor/js/mixin < test/scripts/wait10.txt
+
+# ------
+
+ENDTIME=`date "+%s"`
+RUNTIME=`expr $ENDTIME - $STARTTIME`
+
+echo 'Run time: ' `date -j -f "%s" $RUNTIME "+%M:%S"`
+echo 'Ending time: ' `date` 

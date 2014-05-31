@@ -1,0 +1,42 @@
+#!/bin/csh
+
+cd ..
+
+set verbose
+#
+# Compile only
+#
+#ccake -a catTest/jpaCat 
+#
+
+#
+# Create the simpleCatalog database
+#
+ccake -a catTest/jpaCat -rs "jpaCat.JPACatalogManager" -c 
+
+#
+# One query - enable SQL tracing for jpa
+#
+#ccake -a catTest/jpaCat catTest/cfg/onequery -rs "jpaCat.JPACatalogManager"  > catTest/logs/openjpa-query.log
+#ccake -a catTest/hibCat catTest/cfg/onequery -rs "jpaCat.JPACatalogManager" > catTest/logs/hib-query.log
+#catTest/runReposTest catTest/reposCat catTest/cfg/onequery >&! catTest/logs/repos-query.log
+
+#
+# Run the tests
+#
+
+#ccake -a catTest/jpaCat catTest/cfg/shortTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.short
+#ccake -a catTest/jpaCat -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.normal
+#ccake -a catTest/jpaCat catTest/cfg/longTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.long
+#ccake -a catTest/jpaCat catTest/cfg/replay -rs "jpaCat.JPACatalogManager" >&! catTest/logs/openjpa.replay
+
+#ccake -a catTest/hibCat catTest/cfg/shortTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.short
+#ccake -a catTest/hibCat -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.normal
+#ccake -a catTest/hibCat catTest/cfg/longTest -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.long
+#ccake -a catTest/hibCat catTest/cfg/replay -rs "jpaCat.JPACatalogManager" >&! catTest/logs/hib.replay
+
+#catTest/runReposTest catTest/reposCat catTest/cfg/shortTest >&! catTest/logs/repos.short
+#catTest/runReposTest catTest/reposCat >&! catTest/logs/repos.normal
+#catTest/runReposTest catTest/reposCat catTest/cfg/longTest >&! catTest/logs/repos.long
+#catTest/runReposTest catTest/reposCat catTest/cfg/replay >&! catTest/logs/repos.replay
+

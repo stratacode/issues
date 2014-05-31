@@ -1,0 +1,42 @@
+<html extends="Example">
+
+<body>
+   <div id="content">
+      <div id="exampleContent" exec="server">
+
+      <div class="exampleTitle">ExpertSystem Example</div>
+
+       This example demonstrates a simple real-world business problem and how we can partition the code via layers.
+
+       <p>
+       First we'll start with a layer that defines the domain model types in the system.  This defines the core data structures in the application. 
+
+       <p>
+       The first two types are enumerated types which are empty in the "code layer".   They are specified in a purely declarative way in a separate layer.  You can use these data structures in a different application or to partition the file ownership.  The code owned by the programmer, the names and values of the strings by the technical business person.
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelTypes","FactorValue.sc", false, false) %>
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelTypes","LeadershipStyle.sc", false, false) %>
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelTypes","Situation.sc", false, false) %>
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelTypes","SituationalFactor.sc", false, false) %>
+
+      Now a second layer, developed by the programmer but maintained by the business domain specialist for the names.  The first two files define numerated options using enum types above.
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelNames","FactorValue.sc", false, false) %>
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelNames","LeadershipStyle.sc", false, false) %>
+
+      This file also just populates an enumerated type but because it has lots of text, it is written in SCT, StrataCode's template language.  SCT is just Java turned inside out.  You start in template model, then break into Java and back out again with the JSP-like escpae tags.  It's nice because it's easy to change a file from SCT to SC or vice versa.  It also means SCHTML and other template language variants have the full power of Java behind them.
+
+<%= sc.lang.TemplateLanguage.getTemplateLanguage().styleFile("example/expertSystem/modelNames","SituationalFactor.sct", false, false) %>
+
+      Now a third layer for the rules.  Here's where we separate the unique domain specific code-logic.  There are several approaches: use properties, components, and data binding rules as in the unit converter may be the primary one.  Here we look at a different one, used for state-transition tables as required in this expert system app.  In Java, we express these using a nested set of switch statements.  In StrataCode, we can separate this code to make it manageable by technical domain experts: 
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/expertSystem/modelRules","Situation.sc", false, false) %>
+
+      </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<div abstract="true" style="background-color:transparent; box-shadow: 0 0 0 #fff;">
+   <div id="navbar" class="navbar" exec="server">
+      <span class="logo"><a href="index.html">StrataCode</a></span><ul id="nav" class="nav">
+      <li> <a href="examples.html">Examples</a>
+      <li> <a href="docIndex.html">Documentation</a>
+      <li> <a href="faq.html">FAQ</a>
+      <li> <a href="about.html">About</a>
+      <li> <a href="contact.html">Contact</a>
+      </ul>
+   </div>
+
+   <!-- <span class="layeredBkg" style="float:left; width:940px; margin: 0; padding: 0; position: relative; left:-20px;">&nbsp;</span> -->
+   <p>
+</div>

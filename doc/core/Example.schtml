@@ -1,0 +1,49 @@
+<html abstract="true">
+   <%! 
+   class ExampleInfo {
+      String exampleName; 
+      String description;
+      String url;
+
+      ExampleInfo(String name, String description, String url) {
+         exampleName = name;
+         this.description = description;
+         this.url = url;
+      }
+
+   }
+   boolean containsString(String base, String sub) {
+      if (base == null || sub == null)
+         return false;
+      return base.contains(sub);
+   }
+
+   ExampleInfo[] allExamples = {
+       new ExampleInfo("UnitConverter", "A simple converter between different metrics implemented on many systems.", "exUnitConverter.html"),
+       new ExampleInfo("Todo List", "A todo list sample that demonstrates the web and sync frameworks.", "exTodoList.html"),
+       new ExampleInfo("Expert System", "Simple real-world expert system - demonstrating separation of rules, content from the app.", "exExpertSystem.html"),
+       new ExampleInfo("Program Editor", "A large example, written in swing and the web framework, showing code-sharing, sync and how StrataCode scales", "exProgramEditor.html"),
+     };
+%>
+
+<body>
+
+<div id="content" extends="DocContent">
+
+<div id="exampleIndex" class="exampleIndex">
+   <div class=':= "exampleIndexEntry" + (containsString(Window.window.location.href, example.url) ? " exampleIndexSelected" : "")'  id="exampleIndexEntry" repeat=":= allExamples" repeatVarName="example">
+      <a href="= example.url">
+         <div class="exampleIndexTitle"><%= example.exampleName %></div>
+         <div class="exampleIndexDesc"><%= example.description %></div>
+      </a>
+   </div>
+</div>
+
+<div id="exampleContent">
+</div>
+
+</div>
+
+</body>
+
+</html>

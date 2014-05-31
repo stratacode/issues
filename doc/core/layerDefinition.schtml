@@ -1,0 +1,78 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Layer Definition Files
+
+Layers are defined by simple directories that live in a directory or sub-directory of your layer path.  
+
+The layer definition file is an ordinary StrataCode file named with the directory name.  E.g. foo/foo.sc, foo/bar/bar.sc
+
+The layer definition file contains a modify definition where the type is the layer definition file's path in the layer path.
+
+    --- foo/foo.sc:
+    foo {
+    }
+
+and:
+
+    --- foo/bar/bar.sc:
+    foo.bar {
+    }
+
+## Running the sc Command
+
+When you run the sc command, you specify a list of layers to run: e.g.
+
+    sc foo
+
+or 
+ 
+    sc foo/bar
+
+That list maps to layers in your layerPath.  By default the layer path includes the current directory.
+
+As a convenience, you can also run a specific layer when you are in that layer's directory using . as the name of the layer.
+
+    % cd foo/bar
+    % sc .
+
+## Layer Packages
+
+When the layer definition file specifies a package, that package is used as the top-level package for all files in that layer.  You can omit the package line in your .java and .sc files and StrataCode will insert it for you automatically and create the empty directories during compilation.
+
+If the layer does not specify a package, it inherits the package from the first layer in its extends list which exports its package.  A layer can disable inheriting its package with:
+
+    foo {
+       inheritPackage = false;
+    }
+
+A layer can disable exporting its package with:
+
+    foo {
+       exportPackage = false;
+    }
+
+In general application layers work in the same package so use the default.
+
+Note that a layer with no package can customize any type.
+
+## Configuring Builds
+
+In StrataCode, layer definition files also specify build and other properties but typically only for framework layers.  They are interpreted Java files, run in the order in which the layers are present in the system.  They are initialized in two phases, via initialize and start methods which lets them set and override properties in a layered order.
+
+These layer definition files configure the file types which are processed by the system, add to the classpath, add src folders, specify inherited imports, and set defaults for the code that run in the layers: e.g. public, and enable/disable system features per-layer.
+
+Most systems require that you copy complex build and project setups into your environment that you must manage.  With layers, you only store your customizations, even for project configuration.
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

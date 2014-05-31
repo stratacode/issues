@@ -1,0 +1,58 @@
+<html extends="DocPage">
+<head title="IDE Config"/>
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Status
+
+The only IDE support StrataCode offers right now is what you can get by configuring new file types in your IDE.  You configure your IDE to point to both the generated source and the StrataCode source and go back and forth yourself.  The IDE must refresh after the code has been re-generated before you can debug your project.
+
+This is obviously not ideal but the resemblance of the generated code to the source makes it possible to develop productively in this mode.  Native debugging, code navigation, and edit-time errors are all relatively easy to do in modern IDEs these days and StrataCode's APIs will make it even easier.  
+
+## IntelliJ Configuration
+
+Define:
+
+* a coreRuntime module where the source root is the coreRuntime top-level directory
+* a fullRuntime module where the source root is the fullRuntime top-level directory
+* a system module where the source root is the top-level system directory
+* In project structure, the system module depends on the modules fullRuntime and coreRuntime.   
+The module fullRuntime depends on coreRuntime.
+
+Also add new file types for:
+
+* sc, schtml, sct, sctp
+
+The syntax highlighting rules for sc are like Java.  For schtml, sct, sctp, they are like JSP.
+
+In Preferences, under "Compiler" add "*.sctp" to the resource patterns.
+
+For debugging the application code, there are three options:
+
+1) Use a project for the top-level layers folder of the layer you want to debug.  It will by default index both the SC source and the contents of all of the build or dynbuild directories inside of the layer directory for each layer you build.   So when you go to open Foo, you can either go to the SC source or the generated source in build/java/Foo.java.   You use the generated source for debugging and just have to remember not to edit it by mistake :(
+
+This works but requires that you are only building and debugging one layer at a time.  When you have multiple build directories in the same tree, there's lots of duplicated source, performance problems, problems having the debugger use the right one.  
+
+2) A second option is to use separate projects for each layer.   you may need to add dependencies in the IDE which replicate the layer dependencies.   Because SC can chain together build directories, you may still have some conflicts with duplicated source files.
+
+3) For those reasons, I always use this third option.  When debugging, most of the time I use the -d option to point to a separate build folder, which is an IDE project with the right dependencies for the runtime (e.g. it may need to add wicket libraries if you are using wicket).  This lets you share one build directory for whatever combination of layers you happen to be debugging.   You resync the IDE after each build or have it resync automatically.     I use this where I also create a project for the layers repository so I can still edit the source in all layers, do finds across the layers, etc..   In that project, I exclude all build and dynbuild folders so the source in there does not get picked up. 
+
+With any of these setups, you run apps with:
+
+mainClass:  sc.layer.LayeredSystem
+Working directory:  <your-path>/layers   - points to the layers repo in GIT, assumes you add your layers there.
+Program parameters:  -a -v editor/swing/main  
+
+Use the -a option now cause incremental builds are broken right now.   The -v gives verbose info that's helpful when you're debugging.  
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

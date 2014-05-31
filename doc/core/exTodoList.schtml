@@ -1,0 +1,33 @@
+<html extends="Example">
+
+<body>
+   <div id="content">
+      <div id="exampleContent" exec="server">
+
+      <div class="exampleTitle">TodoList Example</div>
+
+      Here is the todoList sample built on StrataCode's web framework:
+      <p>
+
+      <iframe src="TodoList.html" width="90%" height="300"></iframe>
+
+      <p>
+      This example is built in three layers: the model, the user interface, and the data.
+
+<%= sc.lang.SCLanguage.getSCLanguage().styleFile("example/todo/model","TodoList.sc", false, false) %>
+
+Here is the user interface, in the example.todo.jsui layer.  That layer extends the model layer so this file modifies the Todo type above.  That happens because these files have the same name and the layers use the same package.  You have access to the properties in the model layer, just like the "code behind" pattern.
+
+<%= sc.lang.HTMLLanguage.getHTMLLanguage().styleFile("example/todo/jsui","TodoList.schtml", false, false) %>
+
+and a separate layer to store the data:
+
+<%= sc.lang.HTMLLanguage.getHTMLLanguage().styleFile("example/todo/data","TodoList.sc", false, false) %>
+
+We can run this layer in two different modes.  If we compile it with just the js.schtml layer, it runs in the browser only (as you see above).  If we compile it with both the js.schtml and jetty.schtml layers, it runs in a synchronized way.  As each model entry is changed, its value is sent to the server and saved.  This configuration is configured to just save the data in the user's session.
+
+      </div>
+   </div>
+</body>
+
+</html>

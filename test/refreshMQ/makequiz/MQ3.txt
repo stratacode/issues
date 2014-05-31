@@ -1,0 +1,41 @@
+/**
+ * The main application frame, which contains the QuizList,
+ * QuestionList, and EditQuestion panels.  
+ */
+public class MakeQuiz extends AppFrame {
+   size = SwingUtil.dimension(550, 480);
+
+   // Display size does not include the title bar, border, etc.
+   Dimension displaySize := SwingUtil.subInsets(size, insets);
+
+   // Set the title of the window to reflect the quiz name
+   title = "Make Quiz";
+
+   // A split pane with quiz/question lists on the left side, and the
+   // panel for editing the question on the right
+   object outerSplitPane extends JSplitPane {
+      leftComponent = innerSplitPane;
+      rightComponent = editQuestionPanel;
+      orientation = HORIZONTAL_SPLIT;
+
+      // A split pane with the quiz list on the left side, and the
+      // question list on the right
+      object innerSplitPane extends JSplitPane {
+	 topComponent = quizListPanel;
+	 bottomComponent = questionListPanel;
+	 orientation = VERTICAL_SPLIT;
+
+	 // The QuizList panel lets the user select the quiz
+	 object quizListPanel extends QuizList {
+	 }
+
+	 // The QuestionList panel lets the user select the question
+	 object questionListPanel extends QuestionList {
+	 }
+      }
+
+      // The EditQuestion panel lets the user edit the question data
+      object editQuestionPanel extends EditQuestion {
+      }
+   }
+}

@@ -1,0 +1,8 @@
+/**
+ * A Question consists of the question text, four answer choices, and
+ * the answer detail.
+ */
+public class Question {
+   static int NO_ANSWER = -1;
+
+}

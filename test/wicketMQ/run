@@ -1,0 +1,22 @@
+#!/bin/sh
+
+cp persist/QDM0.txt persist/QuizDataManager.sc
+
+cp wicket/QWP0.txt wicket/QuizWebPage.sc
+cp wicket/DMWP0.txt wicket/DataManagedWebPage.sc
+cp wicket/OC0.txt wicket/OnclickConfirmation.sc
+
+cp makequiz/MQA0.txt makequiz/MakeQuizApp.sc
+cp makequiz/NQ0.txt makequiz/NameQuiz.sc
+cp makequiz/NQH0.txt makequiz/NameQuiz.html
+cp makequiz/QZL0.txt makequiz/QuizList.sc
+cp makequiz/QZLH0.txt makequiz/QuizList.html
+cp makequiz/QTL0.txt makequiz/QuestionList.sc
+cp makequiz/QTLH0.txt makequiz/QuestionList.html
+cp makequiz/EQ0.txt makequiz/EditQuestion.sc
+cp makequiz/EQH0.txt makequiz/EditQuestion.html
+
+echo "Running wicketMQ"
+sc -a . < script.txt
+
+rm -f persist/QuizDataManager.sc wicket/QuizWebPage.sc wicket/DataManagedWebPage.sc wicket/OnclickConfirmation.sc makequiz/MakeQuizApp.sc makequiz/NameQuiz.sc makequiz/NameQuiz.html makequiz/QuizList.sc makequiz/QuizList.html makequiz/QuestionList.sc makequiz/QuestionList.html makequiz/EditQuestion.sc makequiz/EditQuestion.html

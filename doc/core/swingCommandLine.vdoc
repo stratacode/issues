@@ -1,0 +1,392 @@
+<%! object swingCommandLine extends util { %>
+<%= header("Getting Started","gettingStarted") %>
+
+<%= markDown(%>
+
+## Swing API and the Command Line
+
+This tutorial is a bit old, from when we only had the command line editor and the Swing UI.  
+
+## Creating a Simple Layer
+
+To learn StrataCode start by writing a unit converter application which converts numbers from one unit to another, e.g. celcius to fahrenheit.
+
+Change to your layers directory and run sc with no arguments:
+
+<div><pre><code>[/home/stratacode/layers]% <b>sc</b>
+
+No current layers.
+    
+Create a new layer?: [y] 
+</code></pre></div>
+
+Hit enter to create a new layer.  StrataCode responds:
+
+<div><pre><code>Enter new layer directory: /home/stratacode/layers/
+</code></pre></div>
+
+Enter a layer name to store your layer.  To create a family of layers, use a directory or dotted suffix:
+
+<div><pre><code>Enter new layer directory: /home/stratacode/layers/<b>unitDemo/model</b>
+ 
+Types dynamic by default? y/n: [y] 
+</code></pre></div>
+
+Hit enter to choose the default.  At least initially all types in this layer will be dynamic.  Dynamic types can be modified more freely than compiled types at runtime and are great for prototyping.
+
+<div><pre><code>Members public by default? y/n: [y] 
+</code></pre></div>
+
+Hit enter again.  Making all members public by default simplifies the code. 
+
+<div><pre><code>Package: [] 
+</code></pre></div>
+
+Specify a package prefix to prepend onto all types in this layer.  Both .java and .sc files do not have to specify a package.  They also do not have extra directories Java usually requires for that package.   Many layers are single directories containing just a few files.
+
+<div><pre><code>Package: [] <b>unitDemo</b>
+
+Layers to extend (optional): [] 
+</code></pre></div>
+
+Here you can list layers by path name or type name which your layer includes or modifies.  Use TAB to see valid choices.  Your layer can only modify types inside of its package.  For this sample, you'll include the util layer. 
+
+<div><pre><code>Layers to extend (optional): [] <b>util</b>
+
+About to create layer definition file: /home/stratacode/layers/unitDemo/model/model.sc:
+
+dynamic public unitDemo.model extends util {
+}
+
+Create? [y]: 
+</code></pre></div>
+
+The wizard creates the layer definition file "model.sc" and puts it in the "model" directory inside of the unitDemo group of layers.  Any imports in this file are visible to code in the layer and, by default, layers which extend this layer.  A framework layer imports commonly used classes to create a convenient sandbox for code using that layer.
+
+Once you hit enter, StrataCode responds: 
+
+<div><pre><code>
+Adding layer: unitDemo.model extends: [util(sc.util)]
+Compiling util(sc.util) into: /home/stratacode/layers/util/build using:
+No files to compile
+Compiling into: /home/layerCake/layers/unitDemo/model/build layers: [util(sc.util)] dynamic: [unitDemo.model(unitDemo)]
+No files to compile
+(unitDemo.model:unitDemo) -> 
+</code></pre></div>
+
+(Note: if your util layer was not built separately, i.e. you have not run "sc -c util", it will compile files from util and unitDemo.model at this time).
+
+<h2>Defining the Domain Model</h2>
+
+Start by defining the domain model for the unit converter.  You'll need two floating point numbers to store the values to convert between, titles for each unit, and a title for the conversion itself.  The class Converter will be used to store each type of converter.  Adding a new conversion will require configuration of a new instance of this class.
+<p>
+Place the code below into the file unitDemo/model/UnitConverter.sc, or just paste this text directly into the command line.  In this case, StrataCode creates unitDemo/model/UnitConverter.sc automatically.</p>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleDemoFile("example/unitConverter/model", "unitDemo/model", "UnitConverter.sc",
+%>object UnitConverter {
+   static class Converter {
+      double value1, value2;
+      String unit1, unit2;
+      String title;
+      public String toString() {
+         return title;
+      }
+   }
+   
+   object converters extends ComponentList<Converter> {
+      object temperature extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 9.0 / 5.0 + 32; 
+         unit1 = "Celcius";
+         unit2 = "Farenheit";
+         title = "Temperature";
+      }
+      object distance extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 0.62137119;
+         unit1 = "Kilometers";
+         unit2 = "Miles";
+         title = "Distance";
+      }
+      object speed extends Converter {
+         title = "Speed";
+         value1 = 0;
+         value2 :=: value1 * 1.609344;
+         unit1 = "Miles per hour";
+         unit2 = "Kilometers per hour";
+      }
+   }
+}
+<% ) %>
+
+StrataCode does not yet listen for file system changes automatically so use:
+
+<div><pre><code>cmd.refresh(); 
+</code></pre></div>
+
+after you change sc files.
+<p>
+In addition to the Converter domain model class, there are instances of that class for temperature, distance and speed.  Notice the use of the object operator where you'd normally expect to see a class.  The object tag lets you define a type and an instance in one definition.  You reference objects using the same naming rules as classes (imports, inner objects, etc.) but you can use object references in both situations where Java expects types and values. 
+<p>
+Let's look at the definition of the converters object in more detail.  It extends ComponentList from the util layer with elements of the newly defined type Converter.  Inner objects are added to the List. 
+<p>
+Note: In the sample, notice that you can initialize variables in either a class or an instance with a top-level variable=value statement. For example, with the two files:
+
+<div class="filename">file: Bar.sc:</div>
+
+<%= sc.lang.SCLanguage.INSTANCE.style(
+%>class Bar {
+   int baz;
+}
+<% ) %>
+
+<div class="filename">file: Foo.sc:</div>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class Foo extends Bar {
+   baz = 3;
+}
+<% ) %>
+
+In Java, you have to surround these statements with { baz=3; } but StrataCode allows property assignments at the top-level.  Arbitrary statements and expressions are disallowed at this level but you can put in an "a.b" expression into the left-hand side.  So you can say: a.b = 3 if there is an inner type "a" with a property "b".
+
+Let's also look at this statement in more detail:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter.Converter",
+%>value2 :=: value1 * 9.0 / 5.0 + 32;<% ) %>
+
+Notice the use of a new assignment-like operator :=:.  In StrataCode this defines a forward and reverse data binding expression.  When value1 changes, the expression is applied and value2 is updated.  And similarly when value2 is modified, the inverse expression is evaluated and value1 is updated.  Not all expressions are invertible of course.  StrataCode will give a compile time error if it cannot use a reverse binding with a given expression.  In this case because there is only a single variable in an arithmetic expression, you can invert the expression so the bi-directional binding is allowed.  In StrataCode, a forward-only binding is specified with := and a reverse-only binding is expressed with =:.  StrataCode supports most Java expressions with forward-only bindings.   For a given method, you can define an inverseMethod to use that method call in a reverse binding.
+
+Because UnitConverter is an object, you can now test this code: 
+
+<div>
+<pre><code>(unitDemo.model:unitDemo) -> <b>UnitConverter {</b>
+(unitDemo.model:object unitDemo.UCTest) -> <b>converters.temperature {</b>
+(unitDemo.model:object unitDemo.UCTest.converters.temperature) -> <b>value1;</b>
+0
+(unitDemo.model:object unitDemo.UCTest.converters.temperature) -> <b>value2;</b>
+32.0
+(unitDemo.model:object unitDemo.UCTest.converters.temperature) -> <b>value1 = 100;</b>
+(unitDemo.model:object unitDemo.UCTest.converters.temperature) -> <b>value2;</b>
+212.0
+(unitDemo.model:object unitDemo.UCTest.converters.temperature) ->  <b>}</b>
+(unitDemo.model:object unitDemo.UCTest) ->  <b>}</b>
+</code></pre>
+</div>
+
+
+## Extending the Model Object
+
+Extend the unitDemo application to add more conversions algorithms, but do this in a new layer:
+
+<div>
+<pre><code>(unitDemo.model:unitDemo) -> <b>cmd.createLayer();</b>
+Enter new layer directory: /home/layerCake/layers/<b>unitDemo/extendedModel</b>
+Types dynamic by default? y/n: [y] 
+Members public by default? y/n: [y] 
+Package: [unitDemo] 
+Layers to extend (optional): [] <b>unitDemo/model</b>
+Make layer transparent? y/n: [n] <b>unitDemo/model</b>
+About to create layer definition file: /home/layerCake/layers/unitDemo/extendedModel/extendedModel.sc:
+dynamic public unitDemo.extendedModel extends unitDemo.model {
+}
+Create? [y]: 
+</code></pre>
+</div>
+
+The cmd object is a special variable defined by the command line interpreter.  It has a variety of useful methods including createLayer, which kicks off the same create layer wizard you used before.
+<p>
+Now place this code in unitDemo/extendedModel/UnitConverter.sc (or just paste this into the command line again):
+
+<%= sc.lang.SCLanguage.INSTANCE.styleDemoFile("example/unitConverter/extendedModel", "unitDemo/extendedModel", "UnitConverter.sc",
+%>UnitConverter {
+   converters {
+      object volume extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 0.94635295;
+         unit1 = "Quarts";
+         unit2 = "Liters";
+         title = "Volume";
+      }
+      object weight extends Converter {
+         value1 :=: value2 * 0.035273962;
+         value2 = 0;
+         unit1 = "Ounces (US)";
+         unit2 = "Grams";
+         title = "Weight";
+      }
+      object area extends Converter {
+         value1 = 0;
+         value2 :=: value1 * 2.5899881;
+         unit1 = "Square Miles";
+         unit2 = "Square Kilometers";
+         title = "Area";
+      }
+   }
+}
+<% ) %>
+
+Here you omit the class/object keyword to modify the UnitConverter object in the base layer.  If you use "object UnitConverter" here, you would replace the previous version with a new object.  The modify operation works much like extends but updates the existing type instead of creating a new one.
+<p>
+In this case you are modifying two objects one inside the other.  First you modify the UnitConverter object, then you modify the converters subobject.  
+
+This layer is a simple declarative layer similar to what a business analyst would manipulate.   Though it's java-like, the code expresses just the business logic.  
+
+<h2>Adding the User Interface</h2>
+
+Now let's create a new layer to add the swing user interface.  
+<p>
+Note: Using a new layer follows an important design pattern to keep dependencies like swing out of the domain model.  This not only lets you reuse the domain model as widely as possible, it also keeps the domain model simpler.  More than any other part of your system, the domain model reflects the underlying business processes you are helping to manage.  A flexible and nimble domain model promotes flexible and nimble business processes.  Through layering of designs, programmers can easily expose simple but powerful declarative models which expose logic and configuration directly to the people who need them.  And with layers, you do not compromise performance or design integrity by putting this information into runtime-only formats like XML. 
+<p>
+Create the swing layer:
+
+<div><pre><code>(unitDemo.extendedModel:unitDemo) -> <b>cmd.createLayer();</b>
+Enter new layer directory: /home/layerCake/layers/<b>unitDemo/swingui</b>
+Types dynamic by default? y/n: [y] 
+Members public by default? y/n: [y] 
+Package: [unitDemo] 
+Layers to extend (optional): [] <b>swing/core unitDemo/extendedModel</b>
+Make layer transparent? y/n: [n] 
+</code></pre></div>
+
+Now modify the UnitConverter again, just like you did in extendedModel, but this time you'll add a new object named UI of type AppFrame.  This is a wrapper around the JFrame swing class which creates a top-level application window.  For this first step, you'll create a number converter component from the util layer to be used later, and a combo box to select a converter.  Paste this into the command line or create the file unitDemo/swingui/UnitConverter.sc with these contents:
+<%= sc.lang.SCLanguage.INSTANCE.styleDemoFile("example/unitConverter/swingui", "unitDemo/swingui", "UnitConverter.sc",
+%>UnitConverter {
+   @MainInit
+   object UI extends AppFrame {
+      object numberConverter extends sc.util.NumberConverter {
+      }
+
+      object converterChoice extends JComboBox {
+         int alignx = 20;
+         items = converters;
+         location := SwingUtil.point(xpad+alignx, ypad);
+         size := SwingUtil.dimension(windowWidth - 2 * (xpad+alignx), preferredSize.height);
+      }// REMOVE THE REST
+   }
+}
+<% ) %>
+StrataCode's swing/core layer is a thin wrapper on the swing component set to add data binding.  Class names are the same and other than adding sc data binding events, the behavior of these classes will be the same as with Swing.  Because Swing does not have simple row/column layout, this sample works around that limitation by using data binding for location and size properties.  Fixable with custom layout managers but for now this shows off the power of StrataCode's data binding.  The SwingUtil.point and dimension methods do necessary casts and wrapping.
+<p>
+Properties like location and size in swing are implemented with getX/setX methods which take Point and Dimension instances.  StrataCode handles that for you as well as generating getX/setX methods as needed to make properties bindable.
+
+<p>At this point you should see a window.  
+
+Objects in StrataCode are by default lazily instantiated.  The @MainInit annotation is added by the swing layer and causes the component to be initialized as part of the default swing main method.   
+
+While you are still inside of UnitConverter.UI, define a currentConverter property using a forward binding:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>Converter currentConverter := converters.get(converterChoice.selectedIndex);
+<% ) %>
+
+Since converters is a list, you bind to the List.get method based on the currently selected item in the combo box.  As the combo box selection changes, currentConverter's value is automatically updated to point to the selected instance: temperature, area, etc.
+
+Now the rest of the class which defines the two labels and text fields, bound to the currentConverter's values:
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
+%>int row1y := (int)(ypad + converterChoice.location.y + converterChoice.size.height);
+
+object unit1Label extends JLabel {
+   text := currentConverter.unit1;  // Display's converter's "unit 1"
+   labelFor = unit1Field;
+   location := SwingUtil.point(xpad, row1y + baseline);
+   size := preferredSize;
+}
+object unit1Field extends JTextField {
+   location := SwingUtil.point(xpad + unit1Label.preferredSize.width + gap, row1y);
+   size := SwingUtil.dimension(windowWidth - unit1Label.size.width - xpad - 2*gap, preferredSize.height);
+   // Bind's text property to current converter's value1 after converter to/from string
+   text :=: numberConverter.numberToString(currentConverter.value1);
+}
+
+int row2y := (int)(unit1Field.location.y + unit1Field.size.height + ypad);
+
+object unit2Label extends JLabel {
+   text := currentConverter.unit2;
+   labelFor = unit2Field;
+   size := preferredSize;
+   location := SwingUtil.point(unit1Label.location.x, row2y + baseline);
+}
+object unit2Field extends JTextField {
+   location := SwingUtil.point(xpad + unit2Label.preferredSize.width + gap, row2y);
+   size := SwingUtil.dimension(windowWidth - unit2Label.size.width - xpad - 2*gap, preferredSize.height);
+   text :=: numberConverter.numberToString(currentConverter.value2);
+}
+
+object errorLabel extends JLabel {
+   // The number converter provides an error when an invalid number is supplied
+   text := numberConverter.error;
+   location := SwingUtil.point(xpad, unit2Field.location.y + unit2Field.size.height + ypad + baseline);
+   size := preferredSize;
+}
+<% ) %>
+As each widget is defined, it is immediately added to the display because your swing layer is dynamic.  You now have a working swing version of the UnitConverter.  Notice that components robustly respond to resize events because of the data binding expressions.  You can interactively adjust the xpad, ypad, baseline, and color variables to adjust the display.  Do this in a new layer and you've just created a layer which applies a specific style, something suitable to hand off to a designer. 
+
+Before you exit, make sure to close the UI and UnitConverter objects so UnitConverter gets saved with your changes:
+<div><pre><code>    }
+}
+</div></pre></code>
+
+## Adding a Style Layer
+
+Now that our app is built, we want to create a layer for designers that gives them control over select properties they can use to customize the app.  Use the command:
+
+    cmd.createLayer();
+
+create a layer called unitDemo.style.  This becomes the current layer.  Type at the command line:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleDemoFile("example/unitConverter/style", "unitDemo/style", "UnitConverter.sc",
+%>UnitConverter {
+   xpad = 5;
+   ypad = 5;
+   gap = 10;
+   foreground = Color.WHITE;
+   background = Color.BLACK;
+   errorLabel {
+     foreground = Color.RED;
+   }
+}
+<% ) %>
+
+
+## Compiled Layers
+
+These layers use dynamic mode which for StrataCode means interpreted code, incremental updates of types and instances in most cases, keeping the safety of strong type checking.
+
+When you need performance, simply remove the "dynamic" keyword from the class or layer, and StrataCode compiles, rather than interprets, the definition.  With no dynamic layers, your code is not dependent on the StrataCode language engine.   A standard jar file is produced with only a few simple utilities required from StrataCode.  When dynamic layers are present, you need the dynamic layers in the "layer path" of the runtime, plus the small/portable StrataCode language engine.
+
+Edit the files: unitDemo/model/model.sc, unitDemo/extendedModel/extendedModel.sc, unitDemo/swingui/swingui.sc and remove the dynamic keyword from these layer definition files.  Run:
+
+    sc unitDemo/swingui
+
+Your application runs now in compiled mode.  Look at the generated java files in unitDemo/swingui/build.  Run the command unitDemo/swingui/build/swingmain to run the application without the sc command.
+
+Note: making a layer dynamic implies that all layers which extend that layer are themselves dynamic.
+
+## Command Interpreter 
+
+A few more commands that might be helpful at this point:
+
+    cmd.down();
+    cmd.up();
+
+Move down or up to the next layer down in the list.   When inside a type, you move to the next layer which modifies that type.  When at the root level, you move to the next layer in the global stack of layers.  The # characters before and after the type name indicate the number of layers above and below the current layer in the stack.
+
+Use these commands:
+
+    cmd.print();  // prints the current type
+    cmd.listObjects();  // lists sub-objects of this type
+    cmd.list();  // lists all members of this type
+    cmd.print("xx");  // prints details of the named member
+    cmd.edit();    // Valid only when a type is opened.  Edits the file, saves, and refreshes if the file changed.
+
+To see all commands, simply use cmd. followed by the TAB character.  Command-line completion works in many, not all contexts.  Also use up-arrow/down-arrow to navigate through your command history.
+
+Next, add a UnitConverter web UI with the [wicket framework](wicket.html) mobile using [android](gettingStartedAndroid.html), or javascript application using [gwt](gwt.html).  
+
+[More Info](moreSwing.html) on the swing sample.
+
+<% ) %>
+
+<%= footer("Getting Started","gettingStarted") %>
+<% } %>

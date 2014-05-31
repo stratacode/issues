@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cp UC0.txt UnitConverter.sc
+cp UCH0.txt UnitConverter.html
+cp UCA0.txt UnitConverterApp.sc
+
+echo "Running wicketUC"
+sc -a . < script.txt
+
+rm UnitConverter.sc UnitConverter.html UnitConverterApp.sc

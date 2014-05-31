@@ -1,0 +1,26 @@
+/**
+ * Implements a dialog which lets you name a new quiz to be added, and
+ * creates the quiz in the database.
+ */
+public class NameQuiz {
+   QuizDataManager dataManager;
+   String quizName;
+
+   object quizNameField extends JTextField {
+      text :=: quizName;
+   }
+
+   object optionPane extends JOptionPane {
+      message = new Object[] { "Name your quiz:", quizNameField };
+      messageType = PLAIN_MESSAGE;
+      optionType = OK_CANCEL_OPTION;
+   }
+
+   object quizNameDialog extends JDialog {
+      title = "Name Your Quiz";
+      modal = true;
+      resizable = false;
+      contentPane = optionPane;
+      defaultCloseOperation = DO_NOTHING_ON_CLOSE;
+   }
+}

@@ -1,0 +1,13 @@
+<%! object license extends util { %>
+<%= header("License","license") %>
+
+<%= markDown(%>
+
+## License
+
+This is not 100% finalized yet but I am thinking a GPL license for the compiler and language framework and the Apache license for the few StrataCode components that end up in a compiled runtime.  Why not Apache across the board?  Languages which have taken this approach: Ruby, Scala and Clojure's have little to no commercial support which makes them less stable products.  Some system components are too important not to have a revenue stream which supports their innovation.  Java and Mysql have done pretty well using this approach.  Because StrataCode's compiler and language framework may well end up in the hands of users though, even the Apache license for those parts will be affordable.   Any language, to be viable long term needs to be broadly adopted and should not impose deployment constraints on developers. 
+
+<% ) %>
+
+<%= footer("License","license") %>
+<% } %>

@@ -1,0 +1,16 @@
+/**
+ * A WebPage which lets you name a new quiz to be added, and creates
+ * the quiz in the database.
+ */
+public class NameQuiz extends DataManagedWebPage {
+   // The Quiz to be created
+   Quiz quiz = new Quiz();
+
+   // Form for specifying the quiz name
+   object nameQuizForm extends CForm<NameQuiz> {
+      object quizNameField extends CTextField<String> {
+	 required = true;
+	 fieldValue =: quiz.name;
+      }
+   }
+}

@@ -1,0 +1,10 @@
+/**
+ * The top level WebPage which lists all the existing quiz names.
+ * Each quiz can be either edited or deleted, and new quizes can be
+ * created.
+ */
+public class QuizList extends DataManagedWebPage {
+   object displayVersion extends CLabel {
+      textValue := MakeQuizApp.version;
+   }
+}

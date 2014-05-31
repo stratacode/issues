@@ -1,0 +1,34 @@
+cmd.sleep(1000);
+cmd.exec("open http://localhost:8080");
+cmd.sleep(3000);
+
+cmd.exec("cp UC1.txt UnitConverter.sc");
+cmd.exec("cp UCH1.txt UnitConverter.html");
+cmd.sleep(1000);
+cmd.exec("open http://localhost:8080");
+cmd.sleep(1000);
+
+cmd.exec("cp UC2.txt UnitConverter.sc");
+cmd.exec("cp UCH2.txt UnitConverter.html");
+cmd.sleep(1000);
+cmd.exec("open http://localhost:8080");
+cmd.sleep(2000);
+
+cmd.exec("cp UC3.txt UnitConverter.sc");
+cmd.exec("cp UCH3.txt UnitConverter.html");
+cmd.sleep(2000);
+cmd.exec("open http://localhost:8080");
+cmd.sleep(2000);
+
+UnitConverter {
+   converters {
+      temperature {
+         value1=1.0;
+s
+      }
+   }
+   cmd.exec("open http://localhost:8080");
+}
+      
+cmd.sleep(20000);
+

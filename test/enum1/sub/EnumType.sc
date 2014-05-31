@@ -1,0 +1,3 @@
+EnumType {
+   THREE {};
+}

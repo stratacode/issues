@@ -1,0 +1,14 @@
+<html extends="Example">
+<head title="StrataCode Examples"/>
+
+<body>
+
+   <div id="content">
+       <div id="exampleContent">
+           Select an example from the list on the left.
+       </div>
+   </div>
+
+</body>
+
+</html>

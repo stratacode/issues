@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cp model/QZ0.txt model/Quiz.sc
+cp model/QT0.txt model/Question.sc
+cp data/QD0.txt data/QuizData.sc
+
+cp wicket/QWP0.txt wicket/QuizWebPage.sc
+cp takequiz/PQ0.txt takequiz/PickQuiz.sc
+cp takequiz/PQH0.txt takequiz/PickQuiz.html
+cp takequiz/TQ0.txt takequiz/TakeQuiz.sc
+cp takequiz/TQH0.txt takequiz/TakeQuiz.html
+cp takequiz/TQA0.txt takequiz/TakeQuizApp.sc
+
+echo "Running wicketQuiz"
+sc -a . < script.txt
+
+rm -f model/Quiz.sc model/Question.sc data/QuizData.sc wicket/QuizWebPage.sc takequiz/PickQuiz.sc takequiz/PickQuiz.html takequiz/TakeQuiz.sc takequiz/TakeQuiz.html takequiz/TakeQuizApp.sc

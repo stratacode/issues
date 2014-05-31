@@ -1,0 +1,354 @@
+<html extends="MainPage">
+<head title="About Layers"/>
+
+<body>
+   <div id="content">
+       <div id="mainContent" exec="server">
+
+Some more basic advantages to layers:
+<ul>
+     <li>Strongly typed, modular code that adheres to the <a href="http://en.wikipedia.org/wiki/SOLID_(object-oriented_design)">SOLID principles</a> of O/O design
+     <li>Traceable code paths, edit time errors, find usages, refactoring, etc.
+     <li>Like <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&ved=0CDYQFjAB&url=http%3A%2F%2Fdl.acm.org%2Fcitation.cfm%3Fid%3D1885647&ei=vLBRUsaBNaGqiAK7moCICA&usg=AFQjCNGUS5M8Ep_9HKm8GO_terTa9cMT_g&bvm=bv.53537100,d.cGE">Delta oriented programming</a> for product feature-lines.</li>
+</ul>
+
+<%= MarkDownPage.markDown(%>
+
+## Introduction to Layers
+
+Layers are as much a design pattern as language feature.  They introduce both a new hinge point to extend and reuse code and allow new ways for building and maintaining large, complex systems.  Layers are a new twist to object oriented programming, letting you refine a class or instance without renaming.   They also provide a packaging mechanism with dependencies.  Where you'd use a module before, you'll use a layer with StrataCode.  Unlike modules though, layers can be merged.  The process works like layers in Photoshop but where we merge by name, not pixel position.  Layers preserve encapsulation.  They may replace or add to an object's interface or override but cannot remove a previously defined contract.  They also cannot depend on a layer that comes after them in the current list of layers.  
+
+## More Efficient Growth of Large Code Bases
+
+As modules grow in size, they tend to develop circular dependencies.  For example, Module A depends naturally on Module B but as the project grows, some minor aspect of B may develop a dependency on some minor aspect of A, possibly due to a poor modularization decision.  Refactoring to eliminate the circular dependency would work but breaks compatibility, requiring renaming.  Allowing the circular dependency creates severe code management problems.  Your project becomes a conglomeration of A and B, a big blob of code, that must update in lockstep.  Changes in B may depend on changes in A and vice versa.  It becomes impossible to test a new version of A with an old version of B and vice versa.  That reduces your ability to detect when the interfaces of your modules change in an incompatible way. 
+You end up with essentially one larger blob of code losing the benefits of the independence you used to have.
+
+With layers, an upstream layer cannot refer to a downstream layer.  Code dependencies only go one way to preserve modularity as systems grow.  Instead, when you would need to add a cyclic dependencies, due to the addition of that minor feature, this code is added in a separate layer that extends both of the previous layers.  It separates that minor dependency from the bulk of the code.  You retain the independence of the code without breaking APIs or compatibility.
+
+Some runtimes explicitly disallow the cyclic references between modules.  Unfortunately that inflexibility often requires refactoring that breaks compatibility when you need to refactor.  Layers give you the best of both worlds: enforcement of one-way dependencies in the core modular structure, and the ability to incrementally add cyclic relationships to type-names while keeping the code modular.  Unless you've experienced the evolution of lots of mega code bases you may not understand the importance of the benefits and it will take some learning to uncover how best to exploit them.
+
+## Mechanics of Layers
+
+Like modules, layers may extend one or more other layers which they depend upon.  This exposes all of the types and instances in that layer to the extending layer.  Layers also can pass along imports to subsequent layers.  Each layer gets a nice sandbox of all of the types imported by the layers it extends.  Downstream code does not depend on the exact package name of an imported type, allowing you to easily substitute variants by adding an intermediate layer.
+
+You typically run one layer which pulls in dependent layers automatically.  You might however specify a list of layers to run and all dependent layers are automatically sorted and included in the application.   Ultimately each collection of layers - a layered system - maintains a single ordered list of layers at any given time which are merged to form the "runtime view" of the application.
+
+Some may see layers as being too powerful.  Each layer has too much control over the vast environment of the system.  Do you have to search all layers to find who might be changing a particular type?  To avoid this uncontrolled flexibility and help modularize layers, they have a package which is prepended onto the package of all files in the layer.   Layers can only create or modify types in their package.  Files do not specify the empty directories generally required by Java, nor do they need a package operator.  A final layer will not let you modify types in that layer, essentially turning it into a module to the outside world.
+
+Layers can be delivered in compiled form or source form.  The dynamic and modify type features require layers in the source form.
+
+## Why Layers?
+
+Why objects, why methods, etc.  It's hard to describe why you should adopt a new language paradigm.  I came upon this design after 20+ years of refinement after building three large systems I was involved with for a long time.  ATG's nucleus, uses this for runtime components ala spring but has no compiled component support.  
+
+The most important benefits of layers show up when maintaining large customized systems, like those commonly found in enterprise development.  Layers help manage workflows for enterprise systems, separating design, administration, business rules, workflow, and code. 
+
+When combined with StrataCode's declarative features, layers provide a hinge point for customizing any property of any object.  You can replace any DOM element of any HTML file.  Append to or replace any component.  Override any formula.  Though layers require some conceptual understanding, the declarative UI provides navigation and editing of the code through a full lifecycle.
+
+## Customizable Enterprise Systems
+
+Typically in these systems you make copies of the customizable parts and modify those copies.  But the vendor continues to improve the core parts which you copied.  When it comes time to upgrade, a substantial portion of that customization effort is re-applied in more custom work. 
+
+Secondly, these systems tend not to completely separate framework code from business domain specific code.  Today, good frameworks and platforms do a better job of making domain specific code free of platform dependencies.  But even modern frameworks like JPA, Spring and hibernate tie your domain model code to their framework code.  Your models are glued together using XML which has dependencies on framework specific classes.  The developer may still manage cross-cutting concerns like transactions, caching, etc. with code or annotations to the code.  In either case, they are not cleanly separated from the domain logic itself.  When framework dependencies are added to the code, that code can only be used with that framework.  The developer working on that code must know that framework or know they can ignore the framework annotations.
+
+Over time frameworks change and evolve as our IT landscape evolves.  New features are always in demand: real time, mobile, better transparency, better performance, etc.  Separating framework from domain logic will let you reuse that logic with current and future platforms.  Logic running on the server today, may need to run on a mobile device tomorrow.  Spring and Hibernate may never be suitable technologies for the mobile platform because they took too many shortcuts and rely on lots of runtime introspective code.  The real question is not how to fix spring and hibernate but how you properly tease apart the dependencies on such systems from the code you really care about - the part that defines how your business runs.
+
+StrataCode's design provides the basic structure to separate dependencies in your code naturally, without complex code refactoring.  Once you learn the tricks to separate layers cleanly, your designs become cleaner and easier to read by separating concerns.  You eliminate needless code copies so models can't drift out of sync.  
+
+## Interpreted or Compiled? 
+
+There's a tradeoff - small system prototyping is faster with interpreted languages.  Large systems are more efficient with compiled systems.  Rearchitecting at any stage of a business is usually not desirable for many reasons.
+
+In addition to modularity, layers provide a way to place a moveable boundary between interpreted and compiled code.  You have compiled layers which generate a typical .jar representation of your Java application.  As you develop, or in production when you need dynamic code, you use dynamic layers on top of those compiled layers.  These are read from disk and interpreted using dynamic types for any classes you define.  Any classes modified by any dynamic layers are automatically made dynamic.  Dynamic types can be modified at runtime.  Property changes are propagated to the affected instances.  When frameworks support changing properties at runtime, this provides an excel-like experience for declarative programmers.  But when you need production code, remove the dynamic attribute and compile these layers. 
+
+Most interpreted languages also do not do strong type checking.  You do not have to declare your data types and can add attributes on a per-instance basis.  StrataCode currently only supports strong type checking, even in dynamic mode.
+
+Some changes made to dynamic types may require a recompilation.  For example, extending a new compiled class, or overridding a compiled method for the first time.  Since StrataCode uses Java's runtime, when a compiled class changes, a restart is needed to pick up this change.  In these cases, StrataCode detects that a recompile is needed and alerts the programmer.  
+
+## Pure Domain Models   
+
+Your domain model specifies the data and core business rules.  Ideally this model is simple and independent from the rest of the system as it needs to be used where you are coding up a business process using that model.  But these are rich objects that collect code and dependencies rapidly.  Layering helps you preserve an independent version of your domain model.  For a trival example, your domain model starts like:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class Quiz {
+   String name;
+   List<Question> questions; 
+}
+<% ) %>
+
+Add persistence like:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>@Entity
+@Table(name="quiz")
+Quiz {
+   // Primary key is the quiz name
+   override @Id name;
+
+   // Define a one to many relationship between a quiz and its
+   // questions.  The questions will automatically be persisted when the
+   // quiz is persisted.
+   override @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER) questions;
+}
+<% ) %>
+Code might be added for business logic.
+
+To use a quiz, you might also initialize it:
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>Quiz {
+   name = "Science";
+
+   questions {
+      object question1 extends Question {
+         question = "The galaxy we live in is called the Milky Way.  It is shaped\n" +
+                    "approximately like:";
+         answerChoices = { "A round ball", "A doughnut", "A pretzel", "A flat spiral" };
+         answerIndex = 3;
+         answerDetail = "The Milky Way has four spiral arms radiating out from a\n" +
+                        "central cluster of stars (nucleus).  Our solar system is\n" +
+                        "located on one of the spiral arms, quite far from the\n" +
+                        "center.";
+      }
+   }
+}
+<% ) %>
+Each layer is stored in a separate directory with parallel file names and path structure which can be swapped in and out of the application for different purposes.
+
+Not only do you use layers to separate dependencies, you also use them to partition assets among people: business analysts, designers etc.  One person defines the data model, another manages persistence, a third manages business data and rules.  Layers help separate assets along role boundaries for better workflows.
+ 
+## Styles and Design Elements
+
+Style sheets separate configuration from code in a clean way and are very powerful but sometimes overkill and overly complicated.  How do you find and isolate the effects of a code change?  In a simpler model, the developer or framework provides specific customization hooks for a certain set of properties of either the types of UI components or specific instances.  Layers make this separation easier for both the programmer and designer.  The programmer exposes just the properties or components they think need customization.  If they are on classes, they are inherited.  If they are instances they are set on that specific widget instance.  The designer just needs to know the names of the class or object and property.  All of this is toolable because of strong typing, and Java's visibility rules.  
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>UnitConverter {
+   foreground = Color.WHITE;
+   background = Color.BLACK;
+   errorLabel {
+     foreground = Color.RED;
+   }
+}
+<% ) %>
+
+StrataCode's multiple inheritance feature lets you apply properties across the class hierarchy as well.  This gives you a strongly typed version of stylesheet's "class" selector.  Object names are analagos to the "id" selector.  
+
+Designers require immediate updates to be applied so they can dial in the perfect colors, spacing, and overall appearance.
+
+When it comes to deployment, styles may be compiled in for runtime efficiency or applied dynamically for flexibility by making the layer dynamic.
+
+## Configuration and Component Assembly
+
+Dependency injection, or inversion of control, the pattern used by frameworks like Spring, separates class definition in Java code from the code which assembles these classes.  This lets you reuse those classes in other contexts, test environments or different application configurations.  This pattern has been widely adopted by Java enterprise systems  but has limitations.  
+
+For each property, you must choose between initializing it in Java, annotations, or XML.  Separating initialization from the code is more complex and harder to maintain.  Not separating it causes pain down the road and moving from one to the other takes real effort.  For example, QA benefits from much deeper access to code than other stakeholders but frequently the Java code only defines one interface used by both types of markup.
+
+Dependency injection may create hidden connections between components that are difficult to trace without a global search through every class in your application.  For example, matching an interface to some implementation of that interface as in EJB3.  Other systems like Spring avoid this with explicit connections but that requires a separate name space - class names and markup ids, effectively doubling the number of public interfaces in your system.
+
+All of these frameworks add runtime overhead by parsing XML or scanning for annotations at startup.  When systems are large, this overhead becomes substantial.  They often detect configuration errors at startup time, or worse the first time a component is accessed.
+
+When you use XML for assembly, you lose language features like inheritance.  Instead you copy large quantities of configuration which then must be managed independently.
+
+StrataCode provides the benefits of these frameworks without their limitations.  Independent classes are defined for isolation.  You can either modify those classes in a separate layer or create objects which then assign the values of those properties.  You are not forced to create a new name for the instance versus the class and are not forced to leave the language to separate implementation from assembly.
+
+One name space for both objects and classes, and one way to make connections between objects - field references.  This simplifies the code by using one syntax.  You add layers at natural boundaries and if those boundaries change you can merge or split layers without affecting your application.  You assemble objects in a component-style manner using standard field initializers without changing code.  StrataCode supports both Java's tree-based initialization or lets a framework enable a more flexible graph based initialization using the @Component annotation. 
+
+Layers separate initialization from type definition, allowing you to inject dependencies in another layer when it is natural to do so in a design.  And if you change your mind, just refactor by merging or creating a new layer.  You can compile a layer for runtime speed.  To assemble components dynamically the code is the same - just add the dynamic keyword on the layer definition.  With layers, references are traceable - you know which layers are involved, and for each layer it is quick to see which types it defines/modifies. 
+
+Let's compare Guice, the most concise and powerful of these frameworks to StrataCode:
+
+Here's an [example](http://code.google.com/p/google-guice/wiki/Motivation?tm=6) from the Guice docs:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>public class BillingModule extends AbstractModule {
+  @Override 
+  protected void configure() {
+    bind(TransactionLog.class).to(DatabaseTransactionLog.class);
+    bind(CreditCardProcessor.class).to(PaypalCreditCardProcessor.class);
+    bind(BillingService.class).to(RealBillingService.class);
+  }
+}
+<% ) %>
+
+Here the BillingModule's class which binds interfaces to implementation classes.
+
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>public class RealBillingService implements BillingService {
+  private final CreditCardProcessor processor;
+  private final TransactionLog transactionLog;
+
+  @Inject
+  public RealBillingService(CreditCardProcessor processor,
+                            TransactionLog transactionLog) {
+    this.processor = processor;
+    this.transactionLog = transactionLog;
+  }
+
+  //...
+}
+<% ) %>
+
+RealBillingService is a sample Guice service which defines properties typed by implementation classes, using @Inject so Guice sets them automatically.
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors(
+%>public static void main(String[] args) {
+   Injector injector = Guice.createInjector(new BillingModule());
+   BillingService billingService = injector.getInstance(BillingService.class);
+}
+<% ) %>
+
+This code creates the instance of the RealBillingService with the property injections.
+
+In StrataCode, you get the same modularity benefits with just two steps of purely declarative code:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>object BillingService {
+   CreditCardProcessor processor;
+   TransactionLog transactionLog;
+}
+<% ) %>
+
+and in another layer:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>BillingService {
+   processor = PaypalCreditCardProcessor;
+   transactionLog = DatabaseTransactionLog;
+}
+<% ) %>
+
+Later you decide you need more than one BillingService or need to create instances of it explicitly elsewhere.  You can easily refactor:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class BillingServiceType {
+   CreditCardProcessor processor;
+   TransactionLog transactionLog;
+}
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>object BillingService extends BillingServiceType {
+   processor = PaypalCreditCardProcessor;
+   transactionLog = DatabaseTransactionLog;
+}
+<% ) %>
+
+Upstream, no one knows.  This allows you to freely express singleton intent in your design without extra interfaces and boilerplate.  Your designs become clearer and your code shorter.  You are not forced to over-design for future flexibility since you can add that in a compatible way later as needed.  
+
+The Guice sample requires those separate interfaces (not shown).  The bind, createInjector, and getInstance calls are the tools you use to build an object graph in imperative code, thus difficult to tool.  In the StrataCode sample, objects are constructed declaratively behind the scenes.  With no customization, they are stored as static variables and created the first time they are accessed.  But framework layers can change that with code templates and scopes in the layers you extend.  The frameworks programmers control lifecycle, transactions, lists and grids, session or request scoped components.  Systems are more flexible with minimal application code and a declarative, readable syntax.  
+
+Scopes can make code more robust by enforcing constraints at compile time: so you can prevent global objects from getting a reference to a session scoped component (for example).  Scopes are an extension mechanism - allowing framework developers to create a safe, efficient sandbox for application programmers.  Framework developers use simple code templates to separate allocation and instance lifecycle from the application code.  
+
+## Testing/Monitoring 
+
+Customize classes to add logging, monitoring, performance hooks.  Inject test code and diagnostics into system classes in a maintainable way.  Make it easy to build with and without these hooks.  Though this code is separated, compile time errors and good tools will make it easy to keep the code in sync.  Separating it unclutters the program logic.  Here's a simple example of inserting monitoring code before and after some servlet:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>MainProductionServlet {
+  void service(ServletRequest request, ServletResponse response) {
+    SystemMonitor.monitorStart("ProductionServlet");
+    boolean success = false;
+    try {
+       super.service(reuqest, response);
+       success = true;
+    }
+    finally {
+       SystemMonitor.monitorEnd("ProductionServlet", success);
+    }
+  }
+}
+<% ) %>
+
+Behind the scenes, StrataCode will create a new MainProductionServlet class when this testing layer is included.  It will use that class instead of the default one.  You can create layers which add much more testing and monitoring logic because it is isolated both from the core code and core runtime.
+
+## Localization
+
+You might create a layer for each locale variation.  With StrataCode, programmers define strings with static final/const variables and initialize them as they might normally.  You simply override those strings in sublayers.  At compile time, a new class is generated which replaces the original strings with the new strings.  You get a new efficient localized executable.
+
+Strings can be compiled in for the smallest footprint or applied at runtime to allow dynamic language applications without code change.  Most systems that are localized use resource bundle implementations which are dynamic objects.  That adds to the library size, application code size, and data size required.  Particularly for mobile or internet apps, this can be significant as apps grow in size.
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>MainAppPanel {
+   welcomeMessage="Welcome {0}!";
+}
+<% ) %>
+
+You might need to adjust UI spacing for a given language.  With StrataCode, one layer can manage all of these aspects making it easy to manage and build localized systems.
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>MainAppPanel {
+   welcomeMessage = "Willkommen {0}!";
+   leftSideWidth := windowSize * 0.25;
+}
+<% ) %>
+
+## Group Code, Data, Documents
+
+Layers provide a modularization structure not just for code, but for documents and data as well.  For documents, you create a layer, and override a single file in that layer just by adding a "doc" directory and putting your file in the right path.  Now build a version of that site with just that file replaced using sc's compilation system when you include that layer.  Since StrataCode can build and assemble .war files, it can be used with any web framework in its compiled mode.  It assembles a standard web app by merging together layers, generating configuration as desired, compiling code and managing all of the dependencies.
+
+Dynamic layers let you modify StrataCode assets without restarting, even when classes are modified.   This provides the benefits of interpreting code while it is being developed without any compilation step.  Frameworks can support property changes in real time to allow complete wysiwig or 'refresh' style updating, like Excel.
+
+Given that layers are a single organizing principle for all of the assets in a production site, there's one additional way they can be used.  You can use layers as temporary objects, to model changes made to a production site.  You keep the changes isolated during testing but can apply them or merge them into the base system before deployment.  Layers become a powerful prototyping and workflow management tool using the same language features (and eventually tools).
+
+You can merge a set of changes into a document tree both dynamically or at compile time.  The "merge layer" operation similarly can keep code and documents in sync.  Data files and even sql databases can use the layered structure to store and merge diffs (lots of hand waving, not much working code here).
+
+## Modularity with Fewer Types, Smaller Downloads
+
+You frequently use the same code base in different contexts, debugging/development, testing, staging, production.  You'd like to use that same code in even more contexts: mobile environments, web, desktop, browser, etc.  Layers allow you to create multiple versions of the same systems making tweaks in controlled ways to get more power out of those systems.  A mobile version of a domain model might not include the heavy persistence layer but would share basic validation logic, properties, etc.
+
+## Dynamic/Runtime Layers
+
+A dynamic layer can represent a broad set of application changes all at once.  Anything which you can do by setting properties or adding and removing components.  This gives you both flexible tools for managing user interface changes as well as data structures for recording and updating application state.  For example:
+
+* Switching user interface states
+* Keyframes in a simple animation
+* Record/playback temporary application state changes for undo/redo
+* Serialization of property changes, object graphs, modules in source or compiled form.  Layers will replace need for JSON as a serialization and storage format 
+
+## Business Rules
+
+StrataCode makes it easy to split out a set of equations for business rules from the rest of the code, creating files easy to read and edit by technically oriented business users.  Dynamic layers provide "excel-like" interactivity when changing applications but deploy as efficiently as normal Java applications.  The := operators performs getX and setX calls which frameworks can use to make dynamic equations work.  The data binding library itself could even be customized for new types such as BigDecimal or custom data types (matrices, grids, etc.)  
+Business analysts have the potential to directly modify simplified files carved out by Java programmers.  Compile time errors, and tools including code-completion will help them along.  
+
+Rules formed from data binding can use any Java library in a forward binding.  This makes it easy to extend the rules language.  Using metadata, you can relate forward and reverse methods giving you bi-directional data propagation across arbitrary invertible functions.
+
+## Domain Specific Languages?
+
+StrataCode's language engine makes it easy to extend languages and create additional DSLs due to its centralized declarative grammar.  To the extent that a new language can be expressed either via Java expressions or property assignments, it makes sense to use the code-generation capabilitieis instead.  I believe that when you separate the declarative aspects from the logic and control flow, you frequently do not need custom DSLs like workflow state machines.  
+
+Instead, you use code templates for compile time hooks and Java interfaces for runtime hooks to allow framework developers to build powerful, flexible, declarative frameworks without the need for introducing new syntax or language operators.
+
+In human languages, when we need to model a new concept we do not change the structure of the language.  Instead we add nouns, adjectives, verbs, etc. just as we add new classes and methods in a computer language.  The existing control structures are reused in new ways, adapting the old syntax to fit the new circumstance.   This is the principle behind StrataCode's concept for syntax reuse.  Concepts like hierarchy, get/set, are changed as needed by the framework layers you include.  The data binding operators provide flexible declarative rules that use Java expressions. 
+
+## Project Dependencies and Builds
+
+Layers define the project structure so StrataCode does builds and packaging reducing the need for ant and IDE configuration.  Each layer contains:
+
+* A layer definition file which extends other layers, layer build properties such as compiled classes needed, and settings common to files in the layer such as imports, a package prefix etc.  The layer definition file may also contain code that is interpreted to modify how StrataCode processes code.  You register handlers for certain annotations, classes, JVM parameters, can arbitrarily build groups of types to centrally manage servlets, JPA entities, etc.
+* Java, StrataCode, or other files.  
+* By default the build directory itself in <i>layerDir</i>/build
+* Interpreted build script code using flexible hooks for framework developers to customize the behavior of subsequent layers.
+
+Thus a layer is a simple self-contained directory which represents all of the information you need to both develop and run the layer.
+
+All compiled layers precede dynamic layers in the layered system.  By default any layer that extends a dynamic layer is made dynamic automatically.  Framework layers are frequently compiled only.  As your application evolves, you might interpret layers in development compiling the rest.  The benefits are dynamic application assembly during development, efficient, no compromises deployment, and scalability of these concepts for large systems.  When you make a layer dynamic you turn all types defined or modified by that layer into dynamic classes.  You do not have to add the dynamic keywrod to individual types during the evolution of your system.  StrataCode naturally lets you move back and forth easily from a rapid/test development mode to a compiled deployment mode.
+
+## Platform Versions
+
+As systems grow large, you tend to need different versions of the same system.  Take Java and JavaME - two unrelated code bases.  Ideally they would at least share a common base.  With a layered approach, you'd define a core java layer shared by both, then each could customize those types as needed.  Layers would ensure that contracts were preserved, just as strong typing in Java works for classes and interfaces.  Code could be written to extend the base layer (i.e. work in either context) and then be customized in a layer which adds the dependency to the required version.  Over time, you can migrate features from the platform specific layer to the core layer without breaking contracts.  Layers can be inserted after the fact to create contract subsets from existing platforms as needs change.
+
+Features like security could easily have been implemented as a layer to create a slimmer/faster version of the JDK for the majority of use cases which do not require code-level security.  Localization, accessibility, and other features could have been sliced into a few layers of varying sizes and feature sets.  Moving this logic into separate feature-oriented files will make the code easier to read and navigate in most cases.
+
+Though you have more platform versions, the dependencies are managed by centrally.  An app or framework layer requiring security extends the secure version. 
+
+## Synchronization
+
+By injecting code, StrataCode records changes to ordinary Java objects and uses the layers metaphor to serialize these changes from client to server and back again.  This gives you a largely declarative, powerful and flexible synchronization system, that's easy to debug because the protocol exchanged is readable StrataCode layers.
+
+<% ) %>
+   </div>
+
+   </div>
+</body>
+
+</html>

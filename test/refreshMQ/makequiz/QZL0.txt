@@ -1,0 +1,7 @@
+/**
+ * A panel which lists all the existing quiz names.  Each individual
+ * quiz can be selected for editing.  New quizes can be added, and
+ * existing quizes can be deleted, by means of a context menu.
+ */
+public class QuizList {
+}

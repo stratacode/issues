@@ -1,0 +1,102 @@
+/**
+ * A panel which lists all the existing questions for a given quiz.
+ * Each individual question can be selected for editing.  New
+ * questions can be added, and existing questions can be deleted, by
+ * means of a context menu.
+ */
+public class QuestionList extends JPanel {
+   // A border around the list of questions
+   static Border questionListBorder = BorderFactory.createCompoundBorder
+      (BorderFactory.createEmptyBorder(0, 5, 5, 5), BorderFactory.createTitledBorder("Questions"));
+
+   border = questionListBorder;
+   Insets panelInsets := insets;
+
+   // State shared by all the panels
+   QuizDataManager dataManager;
+   MakeQuizState state;
+
+   // Get the quiz object for the given quiz name
+   Quiz quiz := dataManager.findQuiz(state.quizName);
+
+   // A popup menu with menu items to add a new question and delete an
+   // existing question
+   object questionPopupMenu extends JPopupMenu implements ActionListener {
+      object addQuestionMenuItem extends JMenuItem {
+	 text = "Add question";
+	 visible := (state.quizName != null);
+	 { addActionListener(questionPopupMenu); }
+      }
+      object deleteQuestionMenuItem extends JMenuItem {
+	 text := "Delete question " + (state.questionIndex + 1);
+	 visible := ((state.questionIndex != -1) && !state.newQuestionEdit);
+	 { addActionListener(questionPopupMenu); }
+      }
+      
+      void actionPerformed(ActionEvent event) {
+	 JMenuItem menuItem = (JMenuItem) event.source;
+	 if (menuItem == addQuestionMenuItem)
+	    gotoAddQuestion();
+	 else if (menuItem == deleteQuestionMenuItem) 
+	    gotoDeleteQuestion();
+      }
+   }
+
+   // Listens for mouse events and brings up the popup menu when
+   // necessary
+   object popupListener extends PopupMenuListener {
+      popupMenu = questionPopupMenu;
+   }
+
+   // A scroll pane with a list of all questions for this quiz
+   object questionListPane extends JScrollPane {
+      location := SwingUtil.point(panelInsets.left, panelInsets.top);
+      size := SwingUtil.subInsets(QuestionList.this.size, panelInsets);
+      viewportView = questionTextList;
+
+      object questionTextList extends JList {
+	 listItems := quiz.questions;
+	 selectionMode = ListSelectionModel.SINGLE_SELECTION;
+	 selectedIndex :=: state.questionIndex;
+	 { addMouseListener(popupListener); }
+      }
+   }
+
+   /**
+    * Adds a new question to the current quiz, by updating the state
+    * to indicate that a new question should be created.  The actual
+    * work of creating the question, filling it in with data, and
+    * saving it in the database is performed in the EditQuestion
+    * class.
+    **/
+   void gotoAddQuestion() {
+      state.newQuestionEdit = true;
+      state.questionIndex = quiz.questions.size();      
+   }
+
+   /**
+    * Deletes the currently selected question from the database.
+    **/
+   void gotoDeleteQuestion() {
+      // Confirm delete
+      int option = JOptionPane.showConfirmDialog
+	 (SwingUtilities.windowForComponent(this), 
+	  "Are you sure you want to delete question " + (state.questionIndex + 1) + "?", 
+	  "Confirm Delete", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+
+      if (option == JOptionPane.CANCEL_OPTION)
+	 return;
+
+      try {
+	 dataManager.deleteQuestion(state.quizName, state.questionId);
+      }
+      catch (EntityNotFoundException e) {
+	 // Somebody must have deleted this question before
+	 // us; do nothing.
+      }
+      catch (OptimisticLockException e) {
+	 // Somebody must have deleted this question before
+	 // us; do nothing.
+      }
+   }
+}

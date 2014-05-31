@@ -1,0 +1,30 @@
+#!/bin/sh
+
+set -e
+
+sc -ni -a -ta test/ifaceField/ibase
+sc -ni -a -ta test/ifaceField/ibind
+
+sc -ni -a test/componentInner
+
+sc -ni -dynone -a -ta test/ifaceField/ibase
+sc -ni -dynone -a -ta test/ifaceField/ibind
+
+sh test/scripts/run-compiled-demo
+
+
+rm -rf unitDemo
+sc < test/scripts/ds-swingui2.txt
+
+(cd test/refreshMQ; ./run)
+
+sc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swing.Main
+
+#  Annoying tests that pop up lots of windows
+
+(cd test/wicketUC; ./run)
+
+(cd test/wicketQuiz; ./run)
+
+(cd test/wicketMQ; ./run)
+

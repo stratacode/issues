@@ -1,0 +1,135 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## StrataCode on Android
+
+Android supports only the compiled StrataCode features currently.  Eventually the StrataCode language runtime could easily run on android, allowing dynamic UI generation.  The open source nature of the tools should allow us to tie into the existing android tool system so you can make dynamic updates to your android applications, particularly in the simulator where a bit more code and runtime overhead is less of an issue.  
+
+First go through the Getting Started for Java Programmers for download, install and to get the basics for StrataCode.  You'll see that the android and swing versions are fairly similar.  StrataCode smooths over the differences and prevents you from needing to learn about various XML files and other android tools.
+
+## Android Requirements
+
+You need to install the android SDK.  Make a symbolic link from:
+
+    layers/androidLayer/lib -&gt; <androidSDKDir>/platforms/<platformdir>
+
+for example:
+
+    lrwxr-xr-x  1 root  wheel  23 Mar  4 16:09 /usr/local/androidsdk -&gt; /jjv/android-sdk-mac_86
+
+You must also edit the androidLayer/local.properties file to set the sdk.dir property.  
+
+Typically with android, you run a tool to create a new project.  It copies a bunch of files into a directory.  With StrataCode, there's no copying involved.  Those files are stored in template form in the androidLayer which you extend.  They'll be copied into your build dir unless you override them by specifying the explicitly.  In that case, your custom version is used.  So your layer directory can be created via android tools as well.
+
+Your android project needs a layer.  For the unitConverter, this layer is:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>package sc.example.unitConverter;
+
+public example.unitConverter.androidui extends extendedModel, androidWrap, androidAnnotLayer {
+}
+<% ) %>
+
+<%= MarkDownPage.markDown(%>
+
+Extend the extendedModel to get base unit converter functionality.  Extend the androidWrap layer to get the set of classes which wrap android classes for data binding: CTextView, CEditText etc.  Extend androidAnnotLayer - an annotation layer - so you can use classes like Activity, LinearLayout (or any ViewGroup subclass) as container types to group their children.
+
+In Android, your main classes are defined with an Activity instance.  That object has a single content view that gets displayed when that activity is active.  Android has nice LinearLayout controls to organize columns and rows so you don't need data binding to define layout.  Otherwise, the sample looks quite similar to the swingui layer.  
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>// Since model's UnitConverter does not extend anything, we can just redefine this
+// type to avoid one level of object containment
+UnitConverter extends Activity {
+   // Converts the value strings to/from numbers.  numberToString to defines
+   // a reverse method so it can be used in 2-way bindings.
+   object numberConverter extends NumberConverter {
+   }
+
+   object mainView extends LinearLayout {
+      orientation = VERTICAL;
+
+      // currentConverter will always point to the selected item in the combo box
+      Converter currentConverter := converters.get(converterChoice.selectedItemPosition);
+
+      // Combo box to choose the current conversion algorithm
+      object converterChoice extends CSpinner {
+         adapter = new ArrayAdapter<Converter>(UnitConverter.this, android.R.layout.simple_spinner_item, converters);
+      }
+
+      object unit1 extends LinearLayout {
+         object unit1Label extends CTextView {
+            singleLine = true;
+            textString := currentConverter.unit1;  // Display's converter's "unit 1"
+            layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 0);
+            { setPadding(5,0,5,0); }
+         }
+         object unit1Field extends CEditText {
+            singleLine = true;
+            textString :=: numberConverter.numberToString(currentConverter.value1);
+            layoutParams = new LinearLayout.LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
+            inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED;
+         }
+      }
+
+      object unit2 extends LinearLayout {
+         object unit2Label extends CTextView {
+            singleLine = true;
+            textString := currentConverter.unit2;
+            layoutParams = new LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT, 0);
+            { setPadding(5,0,5,0); }
+         }
+         object unit2Field extends CEditText {
+            singleLine = true;
+            textString :=: numberConverter.numberToString(currentConverter.value2);
+            layoutParams = new LinearLayout.LayoutParams(FILL_PARENT, WRAP_CONTENT, 0);
+            inputType = InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED;
+         }
+      }
+
+      object errorLabel extends CTextView {
+         // The number converter provides an error when an invalid number is supplied
+         textString := numberConverter.error;
+         textColor := Color.RED;
+      }
+   }
+}
+<% ) %>
+
+<%= MarkDownPage.markDown(%>
+
+With Android, you also include the AndroidManifest.xml file to declare your activities.  This file currently gets passed through though eventually with sc, it could be generated via a mix of xml snippets and annotations.  There are no sc specific variants to this file, but you can see it at: layers/unitConverter/androidui/AndroidManifest.xml.
+
+## Compiling with Android
+
+To compile your application, from the layers directory run: 
+
+    sc unitConverter/androidui
+
+This generates and android project in the directory: 
+
+    unitConverter/androidui/build
+
+Change to that directory and type:
+
+    ant install
+
+(or any other android ant command).  
+
+The androidLayer directory defines the default set of files required in an android project.  If you want to override any of those files, simply define them in your layer in the appropriate path name.  Your files will then be copied into the build directory instead.
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

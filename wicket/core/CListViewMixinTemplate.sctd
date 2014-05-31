@@ -1,0 +1,10 @@
+<% if (!isAbstract) { %> 
+
+protected void _populateChildren(org.apache.wicket.markup.html.list.ListItem<<%=childTypeName%>> item) {
+   int listItemIndex = item.getIndex();
+   org.apache.wicket.model.IModel<<%=childTypeName%>> listItemModel = item.getModel();
+   Object[] children = {<%=childNamesByScope.get("ListItem")%>};
+   processChildrenItems(children, item, true);
+}
+
+<% } %>

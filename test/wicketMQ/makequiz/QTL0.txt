@@ -1,0 +1,7 @@
+/**
+ * A WebPage which lists all the existing questions for a given quiz.
+ * Each question can be either edited or deleted, and new questions
+ * can be created.
+ */
+public class QuestionList extends DataManagedWebPage {
+}

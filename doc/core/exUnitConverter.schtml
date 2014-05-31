@@ -1,0 +1,148 @@
+<html extends="Example">
+
+<body>
+   <div id="content">
+      <div id="exampleContent">
+         <!-- It would be nice to avoid these section things and just implement this behavior when exec="server" is set on a parent and exec="client" is on the child -->
+         <div id="serverSection1" exec="server">
+         <div class="exampleTitle">UnitConverter Example</div>
+
+         This example shows a few of StrataCode's basic concepts and demonstrates a simple application running on lots of different platforms.
+         <p>
+         Here is the model layer for the UnitConverter component.  
+         
+         It defines all we need for the conversion functionality:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/model", "UnitConverter.sc", false, false) %>
+
+         There are four differences from Java demonstrated here:  
+         <ul>
+            <li>Instead of inner classes, this example uses inner objects.  
+            <li>A customized object template - the ComponentList class uses the @CompilerSettings annotation to register an object template.  That template inserts the "add" call so the inner object is added to the list.  This same mechanism is used for a parent user interface widget to treat its inner objects as child widgets.  
+            <li>There is a new :=: opeator used to relate the two values in a formula.  This is a bi-directional data binding expression.  When value1 changes, the expression is evaluated and value2 is set.  Similarly when value2 is changed, the inverse of that expression is evaluated and value1 is set.  Bi-directional bindings are usable with expressions that have a way to invert them, e.g. arithmetic expressions that have a single variable or simple assignments, or methods which register an explicit reverse method through an annotation..
+            <li>Properties are assignable without braces {}.
+         </ul>
+         </div>
+
+         <div id="genCodeVis" exec="client,server">
+             <a clickEvent="=: ucGeneratedCode.displayed = !ucGeneratedCode.displayed"><%= ucGeneratedCode.displayed ? "Hide" : "Show" %></a> the generated code.
+         </div>
+
+         <div id="ucGeneratedCode" style=':= displayed ? "" : "display:none"'>
+            <%! boolean displayed = false; %>
+          
+         <div id="serverSection2" exec="server">
+            <p>
+            <div class="exampleTitle">UnitConverter Generated Code </div>
+            If you don't care how things are under the hood, skip this section.
+            <p>
+            Here's the code generated when you run this layer (i.e. sc example/unitConverter/model):
+
+   <%= sc.lang.JavaLanguage.INSTANCE.styleFile("example/unitConverter/model", "build/java/sc/example/unitConverter/UnitConverter.java", false, false) %>
+
+            Notice a few things StrataCode did for you.  It implemented value1 and value2 using standard Java getX/setX methods, where the setX method makes a call to the sendEvent method.  The fields unit1, unit2 and title were left alone because they are not used in binding expressions (yet).  StrataCode's build system ensures all fields and their uses line up and gives you annotations to control it when you are using this code from Java. 
+            <p>
+            The converters object is converted into a class named converters.  The parent object has a getConverters method which returns the object instance, creating it the first time it is called.  The ComponentList class it extends uses the @Component annotation so this getConverters method uses component initialization.  The getConverters does more work to be sure it's child objects are initialized cleanly no matter how they interconnect with each other.  Java is a lot more strict so when you run into those needs, you can just add @Component, or put it on your framework classes.
+            <p>
+            The individual Converter instances, temperature, etc. do not have classes generated for them on their own.  Since those classes are not needed, they were omitted for efficiency.
+            <p>
+            The generated code also has the two data binding expressions.  There's a nested set of calls to create the expression which returns the value.  To make it easier to read, here's one of the calls re-formatted with indentation: 
+            <pre class="code">
+      getTemperature().setValue2(
+         DynUtil.doubleValue(
+            Bind.arith(
+               getTemperature(),"value2","+",
+                  new IBinding[]{
+                     Bind.arithP("/",
+                        new IBinding[]{
+                           Bind.arithP("*",
+                              new IBinding[]{
+                                 Bind.bindP(this,new Object[]{"temperature","value1"}),
+                                 new ConstantBinding(9.0)}),
+                           new ConstantBinding(5.0)}),
+                     new ConstantBinding(32)},
+               BindingDirection.BIDIRECTIONAL)));
+            </pre>
+         </div>
+         </div>
+
+         <p>
+         <div id="serverSection3" exec="server">
+         <div class="exampleTitle">Defining a Layer</div>
+         The UnitConverter.sc file is stored in the layer directory called example/unitConverter/model in your layer path.  That layer name's is example.unitConverter.model and is defined by the file model.sc in the example/unitConverter/model directory that looks like:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/model", "model.sc", false, true) %>
+
+The layer name must always be the first thing and the file name always matches the layer directory name.
+<p>
+It sets a package to use as the root for all files in this layer.  That means UnitConverter.sc can live in the layer directory, not in sc/example/unitConverter and need not specify a package.  Layer packages help organize code more easily and narrow the focus for a layer that pays off for making things easier to navigate.
+<p>
+The codeTypes and codeFunctions properties don't affect the runtime.  They help the tools organize layers in the program editor.  This file is written in interpreted Java and can include code to customize your application when this layer is included.  It handles the same tasks that build.xml does but using Java.
+
+         <div class="exampleTitle">Modifying a Layer</div>
+Now to introduce the modify operator, we'll add a very simple layer based on the model layer called example.unitConverter.extendedModel.  First the layer definition file:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/extendedModel", "extendedModel.sc", false, true) %>
+<p>
+The extendedModel extends the model layer using the Java extends operator.  You can include multiple base layers, separated by commas.  When you extend a base layer, you also by default inherit the package of the first layer in the list which has exportsPackage=true.  Application layers frequently all use the same package and so this is a nice shortcut.  
+<p>
+Here's a purely declarative layer which defines three more converter types:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/extendedModel", "UnitConverter.sc", false, false) %>
+Notice we omit the "class" operator in front of the type name.  This is how you modify a type in a previous layer.  This name has to match the file name and there has to be a type with this type name in the previous layer.  These are the same sanity checks Java uses to be sure code is well-formed before compiling it. 
+<p>
+If you run: "sc example.unitConverter.extendedModel", it generates one UnitConverter.java file that has 6 converters in example/unitConverter/extendedModel/build/java/sc/example/unitConverter/UnitConverter.java.  At any given time, there's only one stack of layers, implementing a single set of types for each runtime, just like in Java.
+<p>
+         <div class="exampleTitle">Adding Shared UI Components</div>
+Now we'll add a layer called example.unitConverter.coreui, to add some UI code shared by more than one platform:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/coreui", "UnitConverter.sc", false, false) %>
+There's a String to Number converter we'll use from the UI controls.  This layer introduces two properties.  The property currentConverter is set when currentConverterIndex changes by calling the get method.  This binding also fires if the list contents changes. 
+<p>
+         <div class="exampleTitle">Adding the JS/HTML UI</div>
+
+The first user interface we'll look at is implemented using StrataCode's HTML Template library, schtml:
+<%= sc.lang.HTMLLanguage.INSTANCE.styleFile("example/unitConverter/jsui", "UnitConverter.schtml", false, false) %>
+
+         </div>
+
+         <div id="schtmlVis" exec="client,server">
+             <a clickEvent="=: schtmlIntro.displayed = !schtmlIntro.displayed"><%= schtmlIntro.displayed ? "Hide" : "Show" %></a>
+             the quick intro to schtml for reading the code here.
+         </div>
+
+         <p>
+
+         <div id="schtmlIntro" style=':= displayed ? "" : "display:none"'>
+            <%! boolean displayed = false; %>
+         
+            <div id="serverSection4" exec="server">
+               <div class="exampleTitle">Quick SCHTML Intro</div>
+      SCHTML looks like HTML with some JSP-like tags thrown in.  You also can define any attribute to be a Java expression with or without data binding.  To do this, it's just like the rules for an excel-cell.  If you prefix the attribute value with an operator: =, :=, =:, or :=: followed by a space, the value is treated as a Java expression.  You can only do this for attributes which have a backing property which matches that name.  You can only use data binding expressions with properties of objects that are bindable (or can be made bindable via code-gen).
+      <p>
+      Since this layer also modifies the UnitConverter object, we have a UnitConverter object in scope to use in our tags.  The select tag sets the optionDataSource to the converters list we defined.  The selectedIndex uses a bi-directional binding to the currentConverterIndex property in the coreui layer.  We evaluate the optionData value defined for each select option as the text to display using the JSP-like <%= templateSnippets.expressionOp %> java-expression <%= templateSnippets.closeOp %> operator.  
+      <p>
+      For more SCHTML info, see the <a href="webFramework.html">web framework documentation</a>.
+            </div>
+         </div>
+         <div id="serverSection5" exec="server">
+Here are the UnitConverter UIs for four more frameworks.  Though they look similar, they each leverage the underlying frameworks and so build native UIs.  All share the same model code.  
+<p>         
+For Android:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/androidui", "UnitConverter.sc", false, false) %>
+
+For Swing:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/swingui", "UnitConverter.sc", false, false) %>
+
+For Wicket there are two files:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/wicketui", "UnitConverter.sc", false, false) %>
+
+and an HTML file:
+<%= sc.lang.HTMLLanguage.INSTANCE.styleFile("example/unitConverter/wicketui", "UnitConverter.html", false, false) %>
+
+For GWT:
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/gwtui", "UnitConverter.sc", false, false) %>
+
+         </div>
+      </div>
+   </div>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+<html>
+<head>
+
+<script repeat="= allJSFiles" repeatVarName="jsFile" src="= jsFile"></script>
+
+</head>
+<body>
+<p>
+Javascript code loaded.  See Javascript console for details.
+</p>
+</body>
+</html>

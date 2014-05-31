@@ -1,0 +1,69 @@
+#!/bin/sh
+
+STARTTIME=`date "+%s"`
+echo 'Starting time: ' `date`
+
+set -e
+
+# Start: FormView/CodeView js-editor ------
+
+# first build it from scratch
+sc -a -ta -ni js/schtml example/todo/data
+
+touch example/todo/jsui/TodoList.schtml
+
+sc -ta -ni js/schtml example/todo/data
+
+touch example/todo/model/TodoList.sc
+
+sc -ta -ni js/schtml example/todo/data
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch example/todo/jsui/TodoList.schtml
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch example/todo/model/TodoList.sc
+touch example/todo/jsui/TodoList.schtml
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch example/todo/model/TodoList.sc
+touch example/todo/jsui/TodoList.schtml
+
+sc -ta js/schtml jetty/schtml -dyn example/todo/data $* < test/scripts/wait20.txt
+
+touch example/todo/model/TodoList.sc
+touch example/todo/jsui/TodoList.schtml
+
+sc -ta js/schtml jetty/schtml -dyn example/todo/data $* < test/scripts/wait20.txt
+
+touch example/todo/data/TodoList.sc
+
+sc -ta js/schtml jetty/schtml -dyn example/todo/data $* < test/scripts/wait20.txt
+
+touch example/todo/data/TodoList.sc
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch servlet/core/Context.sc
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch servlet/core/PageDispatcher.sc
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+touch js/layer/lang/java/JavaModel.sc
+
+sc -ta js/schtml jetty/schtml example/todo/data $* < test/scripts/wait10.txt
+
+
+# ------
+
+ENDTIME=`date "+%s"`
+RUNTIME=`expr $ENDTIME - $STARTTIME`
+
+echo 'Run time: ' `date -j -f "%s" $RUNTIME "+%M:%S"`
+echo 'Ending time: ' `date` 

@@ -1,0 +1,51 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+
+<%= MarkDownPage.markDown(%>
+
+## Implementation of Data binding
+
+Data binding is implemented using properties defined via the JavaBean naming conventions or simple fields.  At code generation time, the property initialization code is rewritten to create a binding expression instead.  The create binding call returns the initial value for the property if this is a forward binding.  The binding expression is a tree of objects built from the underlying Java expression.  The root maintains a pointer back to the object which defined it and also stores references to the current values of any properties used in the expression.  Each binding expression component adds itself as a listener to any property which should trigger that binding.  For reverse bindings, the listeners are added to the containing object as well.
+
+Each container object can implement an interface to directly store the bindings but if not, they are stored in a weak hash table associated with that object instance.  As each binding is added, if a previous binding exists on that property it is removed.  As each property is fired, the binding expression compares the new value to the last value and if it has changed, it fires the binding.  Each binding expression caches the last value that has gone through it to avoid firing unnecessarily.
+
+In StrataCode code, when you use a property in a data binding expression, as long as StrataCode has the source to the underling class it will automatically inject data binding support.  If your property is defined as a field it gets converted to get/set methods.  If it is already defined with get/set methods, overriding get/set methods are injected.  If StrataCode needs to override get/set in the same class, it renames the old/get set method based on the layers name.  Essentially this makes data binding transparent and automatic for clients as long as you are compiling against a source layer.  
+
+For example, because Swing's JLabel's location property does not do any data binding but it is used in data binding expressions in our sample.  This code is generated in the wrapper sc.swing.JLabel automatically:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.swing.JLabel",
+%>public static sc.type.IBeanMapper _locationProp = sc.type.TypeUtil.getPropertyMapping(sc.swing.JLabel.class,
+                                                                                   "location");
+public java.awt.Point getLocation() {
+   return super.getLocation();
+}
+@sc.bind.Bindable public void setLocation(java.awt.Point _location) {
+   super.setLocation(_location);
+   sc.bind.Bind.sendEvent(sc.bind.IListener.VALUE_CHANGED, this, _locationProp);
+}
+<% ) %>
+
+A static lookup is made for the get/set mapping info for this property and the result is stored in _locationProp.  No memory allocations are performed during a sendEvent and though bindings are performed using reflection, the Method/Field objects are cached statically so the call is about as efficient as possible.
+
+You can turn data binding on and off through annotations as well to avoid needing the source to compile a client.  StrataCode converts from "a.b" to a.getB() and a.setB() automatically so you do not have to do that in your code.  It follows the JavaBean conventions as well so if your component already implements property change listeners, those can be used with StrataCode data binding.  By default though, StrataCode uses a more efficient implementation which does not require memory allocation to send an event. 
+
+If you are implementing data binding manually or in Java code, you only need to add code if other clients are listening for changes on your property.  To receive data binding change events, your regular public field or get/set bean property will work just fine.
+
+The framework can queue up binding events but the default is to fire them immediately in the "sendEvent" call.  Swing for example pushes binding events, addChild and processInterpreted statement to the swing event dispatcher thread since it is not thread-safe.  Wicket defers all events till the next "refresh" so these operations are performed on the request thread.
+
+Lazy bindings will fire the binding expression just before the getX call returns when the binding is stale.  Any changes detected will invalidate the binding so it is evaluated the first time getX is called or the next time after a change.  [NOTE: Lazy bindings not enabled and untested... just haven't needed them yet]
+
+For more information on data binding, look at the Java doc for the sc.bind.Bind class.  This contains the public apis for creating binding expressions manually.
+
+<% ) %>
+
+
+     </div>
+   </div>
+</body>
+</html>

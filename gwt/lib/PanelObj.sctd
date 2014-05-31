@@ -1,0 +1,41 @@
+/** 
+ * UIPanel objects
+ */
+<% if (!overrideField && !overrideGet) { %>
+   <%=fieldModifiers%> <%=variableTypeName%> <%=lowerClassName%>;
+<% } %>
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>(boolean doInit) {
+<% if (overrideGet) { %>
+   <%=variableTypeName%> <%=lowerClassName%> = super.get<%=upperClassName%>();\
+<% } %>
+   if (<%=lowerClassName%> == null) {
+   <%=lowerClassName%> = <% if (typeIsComponentClass) { %><%=typeClassName%>.new<%=typeBaseName%>(false)<% } else { %>new <%=typeName%>()<% } %>;
+<% if (overrideGet) { %>
+      set<%=upperClassName%>(<%=lowerClassName%>);
+<% } %>
+     <%=lowerClassName%>.preInit();
+     <%=propertyAssignments%>
+     <% if (numChildren > 0) { %>
+     Object[] _children = new Object[] {<%=childrenNames%>};
+     for (Object _child:_children) {
+        if (_child instanceof com.google.gwt.user.client.ui.Widget) {
+           com.google.gwt.user.client.ui.Widget _cw = (com.google.gwt.user.client.ui.Widget) _child;
+           // First see if there's a root node defined for this widget.  If so, it goes in that element, not the panel
+           com.google.gwt.user.client.ui.RootPanel panel = com.google.gwt.user.client.ui.RootPanel.get("<%= typePathName %>");
+           if (panel == null) {
+              <%=lowerClassName%>.add(_cw);
+           }
+           else 
+             panel.add(_cw);
+        }
+     }
+     <% } %>
+     if (doInit) {
+       <%=lowerClassName%>.init();
+       <%=lowerClassName%>.start();
+     }
+     return <%=lowerClassName%>;
+  }
+  else return <%=lowerClassName%>;
+}
+<%=getModifiers%> <%=variableTypeName%> get<%=upperClassName%>() { return get<%=upperClassName%>(true); }

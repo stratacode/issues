@@ -1,0 +1,8 @@
+/**
+ * A panel which lists all the existing questions for a given quiz.
+ * Each individual question can be selected for editing.  New
+ * questions can be added, and existing questions can be deleted, by
+ * means of a context menu.
+ */
+public class QuestionList extends JPanel {
+}

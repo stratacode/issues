@@ -1,0 +1,95 @@
+/**
+ * Some predefined Quiz data.
+ */
+public class QuizData {
+
+   static object quizList extends ComponentList<Quiz> {
+      object artHistoryQuiz extends Quiz {
+         name = "Art History";
+ 
+         object artQuestions extends ComponentList<Question> {
+            object question1 extends Question {
+               question = "Andy Warhol was a leading figure in the visual art movement " + 
+	                  "known as: ";
+    	       answerChoices =  { "Cubism", "Dadaism", "Art Nouveau", "Pop art" };
+	       answerIndex = 3;
+	       answerDetail = "Best known as the artist who painted the Campbell's Soup " + 
+	                      "Can, Warhol was one of the leaders of pop art in the " + 
+			      "United States.";
+            }
+
+            object question2 extends Question {
+               question = "Which of the following statements about the Leaning Tower of " + 
+	                  "Pisa is incorrect?";
+	       answerChoices =  { "It is a freestanding bell tower",
+				  "It took almost two centuries to complete",
+				  "The architect intended for it to lean",
+				  "It leans at an angle of about 4 degrees" };
+	       answerIndex = 2;
+	       answerDetail = "Intended to stand vertically, the tower began leaning " + 
+	                      "soon after the onset of construction, due to a poorly " + 
+			      "laid foundation set in weak, unstable subsoil.";
+            }
+
+            object question3 extends Question {
+               question = "What is the name of a painting technique in which small, distinct " + 
+	                  "dots of pure color are applied in patterns to form an image?";
+               answerChoices =  { "Impressionism", "Pointillism",
+				  "Surrealism", "Expressionism" };
+	       answerIndex = 1;
+	       answerDetail = "Pointillism, branching from Impressionism, was developed " + 
+	                      "by George Seurat in 1886.";
+            }
+
+            object question4 extends Question {
+               question = "What is the most common theme encountered in prehistoric " +	
+	                  "cave paintings?";
+	       answerChoices =  { "Human gatherings", "Religious rituals",
+				  "Natural disasters", "Wild animals" };
+	       answerIndex = 3;
+	       answerDetail = "Cave paintings often pictured large wild animals, such " + 
+	                      "as bison, horses, and deer. Drawings of humans were rare " + 
+			      "and were usually schematic.";
+            }
+
+            object question5 extends Question {
+               question = "How many paintings did Vincent van Gogh sell in his lifetime?";
+               answerChoices =  { "One", "Sixteen", "Fifty four", "One hundred" };
+	       answerIndex = 0;
+	       answerDetail = "Little appreciated during his lifetime, van Gogh died " + 
+	                      "largely unknown to the art world at the age of 37.";
+            }
+         }
+
+         questions = artQuestions;
+      }
+
+   }
+
+   static Map<String,Quiz> quizData = createQuizData();
+
+   static Map<String,Quiz> createQuizData() {
+      Map<String,Quiz> quizData = new HashMap<String,Quiz>();
+      for (Quiz quiz:quizList)
+         quizData.put(quiz.name, quiz);
+      return quizData;
+   }
+
+   /**
+    * Returns the names of all the quizes defined in this class.
+    */
+   public static List<String> getAllQuizNames() {
+      List<String> quizNames = new ArrayList<String>();
+      for (Quiz quiz:quizList)
+         quizNames.add(quiz.name);
+      return quizNames;
+   }
+
+   /**
+    * Looks up a Quiz object by name.
+    */
+   public static Quiz getQuizByName(String quizName) {
+      return quizData.get(quizName);
+   }
+}
+

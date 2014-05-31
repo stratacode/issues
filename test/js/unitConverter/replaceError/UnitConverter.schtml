@@ -1,0 +1,7 @@
+<html>
+<body>
+   <div id="feedback" style="error" tagMerge="replace"> 
+      <%= numberConverter.hasError ? "Error: " + numberConverter.error : "" %>
+   </div>
+</body>
+</html>

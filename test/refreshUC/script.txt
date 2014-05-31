@@ -1,0 +1,15 @@
+cmd.pauseTime = 50;
+UnitConverter {
+  cmd.execDir = "test/refreshUC";
+  cmd.exec("cp UC1.txt UnitConverter.sc");
+  cmd.sleep(1000);
+  cmd.refresh();
+  cmd.exec("cp UC2.txt UnitConverter.sc");
+  cmd.sleep(1000);
+  cmd.refresh();
+  cmd.exec("cp UC3.txt UnitConverter.sc");
+  cmd.sleep(1000);
+  cmd.refresh();
+}
+cmd.staleInfo;
+cmd.sleep(4000);

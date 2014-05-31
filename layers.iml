@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/awt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/expertSystem" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gui" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jetty" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jpa" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/junit" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/opengl" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/quiz" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/servlet" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/swing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/unitConverter" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wicket" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/junit/lib" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/junit/lib/build" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/js/prebuild/build/js" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/android" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/example" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/gwt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/html" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/js" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/android/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/android/lib/sdk" />
+      <excludeFolder url="file://$MODULE_DIR$/catTest" />
+      <excludeFolder url="file://$MODULE_DIR$/doc/cheatSheet" />
+      <excludeFolder url="file://$MODULE_DIR$/doc/core/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/remoteMethod/main/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/todo/clientOnly/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/todo/clientServer/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/example/todo/data/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/todo/data/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/jsui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/main/build" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/main/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/style/build" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/style/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/swingui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/expertSystem/swingui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/jsapp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/jsmain/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/jsmain/build-save" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/main/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/main/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/mixin/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/mixin/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/mixinWindowScope/build/java" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/mixinWindowScope/build/js" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/model/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/rtext/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/rtext/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/style/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/style/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/swingui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/swingui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/test/simpleModel/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/threeD/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/threeD/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/vim/build" />
+      <excludeFolder url="file://$MODULE_DIR$/gui/editor/vim/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/gwt/lang/build" />
+      <excludeFolder url="file://$MODULE_DIR$/jetty/lchtml/build" />
+      <excludeFolder url="file://$MODULE_DIR$/jetty/lib/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/jpa/hibernate/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/jpa/openjpa/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/js/appPerPage/main/build" />
+      <excludeFolder url="file://$MODULE_DIR$/js/layer/build" />
+      <excludeFolder url="file://$MODULE_DIR$/junit/lib/build" />
+      <excludeFolder url="file://$MODULE_DIR$/opengl/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/quiz/wicket/makequiz/build" />
+      <excludeFolder url="file://$MODULE_DIR$/quiz/wicket/makequiz/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/quiz/wicket/takequiz/build" />
+      <excludeFolder url="file://$MODULE_DIR$/quiz/wicket/takequiz/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/quiz/wicket/wicketui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/style3/build" />
+      <excludeFolder url="file://$MODULE_DIR$/style333/build" />
+      <excludeFolder url="file://$MODULE_DIR$/swing/rtextarea/lib" />
+      <excludeFolder url="file://$MODULE_DIR$/swing/styleA/build" />
+      <excludeFolder url="file://$MODULE_DIR$/swing/styleB/build" />
+      <excludeFolder url="file://$MODULE_DIR$/temp" />
+      <excludeFolder url="file://$MODULE_DIR$/test/dyn/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/test/emptySwing/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/androidui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/androidui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/extendedModel/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/istyleA/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/istyleA/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/jsui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/jsui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/model/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/style/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/style/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleA/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleA/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleB/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleB/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleC/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleC/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/styleQ/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/swingui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/swingui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/wicketAjax/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/wicketui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitConverter/wicketui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/unitDemo" />
+      <excludeFolder url="file://$MODULE_DIR$/unitDemo/extendedModel/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitDemo/model/build" />
+      <excludeFolder url="file://$MODULE_DIR$/unitDemo/swingui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/ajaxExamp/web/WEB-INF" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/annotExamp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/bookExamp/build" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/bookExamp/web/WEB-INF" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/lang/build" />
+      <excludeFolder url="file://$MODULE_DIR$/wicket/lib/lib" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="sc" />
+  </component>
+</module>
+

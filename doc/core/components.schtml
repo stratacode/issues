@@ -1,0 +1,106 @@
+<html extends="DocPage">
+<head title="Components"/>
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## StrataCode Components
+
+StrataCode has several component features for making Java code more declarative, more concise, and easier to read.  Modern component frameworks implement an inversion of control pattern to wire together a graph of objects for later customization.  With StrataCode, these features are all built into the language.  
+
+You manage component instances, set properties and add references to other components all in StrataCode.  You can put code and configuration together in one file for rapid development, then decide later what's "configuration."  Usually QA or customers can just override your settings in a subsequent layer and do everything Spring can do with a copy-replace XML file.  If necessary you can split configuration from code without breaking compatibility down the road by inserting a new layer.  This provides customization without upfront planning, a solution that improves code reusability dramatically.
+
+When your component configurations get really complex – for example, where Java's normal initialization mechanism fails, due to references to objects that refer back - the @Component annotation comes to the rescue.  It rewrites the standard Java constructor and field initialization syntax in a way that supports multi-step resolution.  When your constructor code runs referenced objects may not have been fully initialized.  But you have init and start methods to move that code to as a backup.  (TODO: perhaps this should be a configurable list of stages as configured by the framework layers?  Also right now, we do not rewrite the constructor to move that code after the variable initialization in the newX method.  But we probably should to preserve Java semantics?  For now you need to move that code into the preInit or init methods).
+
+Layers provide customization hooks to your code.  Keep it all together using the robustness of Java's type system, name spaces, scoping etc.  Code for now and let layers back you up for future customization needs.
+
+## Creating Object Instances
+
+StrataCode supports a new "object" operator, like Scala's object in that it defines a new variable that has a type at the same time.  
+
+If the object is a top-level construct in the file:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>object myInstance {
+}
+<% ) %>
+StrataCode generates code similar to the following:
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class myInstance {
+    private static myInstance myInstance;
+    static myInstance getMyInstance() {
+        if (myInstance == null)
+            myInstance = new myInstance();
+        return myInstance;
+    }
+}
+<% ) %>
+
+<%= MarkDownPage.markDown(%>
+
+StrataCode creates a class for the object with a static property which lazily creates the default instance.   In your code, you can refer to the object with an ordinary variable e.g. 'myInstance'.  At code-generation time, StrataCode will transform that variable into a method call: myInstance.getMyInstance().
+
+Just as Java lets you define inner classes, you can have inner objects:
+
+<% ) %>
+
+<%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
+%>class MyClass {
+   object innerObject {
+   }
+}
+<% ) %>
+
+<%= MarkDownPage.markDown(%>
+This defines an inner object, with a single instance created for each instance of MyClass.  At code generation time, StrataCode generates an instance variable to hold the instance and a similar getInnerObject method inside of MyClass to lazily create and retrieve the instance.   As an optimization, StrataCode may not generate a class for each inner object.   Many inner objects are just configured instances of some other type and this makes the implementation more efficient.
+
+Framework layers can use inner objects for the parent/child relationship by adding the "setParent" call or constructor parameters during code-generation.
+
+## Properties
+
+Programmers are taught to avoid exposing fields directly in APIs.  Instead Java's convention for properties is to use getX and setX methods to implement a property called X.  You explicitly call the getX or setX method instead of directly manipulating the field so that the implementation can adapt down the road without breaking your code.   The result is good but it's more code to write both to implement and use a property and worse the code is harder to read and use. 
+
+StrataCode simplifies your life by formalizing the Java convention by generating getX and setX methods as needed and converting simple identifiers and assignments to getX and setX method calls as needed in your generated code.  You can define properties and use them as you would Java fields.  StrataCode handles any necessary code-generation and conversion for you automatically.  Your code looks simpler, cleaner and is more efficient.  Use fields knowing that you can write custom getX and setX methods, or have them generated for you later without breaking code.
+
+Frameworks can customize the getX and setX code generated for properties to interact with framework code.   
+
+The data binding system detect when properties are used in data binding expressions and generates getX and setX methods with the proper code to implement the binding.
+
+## Object Graphs - Recursive References
+
+When you initialize fields in a Java class you can only refer to fully initialized objects.  If the state of your object in any way refers to values which refer back to you, your code will either not compile or just not work.  These are called recursive references.  Component frameworks allow them by adding a multi-step initialization process.  Objects are created and registered in the name space, then references are resolved, then initialization hooks are run. 
+
+Programmers try to avoid recursive references because they create less modular code.  But when you need to add one, it can be hard to get around that need when data needs to flow upstream.  To move these references from Java to the component framework involves rewriting code, configuration, and breaks code using the affected published APIs or configuration hooks.
+
+StrataCode offers a nice alternative.  Add the @Component annotation to your StrataCode class to change the generated Java code to allow that class to use recursive references.  StrataCode transforms your Java code to use a multi-step initialization sequence.  First it creates all instances in the reference graph and sets their member variables so the getX methods work.  Then the instance variables are assigned.  
+
+TODO: Currently the constructor code is run before these complex instance variables are assigned.  Should this be fixed?  It would be nice if by the time constructor code is run, all instance variables are at least assigned.  
+
+You cannot guarantee that all referenced constructors have been run as there's no way to do that in a recursive reference graph.  Instead, you can move code dependent on that into an init method that is called later.  There's also a start method called after all referenced components have been initialized. 
+
+## Customizing Object Lifecycle
+
+A declarative framework that only supports static objects only goes so far.  StrataCode makes the object lifecycle a customization hinge point so the same object operator can create objects with different lifecycles by customizing the generated getX and setX methods for those objects along with other runtime controls.   
+When combined with the HTML framework, you can easily control the lifecycle of the page objects by using the scope operator or the @Scope annotation.  
+
+* session scoped: per browser session 
+* window scoped: per browser window 
+* request scoped: per request (TODO: not yet implemented but should not be difficult.  It will require the complete reset sync to happen essentially on each request, like we do when there's a failover.)
+* global scoped: like static instances on the server
+* application scoped: per separate application id, typically the page's URL unless your application is built from more than one page. (TODO not yet implemented)
+
+Framework developers have simple hooks for implementing a new scope.  They can override the contents of the getX method generated for a particular base class, class marked with an annotation, or in a layer.  This is controlled both by annotations set on the class, base-class or layer.  Framework layers provide code templates for generating the right getX method for a given type.  For a session scoped type, they find the object in the current session using a thread-local variables to find the current session.  
+
+<% ) %>
+
+     </div>
+   </div>
+</body>
+</html>

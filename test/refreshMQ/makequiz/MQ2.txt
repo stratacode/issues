@@ -1,0 +1,13 @@
+/**
+ * The main application frame, which contains the QuizList,
+ * QuestionList, and EditQuestion panels.  
+ */
+public class MakeQuiz extends AppFrame {
+   size = SwingUtil.dimension(700, 400);
+
+   // Display size does not include the title bar, border, etc.
+   Dimension displaySize := SwingUtil.subInsets(size, insets);
+
+   // Set the title of the window to reflect the quiz name
+   title = "Make Quiz";
+}

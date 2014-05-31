@@ -1,0 +1,5 @@
+/**
+ * The WebPage which actually lets you take a particular quiz.
+ */
+public class TakeQuiz extends QuizWebPage {
+}

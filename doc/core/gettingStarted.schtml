@@ -1,0 +1,46 @@
+<html extends="DocPage">
+
+<body>
+
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+If you're interested in hands on, contact Jeff Vroom for access.
+
+To learn more, watch the [demo videos](videos.html).  
+
+Prerequisites: Java, Git, Unix (linux or mac)
+
+Get the StrataCode command and runtime:
+
+    git clone --depth=1 ssh://vsgit@stratacode.com/home/git/vs/dist
+
+Get the StrataCode layers: frameworks, libraries, samples, tests:
+
+    git clone ssh://vsgit@stratacode.com/home/git/vs/layers
+
+If you are curious, get the StrataCode source code itself:
+
+    git clone ssh://vsgit@stratacode.com/home/git/vs/stratacode
+
+Put the dist/bin folder in your path.  Change to the layers folder, the folder created when you ran the second git clone and run:
+
+    sc editor/swing/main
+
+to start the editor.  Or run:
+
+    sc editor/swing/main example/expertSystem/main
+
+to run the editor with an application.  If you have problems, first try adding the '-a' option to do a clean build.  There's a usage for the sc command and also help availably at the command with "help".
+
+[IDE Setup](ideConfig.html).
+
+<% ) %>
+
+
+     </div>
+   </div>
+</body>
+</html>

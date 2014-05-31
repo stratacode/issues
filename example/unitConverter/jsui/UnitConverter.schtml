@@ -1,0 +1,26 @@
+<%@ @URL(pattern="/uc") %>
+<html>
+<head>
+	<title>UnitConverter on StrataCode</title>
+	<link rel="stylesheet" type="text/css" href="style.css"/>
+</head>
+<body>
+
+   <div class="appFrame">
+      <form id="unitConverterForm">
+         <select id="converterChoice" 
+               optionDataSource=":= converters" 
+               selectedIndex=":=: currentConverterIndex"/>
+         <br>
+         <span id="unit1Label" class="unitLabel"><%= currentConverter.unit1 %></span>
+         <input id="unit1Field" value=":=: numberConverter.numberToString(currentConverter.value1)" class="unitField" autoComplete="off"/>
+         <br>
+         <span id="unit2Label" class="unitLabel"><%= currentConverter.unit2 %></span>
+         <input id="unit2Field" value=":=: numberConverter.numberToString(currentConverter.value2)" class="unitField" autoComplete="off"/>
+      </form>
+
+      <div id="feedback"><%= numberConverter.error %></div>
+   </div>
+
+</body>
+</html>

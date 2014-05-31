@@ -1,0 +1,15 @@
+#!/bin/sh
+
+echo 'Prepping demo: ' `date`
+
+sc -vl -a -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait10.txt
+#cp -r js/appPerPage/main/build /jjv/bk/uc_jsapp_orig
+#cp -r jetty/schtml/build /jjv/bk/uc_jetty_orig
+sc -a -ta -ni example/todo/clientOnly
+#cp -r js/appPerPage/main/build /jjv/bk/tdc_jsapp_orig
+sc -a -ta -ee -dyn editor/js/mixin example/todo/clientServer < test/scripts/wait10.txt
+#cp -r js/appPerPage/main/build /jjv/bk/tdcs_jsapp_orig
+#cp -r jetty/schtml/build /jjv/bk/tdcs_jetty_orig
+sc -vl -a -ta example/todo/clientServer editor/js/options/windowScope < test/scripts/wait10.txt
+
+

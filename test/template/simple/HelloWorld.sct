@@ -1,0 +1,6 @@
+<%! object HelloWorld { 
+   String message = %> Hello
+World! <% ; 
+} %>
+
+

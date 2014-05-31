@@ -1,0 +1,41 @@
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	     version="1.0">
+  <persistence-unit name="simpleCatalog">
+    <class>jpaCat.SimpleCategory</class>
+    <properties>
+       <!--<property name="openjpa.Log" value="DefaultLevel=TRACE, Tool=INFO"/>-->
+       <property name="openjpa.Log" value="DefaultLevel=WARN, Tool=INFO"/>
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema"/>
+
+      <property name="openjpa.RemoteCommitProvider" value="sjvm"/>
+      <property name="openjpa.DataCache" value="true(CacheSize=<%= CacheTest.itemCacheSize%>, SoftReferenceSize=0)"/>
+      <property name="openjpa.QueryCache" value="true(CacheSize=<%= CacheTest.queryCacheSize%>, SoftReferenceSize=0)"/>
+
+    <!--
+      <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost/simpleCatalog?user=dmfl&amp;password=gregsbirthday"/>
+      <property name="openjpa.ConnectionDriverName" value="com.mysql.jdbc.Driver"/>
+     
+      <property name="openjpa.ConnectionProperties" 
+          value="DriverClassName=com.mysql.jdbc.Driver,URL=jdbc:mysql://localhost/simpleCatalog,
+            MaxActive=100, 
+            MaxWait=10000, 
+            TestOnBorrow=true, 
+            Username=dmfl, 
+            Password=gregsbirthday"/>
+      <property name="openjpa.ConnectionDriverName" value="com.mchange.v2.c3p0.ComboPooledDataSource"/>
+      
+      -->
+
+      <property name="openjpa.ConnectionProperties" 
+          value="DriverClassName=com.mysql.jdbc.Driver,Url=jdbc:mysql://localhost/simpleCatalog, 
+            MaxActive=100, 
+            MaxWait=10000, 
+            TestOnBorrow=true, 
+            Username=dmfl, 
+            Password=gregsbirthday"/>
+      <property name="openjpa.ConnectionDriverName" value="org.apache.commons.dbcp.BasicDataSource"/>
+
+    </properties>
+  </persistence-unit>
+</persistence>
