@@ -71,29 +71,33 @@ After you build your project, the layer's build directory contains a directory c
 
 StrataCode generates a default index.html file which contains links to the top-level URLs defined in your project.  This includes all of the schtml files that have an html tag in them or types you mark with @URL.  Other schtml files are typically used as  HTML fragments.  If you add an @URL annotation you can expose any type as a page.
 
-Any schtml files you put in the top level directory of your layer will be put into the web directory.
-
 ### Client/Server Applications
 
-When you include the jetty.schtml, StrataCode generates a class called PageInit to initializes all of the top level URLs and registers them with the PageDispatcher servlet.  This will include those types marked with @URL or which have an <html> tag as their root but this is configurable.   This servlet maps the page requests from URLs to code which uses your server-side template object to generate an HTML response.
+When you include the jetty.schtml layer, StrataCode generates a class called PageInit to initializes all of the top level URLs and registers them with the PageDispatcher servlet.  This will include those types marked with @URL or which have an <html> tag as their root but this is configurable.   This servlet maps the page requests from URLs to code which uses your server-side template object to generate an HTML response.
 
-You can control what URLs map to which pages via the @URL annotation.  You also can provide a pattern string which matches query parameter URLs to specific object types.  When a query pattern matches, that page is invoked after the pattern extracts the values from the URL and applies them to the page object. <i>TODO: provide an example of @URL(pattern="...") here</i>
+### URLs and Template Pages
+
+Any schtml files you put your layer directory are put into the corresponding directory in the generated web root.  This allows you to keep code and templates together in the normal Java package hierarchy, so you can override one by another.  It also gives you a simple default URL naming scheme which you can use to replace template pages, even when the package name does not match. 
+
+You can also control what URLs map to which pages via the @URL annotation.  This annotation lets you associate a pattern string which matches components of the URL, such as path-name entries or query parameter, to properties values.  When a query pattern matches an incoming request for a URL, that page is used to retrieve the contents.  But first the pattern extracts the values from the URL uses them to set properties on the page object.  <i>TODO: provide an example of @URL(pattern="...") here</i>
 
 ### Synchronization
 
 When your layers extend both jetty.schtml and js.schtml, you can also enable StrataCode synchronization.
 
-In the synchronized version, an initial static HTML page is delivered to the browser which represents the initial application state.  As changes are made on the client those changes are recorded in a runtime layer of data called a "sync layer".  When necessary, the client syncs its changes to the server.  The sync layer is serialized using the StrataCode language and sent across the wire.  In this format, a layer looks a lot like a JSON file though it can contain arbitrary program changes, not just data.
+In the synchronized version, an initial static HTML page is delivered to the browser based on the URL request.  The server code for the template page is executed to provide that current page using the version of any synchronized objects currently maintained on the server.   After the initial HTML is displayed to the user, the client starts downloading the Javascript code to incrementally update the page.  It then downloads a Javascript code snippet to initialize the state of any synchronized objects.
+
+ As changes are made on the client those changes are recorded in a runtime layer of data called a "sync layer".  When necessary, the client sends its current sync layer to the server.  This sync layer works like a JSON file though it can supports any kind of change you might make to the server.  It can include method calls, new instance creation, etc.
 
 The server applies that layer of changes and records any subsequent changes made in response.  Commonly you will change properties which trigger data binding expressions on the server.  These rules produce new property changes, or may call methods which create an entire object graph.  The changes made on the server are recorded just like on the client and then sent back as the response to this request.  This natural batching of changes gives you nice seamless client/server communication with good performance characteristics based on the batching that occurs naturally.  
 
-Once the responses back at the client, it's applied to the client objects.  Those changes update the user interface elements.  
+The client applies the response which typically updates the user interface displays or triggers additional UI display logic.
 
-It sounds like magic, and it's not easy to get this level of seamlessness, but it works on some pretty complex data structures.  The formats exchanged are very easy to read (like JSON) and debug.
+There is a lot of moving parts but they are all carefully designed to be flexible, efficient, and maintainable.  For example, it's easy to trace the generated code injected into the Java for synchronization to be sure it matches what you want.  Also, The formats exchanged are very easy to read and debug.
 
-It's a very clean way to implement declarative, client/server from a single code base.
+Overall we believe the sync framework provides a clean way to implement declarative, client/server from a single code base.
 
-You can disable synchronization by turning it off at the layer level and use traditional RPC  Or better yet, implement traditional RPC using synchronization.  Take all of the parameters you would pass to your server objects and make them properties of various objects.  Those objects would hold the "client/server state".  When one of those parameters changes, you invoke a server method.  Use other properties for the return value or any resulting changes.  Data binding becomes a simple replacent to asynchronous programming with RPC.  Your client and server objects may only live for the duration of one call or they may implement a dialog. e.g. an incremental download, synchronizing a form to some database object, etc.  (Note: The RPC support is coded but not yet needed so remains untested).
+You can of course mix in explicit RPC or use data binding to call remote methods automatically.
 
 ## Data Synchronization - Client/Server Communication
 

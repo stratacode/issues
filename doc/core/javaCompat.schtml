@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="Java Compatibility"/>
 
 <body>
 
@@ -9,13 +10,17 @@
 
 This section describes both the basics around importing existing Java code, and at a language level, the compatibility between StrataCode code and Java code.
 
-## Importing Java Libraries
+## Importing Compiled Java Libraries
 
-StrataCode is designed to make it easy to import pre-compiled Java libraries and use them from StrataCode or Java code compiled by StrataCode.  You cannot modify these types using the modify operator, inject data binding, or use other features with them that require that StrataCode generate the code for these types.
+StrataCode is designed to make it easy to work with large Java code bases.  As a first step, you can simply import pre-compiled Java libraries and use them from StrataCode.  You cannot modify these types using the modify operator, inject data binding, or use other features with them that require that StrataCode generate the code for these types.
 
-A layer definition file can append to the class path as needed to add compiled libraries to the system.  These types are automatically treated as JavaBeans by StrataCode using the get/set pattern.  You can attach metadata to individual classes using "annotation layers".  This metadata can affect the compiled code which uses that type, e.g. turning any use of a class into a component automatically.  You can mark properties as constant to eliminate data binding warnings and overhead.  You can add code templates to a type used for defining object instances or component definitions.
+A layer definition file can append to the class path as needed to add compiled libraries to the system.  These types are automatically treated as JavaBeans by StrataCode using the get/set pattern.  You can attach metadata to individual classes using "annotation layers".  This metadata can affect the compiled code which uses that type, e.g. turning any use of a class into a component automatically.  You can mark properties as constant to eliminate data binding warnings and overhead listening for events on properties that do not change.  You can add code templates to a type used for defining object instances or component definitions.
+
+To automate installs and updates, StrataCode has a simple repository package management system.  There are RepositoryManagers for git and http but it will be easy to add maven, ant, and gradle.  During the runtime, these package managers can ensure all dependencies are met before loading the Java code and do any installation or updates necessary.
 
 ## Compilation of Java and StrataCode 
+
+To use more StrataCode language features, you can also copy your source files into layers and have StrataCode pre-process them. 
 
 Each layer can contain a mix of Java and StrataCode files.  StrataCode will translate them all to vanilla Java files before compiling.  If your layer has Java files and you don't use any extensions, these files are passed through unmodified to the compilation phase.  The only changes made to Java files are cosmetic - add a missing "package" tag from the layer's package, add a missing public or private modifier when you mark your layer as public or private.  When dealing with pure Java files, StrataCode will still maintain class dependencies, compiling only files required to ensure your .class files are always up to date.  This makes it easy to incrementally add StrataCode to an existing Java project a file at a time, replacing Java's ant build tool.
 

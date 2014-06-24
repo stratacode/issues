@@ -48,6 +48,7 @@ ModelEditor extends RTextScrollPane {
       object completionProvider extends SCCompletionProvider {
          ctx := ModelEditor.this.ctx;
          completionType = CompletionTypes.EntireFile;
+         fileModel := model;
       }
 
       AutoCompletion autoCompletion = new AutoCompletion(completionProvider);

@@ -147,10 +147,6 @@ class EditorModel implements sc.bind.IChangeable {
       if (type == null || type == currentType)
          return;
 
-      // Push this back if the change is coming from the editor model side
-      //if (currentCtxType != type)
-      //   currentCtxType = type;
-
       String[] newTypeNames = new String[1];
       newTypeNames[0] = DynUtil.getTypeName(type, true);
       typeNames = newTypeNames;

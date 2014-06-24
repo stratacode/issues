@@ -1,5 +1,5 @@
 <html extends="DocPage">
-<head title="Components"/>
+<head title="StrataCode Components"/>
 
 <body>
 
@@ -10,13 +10,13 @@
 
 ## StrataCode Components
 
-StrataCode has several component features for making Java code more declarative, more concise, and easier to read.  Modern component frameworks implement an inversion of control pattern to wire together a graph of objects for later customization.  With StrataCode, these features are all built into the language.  
+StrataCode has several component features for making Java code more declarative, more concise, and easier to read.  You may be familiar with component frameworks that implement an inversion of control pattern to wire together a graph of objects for later customization.  With StrataCode, these features are all built into the language using the new object operator and simple references between objects.  
 
-You manage component instances, set properties and add references to other components all in StrataCode.  You can put code and configuration together in one file for rapid development, then decide later what's "configuration."  Usually QA or customers can just override your settings in a subsequent layer and do everything Spring can do with a copy-replace XML file.  If necessary you can split configuration from code without breaking compatibility down the road by inserting a new layer.  This provides customization without upfront planning, a solution that improves code reusability dramatically.
+With an inversion of control container, you are faced with the choice of doing writing in configuration or code using annotations.  When you need to move from one to the other, it alters the API contract for anyone using that code.  Either way, wiring and error detect happens at startup time, not compile time.
 
-When your component configurations get really complex – for example, where Java's normal initialization mechanism fails, due to references to objects that refer back - the @Component annotation comes to the rescue.  It rewrites the standard Java constructor and field initialization syntax in a way that supports multi-step resolution.  When your constructor code runs referenced objects may not have been fully initialized.  But you have init and start methods to move that code to as a backup.  (TODO: perhaps this should be a configurable list of stages as configured by the framework layers?  Also right now, we do not rewrite the constructor to move that code after the variable initialization in the newX method.  But we probably should to preserve Java semantics?  For now you need to move that code into the preInit or init methods).
+With layers, you have the choice of putting the reference in the original code or configuring it in a new layer.  You can change your mind at any point without affecting consumers of your published layers.  Even if you put a reference into the original source code, it can be overridden with no cost in a subsequent layer.
 
-Layers provide customization hooks to your code.  Keep it all together using the robustness of Java's type system, name spaces, scoping etc.  Code for now and let layers back you up for future customization needs.
+The layered approach to component assembly provides customization without upfront planning, a solution that improves code reusability substantially.
 
 ## Creating Object Instances
 
@@ -73,11 +73,11 @@ Frameworks can customize the getX and setX code generated for properties to inte
 
 The data binding system detect when properties are used in data binding expressions and generates getX and setX methods with the proper code to implement the binding.
 
-## Object Graphs - Recursive References
+## Recursive References using @Component
 
 When you initialize fields in a Java class you can only refer to fully initialized objects.  If the state of your object in any way refers to values which refer back to you, your code will either not compile or just not work.  These are called recursive references.  Component frameworks allow them by adding a multi-step initialization process.  Objects are created and registered in the name space, then references are resolved, then initialization hooks are run. 
 
-Programmers try to avoid recursive references because they create less modular code.  But when you need to add one, it can be hard to get around that need when data needs to flow upstream.  To move these references from Java to the component framework involves rewriting code, configuration, and breaks code using the affected published APIs or configuration hooks.
+Programmers try to avoid recursive references because they create less modular code.  But when you need to add one, it can be hard to get around that need.  In the real world, data sometimes flows upstream.  To move these references from Java to the component framework involves rewriting code, configuration, and breaks code using the affected published APIs or configuration hooks.
 
 StrataCode offers a nice alternative.  Add the @Component annotation to your StrataCode class to change the generated Java code to allow that class to use recursive references.  StrataCode transforms your Java code to use a multi-step initialization sequence.  First it creates all instances in the reference graph and sets their member variables so the getX methods work.  Then the instance variables are assigned.  
 

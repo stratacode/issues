@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="Understanding StrataCode"/>
 
 <body>
 
@@ -11,11 +12,11 @@
 
 StrataCode helps you layer files, data and code with minimal effort.  These layers are a powerful organizational tool that can be exploited in many ways during framework development.  This gives you both modularity and a clean way to isolate a group of changes for review, staging, and push to production.
 
-At the same time, StrataCode is another Java build, configuration system like Gradle but configured by Java.  Layers are your config scripts but rather than copy them into your project you just extend them and customize them using inheritance.  You can use each of the StrataCode features: data binding, Java to Javascript, and modifying types independently.  There's a small set of Java classes with minimum dependencies for data binding and type utilities used by it that end up in your application when you use data binding or other extensions.
+While StrataCode may seem like a lot, each feature can be used independently: java build and configuration, data binding, Java to Javascript, and modifying types.  At runtime, you only need a small library of Java classes for data binding.
 
-A Java programmer trying to learn Ruby, Scala, or Closure must learn lots of new syntax.  StrataCode adds only a handful of syntactical extensions making it easy to learn if you know Java.  Java files in a StrataCode layer are passed through without changes.  Java code in a .sc file works the same aside from a few subtle changes.  The types generated are the same so you mix and match.  Under the hood, StrataCode extensions are expanded into Java code keeping the original structure, comments, etc.
+A Java programmer trying to learn Scala, or Closure must learn lots of new syntax.  StrataCode adds only a handful of syntactical extensions making it easy to learn if you know Java.  Java files in a StrataCode layer are passed through without changes.  Java code in a .sc file works the same aside from a few subtle changes.  The types generated are the same so you mix and match.  Under the hood, StrataCode extensions are expanded into Java code keeping the original structure, comments, etc.
 
-Though it is easy to read any given StrataCode file, to understand a program you need to really understand layers in the way you understand the concept "object oriented programming".  If you succeed, you will learn a powerful design pattern, a simple syntax, a reshaping of your primary design surface that lets you and your colleagues work with beautiful, elegant systems that lower total cost of development: one language, one toolset, many skill sets, one maintainable system.
+Though it is easy to read any given StrataCode program, to use layers effectively in building new programs you need to understand how to use them in the way you understand how to use object oriented programming.  If you succeed, you will learn a powerful design pattern, a simple syntax, a reshaping of your primary design surface that lets you and your colleagues work with beautiful, elegant systems that lower total cost of development: one language, one toolset, many skill sets, one maintainable system.
 
 Layers add an additional hinge point to typical object oriented design flexibility and have many possible uses.  They make it easier to share your designs with declarative programmers: analysts, admins, designers without custom XML formats, style sheets, resource bundles, etc. and with much less programmer effort.  You can interpret or compile layers as needed for deployment flexibility.  Layers are a powerful organizational tool that can be exploited in many ways during framework development.  
 

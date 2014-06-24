@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="StrataCode Template Language"/>
 
 <body>
 
@@ -9,33 +10,41 @@
 
 ## StrataCode Template Language
 
-The template language provides the power of StrataCode for situations where you have dynamic text, such as XML or HTML files to generate in a layered fashion.  The template language provides all StrataCode features as well - get/set conversion, compiled or interpreted execution.  You can generate stateful templates, which have incremental refresh, or generate a template which is stateless - i.e. re-evaulates from scratch each time.  
+The template language provides the power of StrataCode when you have a program which has a lot of text.  Key parts of your Java program can be defined as free-form text using the JSP escape character sequence &lt;% and %&gt; to separate text from code.  
 
-Even though StrataCode comes with a template language that dramatically improves the state of the art, it also works well with other web frameworks like JSP and Wicket and it's easy to add more integrations.
+The template language itself is typically customized by a framework when it's associated with a particular file extension (e.g. schtml, scss, sct, scxml, scsh etc).  Of these formats, schtml and scss extend the template language grammar to offer parsing of the text sections.  You can configure many aspects of how the template language behaves:
 
-Under the hood, the template language is a small deviation from the StrataCode language itself.  Templates are easy to read by Java programmers, strongly typed, compiled in one pass not two which gives them good errors messages.
+* whether the template is compiled into a Java .class or interpreted at build or runtime 
+* the default base class for the template if one is not specified 
+* the code generated for the "output" method used to retrieve the template's current value
+* the suffix of the generated file
+* enable "stateful templates" - where you can incrementally update the template based on property changes and data binding
+* whether the template by default modifies or replaces a previous template with the same name
+* whether the template is named by it's path name in the layer or by it's type name in the language system
 
-Framework developers use the template language for code snippet templates.  They also use the template language to generate xml files, improving build automation.  Templates can be turned into a java class and compiled or interpreted.  They can be treated just like source files and override or modify Java types.  
+Framework developers use the template language for code snippet templates.  They also use the template language to generate xml and other build files reducing the copying of project configuration.  
 
 Some web frameworks use a pattern called "code behind" where you write a class to define a page object that sits behind the template.  The properties and methods in the page object are available to the template.  StrataCode takes this pattern further.  It let's you weave code files, and template files in any number, each one using, extending, overriding, the previous one. 
 
-The grammar for the template language is derived from the StrataCode language.  Unlike JSP, the template is parsed with a single grammar, in a single pass making syntax errors easier to find.  The parsing rules are a bit more restrictive in some cases than JSP but the restrictions make for more readable, well structured templates. 
+## Comparison to JSP
+
+JSP is built by first parsing JSP, then generating Java, then parsing the Java.  StrataCode templates are parsed in one-pass, then that model is transformed to Java without a reparsing step.  The one-pass model produces statically typed, well structured templates with the same tooling potential as Java..
+
+The grammar for the template language is derived from the StrataCode grammar in just a few dozen lines of code.  The parsing rules are a bit more restrictive in some cases than JSP but the restrictions make for more readable, well structured templates.  They have good error messages and have the static typing as in Java. 
 
 While JSP has include tags, tag libraries and more, the template language takes a simpler approach, leveraging concepts from Java already for composition, typing etc.  While JSP tries to hide the complexity of Java via a myriad of tags, operators, attributes etc. the template language just lets you mix template strings with Java code.  You use Java operators for Java-like things.  Of course in general, you should try as hard as possible to keep your templates simple - to keep Java separate from your template code so others can read and modify it easily.  But when you do need to add properties, write a template macros, extend another template, etc. there's really no need to invent new syntax and structure when Java does everything you need in a simpler, more flexible way.
 
-Like most template languages, the template begins as content.  If your file is called "foo", it might live in the location: "foo.scxx" and defines the type foo.  The extension used depends on what format this template is producing and how it is processed.  The scxml extension lets you generate XML files at build time.
+## Template Language Types
 
 The schtml file uses the HTMLLanguage which extends the TemplateLanguage grammar.  It supports all of the features of the Template language but lets you generate and update HTML on the client, server or both.
 
 The sct file works just like an sc file except that it starts out as a template.  Use that for any sc file which requires some long strings which you do not want to escape.  If you want to separate those strings from the code entirely, you can put the sct file in a different layer.
 
-Adding new template formats is simply a few lines of StrataCode code in a layer definition file to add a new TemplateProcesor.  For each extension, you specify whether the template is interpreted or compiled, what extension is produced, what directory it goes in, and what build-pass this all occurs in.
+The scxml file generates an xml file typically at build time.  The system is designed to make it easy to parse specific types of XML files and produce read-write code models of those types so you can do awesome integrations with systems based on XML.
 
-To interpret a template, the parser returns a Template object.  You evaluate that template, providing an optional this object or other context, then interpret the Java code inside to produce the string.  
+## Template Operators
 
-When you compile a template, the code is transformed into a .java file and compiled.  In this case, you can provide a default extends class and any code templates associated with that class are used in the compilation.  So by extending the Servlet class, if you include the servlet.meta layer, your template automatically has request/response parameters added to the output method.  
-
-The template language uses the same basic operators as JSP but unlike JSP they cannot be mixed freely with Java.  They are only used to separate the main constructs: definitions, statements, and expressions.  This makes StrataCode templates equivalent to StrataCode class or object definitions that start out defining a content string.  With the &lt;% operator, you break into the context of code and with &gt; you return to the string.  This string gets added to a string builder in an output method:
+The template language uses the same basic operators as JSP but unlike JSP they cannot be mixed freely with Java.  They are only used to separate the main constructs: definitions, statements, and expressions.  StrataCode templates work like StrataCode definitions that start out defining a content string.  With the &lt;% operator, you break into the context of code and with %&gt; you return to the string.  This string gets added to a string builder in an output method:
 
 <%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "Hello.schtml", templateSnippets.helloTemplate) %>
 
@@ -131,7 +140,17 @@ You can imports types by placing this at the top of the file:
 
 <%= sc.lang.TemplateLanguage.INSTANCE.styleNoTypeErrors("doc/core", "formatter.schtml", templateSnippets.importTemplate) %>
 
-Essentially the template language is a very simple but powerful framework that lets you express dynamic designs simply even when the majority of the content is static.  Layering of templates provides even more flexibility.  For more examples of the template language, look at "doc" layer where StrataCode's documentation is defined.  The doc layer adds the "vdoc" extension.  This is a format which uses the StrataCode template language to generate the dynamic HTML document.  The syntax highlighting comes from utilities built with StrataCode's language engine.  
+## Adding New File Formats
+
+Adding a new file format that uses the template language requires only a few lines of code in a layer definition file.  You add and configure a new TemplateProcesor instance and register it for a given syntax, and optional path prefix.  For each extension, you specify whether the template is interpreted or compiled, what extension is produced, what directory it goes in, and what build-pass this all occurs in.
+
+To interpret a template at runtime from your code, use the parser to parse the template.  It returns a Template instance.  You can evaluate that template, providing an optional this object or other context, then interpret the Java code inside to produce the string.  
+
+When you compile a template, the code is transformed into a .java file and compiled.  
+
+## Examples
+
+For more examples of the template language, look at "doc/core" layer where StrataCode's documentation is defined, or the editor/js/core schtml and scss files.
 
 Also look at WEB-INF/web.scxml in the layers: servlet/webApp and wicket/lib.  This shows how you can layer dynamic generation of XML files, driven from annotations in Java code.
 

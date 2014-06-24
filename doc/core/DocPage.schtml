@@ -21,7 +21,7 @@
          <div extends="DocIndex" title="Data Binding" url="dataBinding.html"/>
          <div extends="DocIndex" title="Defining Layers" url="layerDefinition.html"/>
          <div extends="DocIndex" title="Web framework" url="webFramework.html"/>
-         <div extends="DocIndex" title="Syncronization" url="syncFramework.html"/>
+         <div extends="DocIndex" title="Synchronization" url="syncFramework.html"/>
          <div extends="DocIndex" title="Android framework" url="gettingStartedAndroid.html"/>
          <div extends="DocIndex" title="Java Compatibility" url="javaCompat.html"/>
          <div extends="DocIndex" title="Build Runtime" url="runtime.html"/>

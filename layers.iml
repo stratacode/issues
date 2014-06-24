@@ -29,11 +29,17 @@
       <excludeFolder url="file://$MODULE_DIR$/catTest" />
       <excludeFolder url="file://$MODULE_DIR$/doc/cheatSheet" />
       <excludeFolder url="file://$MODULE_DIR$/doc/core/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/expertSystem/swingui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/expertSystem/swingui/dynbuild" />
       <excludeFolder url="file://$MODULE_DIR$/example/remoteMethod/main/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/simpleSync/main/build" />
       <excludeFolder url="file://$MODULE_DIR$/example/todo/clientOnly/build" />
       <excludeFolder url="file://$MODULE_DIR$/example/todo/clientServer/dynbuild" />
       <excludeFolder url="file://$MODULE_DIR$/example/todo/data/build" />
       <excludeFolder url="file://$MODULE_DIR$/example/todo/data/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/example/unitConverter/jsui/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/unitConverter/jsui/dynbuild" />
+      <excludeFolder url="file://$MODULE_DIR$/example/unitConverter/model/build" />
       <excludeFolder url="file://$MODULE_DIR$/expertSystem/jsui/dynbuild" />
       <excludeFolder url="file://$MODULE_DIR$/expertSystem/main/build" />
       <excludeFolder url="file://$MODULE_DIR$/expertSystem/main/dynbuild" />
