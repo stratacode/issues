@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="Defining New Layers"/>
 
 <body>
 
@@ -9,9 +10,7 @@
 
 ## Layer Definition Files
 
-Layers are defined by simple directories that live in a directory or sub-directory of your layer path.  
-
-The layer definition file is an ordinary StrataCode file named with the directory name.  E.g. foo/foo.sc, foo/bar/bar.sc
+You define a new layer by creating a layer definition file in a source directory in your layer path.  The layer definition file is an ordinary StrataCode file named with the directory name.  E.g. foo/foo.sc, foo/bar/bar.sc
 
 The layer definition file contains a modify definition where the type is the layer definition file's path in the layer path.
 
@@ -35,7 +34,7 @@ or
  
     sc foo/bar
 
-That list maps to layers in your layerPath.  By default the layer path includes the current directory.
+That list maps to layers in your layerPath.  By default the layer path includes the current directory or you can set it via the -lp option.
 
 As a convenience, you can also run a specific layer when you are in that layer's directory using . as the name of the layer.
 

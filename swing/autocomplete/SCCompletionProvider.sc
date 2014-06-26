@@ -3,11 +3,13 @@ import org.fife.ui.autocomplete.*;
 import java.util.Collections;
 import sc.lang.EditorContext;
 import sc.lang.CommandSCLanguage;
+import sc.lang.java.JavaModel;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.BadLocationException;
 
 public class SCCompletionProvider extends CompletionProviderBase {
    public EditorContext ctx;
+   public JavaModel fileModel;
 
    public enum CompletionTypes {
       ExistingLayer,
@@ -27,6 +29,8 @@ public class SCCompletionProvider extends CompletionProviderBase {
       for (int i = input.length()-1; i >= 0; i--) {
          switch (input.charAt(i)) {
             case ';':
+            case ' ':
+            case ':':
             case '}':
             case '{':
             case '=':
@@ -48,15 +52,13 @@ public class SCCompletionProvider extends CompletionProviderBase {
                   lastText = text;
                }
                else if (completionType == CompletionTypes.EntireFile) {
-                  // TODO: this is probably the most robust way - parse from the beginning of the file in "parse incremental" mode, then take the fragment which results
-                  // and try to complete it.  Theoretically that would give us the complete context needed to complete the command.  But the partial values stuff does
-                  // not populate the enclosing type property of some productions so that would need to be fixed (it seems to do one?)  anyway, for now we back up till the
-                  // next statement and use the general completor.
-                  //relPos = ctx.complete(text, 0, candidates, CommandSCLanguage.getCommandSCLanguage().compilationUnit);
+                  // We are passing in two versions of the text to complete.  One which is from the beginning of the file
+                  // and the other which is just the last token.  We can use the first approach either to find the specific
+                  // AST node which failed to parse, then complete that, or we can use that approach just to find the context
+                  // of the current type and then use that to complete the text.
                   lastText = text;
                   text = getStatementCompleteStart(text);
-                  relPos = ctx.complete(text, 0, candidates);
-                  relPos += lastText.length() - text.length(); // Compensate for text we chopped off
+                  relPos = ctx.complete(text, 0, candidates, lastText, fileModel);
                }
                else if (completionType == CompletionTypes.ApplicationType) {
                   relPos = ctx.completeType(text, candidates);

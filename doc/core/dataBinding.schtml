@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="StrataCode Data Binding"/>
 
 <body>
 
@@ -25,17 +26,19 @@ Three types of bindings:
 
 ## Excel-like formula for Java
 
-Think of your application having an Excel-like sheet of properties, and expressions but instead of a grid, it's a tree of types and their properties.  You can override any cell/property either by value or formula.  The formula include any Java expression.  You can use data binding with any existing Java library, with methods or static functions.  
+Think of your application having an Excel-like sheet of properties, and expressions but instead of a grid, it's a tree of types and their properties.  You can override any cell/property either by value or formula.  The formula include any Java expression.  You can use data binding with any existing Java library, with methods or static functions.  You can override any value or formula in a new layer.
 
 Several modern platforms implement some form of reactive, declarative programming commonly called data binding.  Data binding is a software pattern where you use expressions that are evaluated automatically when properties change.  These expressions can update other properties or invoke methods.  Instead of worrying about loops, if statements, etc. you can do more with these data binding rules with less code.  It's easier to change the expressions to control the logic of your program.  
 
-StrataCode's data binding system is based on over 20 years of experience with building large systems using data binding techniques.  To benefit the most from data binding, we've found that you can effectively expose a rich, easily configured layer of features and functionality in binding rules.  Use intermediate properties to break up complex rules.  Or trigger a method which performs step-by-step computation when properties change.  These techniques let you hide complex logic, keeping it separate from the declarative, configurable layer.  This layer becomes a skin of properties and simple data binding rules that sit on top of the application logic.  
+StrataCode's data binding system is based on over 20 years of experience with building large systems using data binding techniques.  To benefit the most from data binding, we've found that you can effectively expose a rich, easily configured layer of features and functionality in binding rules.  Use intermediate properties to break up complex rules.  Or trigger a method which performs step-by-step computation when properties change.  These techniques let you hide the more complex logic, keeping it separate from the declarative, configurable layer, but expose a very rich configurable set of properties and rules.  
 
-Many modern frameworks are migrating to "reactive" development models.  This is where code runs in response to events, at a finer-grained level than typical request/response designs.  StrataCode's data binding metaphor lets you leverage the reactive metaphor for all kinds of programs, from easy declarative UIs, including even client/server and persistence features.
+With StrataCode layers, technical users can collaborate in multiple ways with developers.  If they use the same layer, their changes affect only the lines of code they touch in the tool.  They might be editing changes in a new layer, where the developer has placed only the editable rules and values, or by recording changes in a transparent layer which records just their changes.  No longer do developers have to design in customizability up front or code it in later.  Instead, they can develop the cleanest, simplest code, knowing customization later will be an easy cut-and-paste.
 
 ## StrataCode Data Binding
 
 Here's how data binding works in StrataCode.  A data binding expressions can be any Java expression attached to a new special type of assignment operator: 
+
+<% ) %>
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>class MyClass {
@@ -43,6 +46,9 @@ Here's how data binding works in StrataCode.  A data binding expressions can be 
   int b = 3;
 }
 <% ) %>
+
+<%= MarkDownPage.markDown(%>
+
 Changes are propagated along the equals sign in the direction of the colon(:) in an assignment.  When you say := the left side updates when the right side is changed.  So in the example above, when b is changed, a is set to 2 times b.  
 
 There are two other data binding operators.  When you use =: the right side of the Java expressions is updated or evaluated when the left hand side changes.  When you use :=: the change goes both ways.  In this case, the expression must have an inverse expression which StrataCode can evaluate when the left hand side changes or an error is generated.
@@ -58,6 +64,8 @@ When a binding is performed on a method which has side-effects, i.e. it's return
 StrataCode supports data binding using Java expressions on a type's properties: typically fields or JavaBean style getX/setX methods. 
 
 ## Data Binding Simple Examples
+
+<% ) %>
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>Foo {
@@ -99,9 +107,13 @@ Methods and array operations are supported as well:
 }
 <% ) %>
 
+<%= MarkDownPage.markDown(%>
+
 For expressions which invoke a method, bi-directional bindings are supported only if the method declares a BindSettings annotation with the reverseMethod attribute set.  see the getting started for more details on that.
 
 But reverse-only binding expression to method calls are allowed.  In this case, the binding has nothing to do with defining the value of the property.  Instead the method is called when the property is changed.  So in this case, you can even pass the value of the property to the method asa parameter to implement a simple property change handler:
+
+<% ) %>
 
 <%= sc.lang.SCLanguage.INSTANCE.styleSnippetNoTypeErrors("sc.example.unitConverter.UnitConverter",
 %>// Calls the method changeHandler whenever d changes with the
@@ -120,6 +132,7 @@ Implement raised/lowered border swap based on the selected state of the JToggleB
 }
 <% ) %>
 
+<%= MarkDownPage.markDown(%>
 
 ## Removing or Replacing Bindings
 
@@ -142,6 +155,12 @@ Data binding rules run when properties change.  At the runtime level, there need
 2. If you mark a property with the @Bindable annotation, StrataCode will add the sendEvent call even if that property is not used in binding expressions.  You will need to do this if you use StrataCode to generate compiled libraries where users do not have the source.  
 
 3. You can send events manually in code to trigger events.  If you do, you should mark the property the annotation @Binding(manual=true) to tell StrataCode the property is bindable.  Otherwise, it will either add the binding logic again itself (for code it compiles) or give you a warning (for compiled code).
+
+## Performance and Scalability 
+
+To implement this pattern most effectively StrataCode uses code injection and compile-time validation of bindings to make the most powerful, bindable Java expressions available.  StrataCode detects which expressions cannot be made bindable and warns you at cmpile time.  You can control the warnings through easy annotations. It's easy to create bindable libraries of objects and methods to provide even more power in your dynamic relations including objects which trigger events to invalidate all methods on the instance, method pairs that implement complex bi-directional relationships.  When an expression is not bindable via event firing, you can mark bindings or objects to be refreshed - where the bindings are validated and only fired if their values have changed.  This is not as low-latency and scalable as event firing but a nice fallback to code injection.  In fact, many modern reactive frameworks only support this model and do hand waving at complex applications that use bindings (i.e. more than 10K bindings).   
+
+In StrataCode a data binding is simply an instance of an event listener created when that property is initialized.  It's registered with it's owning object so there's only one binding that defines the value for each property on the object.  The process of sending an event and firing a binding allocates no memory.
 
 ## Debugging Problems
 

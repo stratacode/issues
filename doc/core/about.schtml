@@ -30,17 +30,13 @@ Jeff has had help from many people.  Natalya Hung for advice on the syntax, help
 
 ### Project Status 
 
-There are still bugs that need fixing.  Names and concepts that need refining.  Features or errors I may have missed cause don't use certain language features.  I'm committed to making it an awesome platform so hopefully one day lots of people want to use it.
+There are still a couple of high priority bugs that need fixing for the project to reach "preview" maturity.   Even after that we will need your help refining concepts and names of things.  
 
-StrataCode is designed to be robust so people can build big software ecosystems with it so have been refining the features and performance.  The JS/HTML frameworks will be alpha quality at first release, the language and core framework are close to beta (pending testing).  Java build/run close to releaseable (pending testing). 
-
-Here are the known issues:
+[Here](https://github.com/stratacode/layers/issues?state=open) are the open bugs.
 
 #### Performance
 
-The compile times are fairly good - about 25 seconds to compile the program editor and a small sample including all of the framework layers, for both server and client runtimes.  It can be made even faster with incremental changes. 
-
-The incremental compile is still buggy and can be made even faster.  When you change leaf classes, the incremental times are pretty fast.  When you change classes which are used by lots of other classes, it right now compiles all of those dependent classes but probably does not have to in most cases.  
+The compile times are fairly good - about 25 seconds to compile the program editor and a small sample including all of the framework layers, for both server and client runtimes from scratch.  It is faster with incremental recompilation but that is still buggy.   When you change leaf classes, the incremental times are pretty fast.  When you change classes which are used by lots of other classes, it right now compiles all of those dependent classes but probably does not have to in most cases.  
 
 Builds are down in layers, so you can isolate dependencies and thus isolate compile times as you add more code.  This is not fully exploited in the build system but should help improve both the speed and reliability of the incremental builds.
 
@@ -66,7 +62,7 @@ When you use StrataCode with .java files, it passes the code through unchanged. 
 
 ### Jeff's Pledge and Software Philosophy
 
-If you find a bug I'll do my best to offer a workaround as soon as possible.  I'll fix it as soon as I can.  If you give me your source code and test suite, I'll make sure your tests run on each new release.  I'll maintain it for as long as I am able.  
+If you find a bug I'll do my best to offer a workaround as soon as possible and fix it as soon as I can.  If you give me access to a test suite, I'll make sure those tests run on each new release. 
 
 I believe in open source for platform, framework and horizontal application features.  The stuff everyone needs to write and run a scalable business application.  This stuff is mission critical and so should not be monopolized for cost and reliability reasons.  Support, services and more niche features with smaller audiences usually are priced to pay for development and to create substainable viable product ecosystems.  They might or might not be open source based on how the developers choose to monetize their IP most efficiently.  This is the stuff you want to pay for so it's customized for your needs.  If it's not open source and you use this code, you need a stronger trust relationship with your suppliers.  
 

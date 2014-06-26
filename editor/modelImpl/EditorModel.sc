@@ -243,8 +243,8 @@ EditorModel {
          currentTypeIsLayer = false;
       }
 
-      //if (currentCtxType != currentType)
-      //   currentCtxType = currentType;
+      if (currentCtxType != currentType)
+         currentCtxType = currentType;
 
       updateCurrentJavaModel();
 
@@ -556,6 +556,11 @@ EditorModel {
 
    void changeCurrentType(Object type) {
       super.changeCurrentType(type);
+
+      // Push this back if the change is coming from the editor model side
+      if (currentCtxType != type)
+         currentCtxType = type;
+
       updateCurrentJavaModel();
    }
 

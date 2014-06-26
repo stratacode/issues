@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="StrataCode Build and Runtime"/>
 
 <body>
 
@@ -9,22 +10,19 @@
 
 ## StrataCode Build and Runtime Overview
 
-The sc command generates any changed code, compiles changed java, and runs main methods and starts processes, or opens urls pulled in by dependent layers.  It's goal is to be an easy way to run a specific configuration efficiently.  It maintains an index of all generated code so it can validate itself and clean up after itself.  You point it at the layer or set of layers you want to run.  Each layer includes its dependent layers automatically.  If you run "sc a b c" it applies the layers in that order - so c is the most specific layer, the one that will be built unless it is dynamic.
+The sc command generates any changed code, compiles changed java, and runs main methods and starts processes, or opens urls pulled in by dependent layers.  It's goal is to be an easy way to validate and run any configuration of layers efficiently.  It maintains an index of all generated code so it can validate itself and clean up after itself from run to run.  
 
-If your layers are stored under different root directories, set the layerPath to include each root.  When searching for a layer directory, the directories in the layer path are searched in order like Java's classpath.  You can then use layer names relative to the directory in the layer path.  Layer directories today may not be accessed in a zip or jar format.
+You provide the sc command the layer or set of layers you want to run.  Each layer includes its dependent layers automatically.  If you run "sc a b c" it applies the layers in that order - so c is the last layer.  This is called "the build layer".  The results are by default stored in the last layer's build or dynbuild directories depending on whether the last layer is compiled or dynamic. 
+
+If your layers are stored under different root directories, set the layerPath to include each root using the -lp option.  When searching for a layer directory, the directories in the layer path are searched in order like Java's classpath.  You can then use layer names relative to the directory in the layer path.  
+
+The layer path cannot contain zip or jar files currently.  They must be expanded directories.
 
 ## Dynamic and Compiled Layers
 
-A layer becomes dynamic when you prefix the layer's name with the dynamic attribute in its definition file.  A layer which extends another dynamic layer either directly or indirectly is also by definition dynamic.  As your system system evolves, you typically make layers dynamic during development, then remove the dynamic keyword and compile them into the core for deployment.  
+A layer becomes dynamic when you prefix the layer's name with the dynamic attribute in its definition file or use the -dyn option before the layer name on the command line.  A layer which extends another dynamic layer either directly or indirectly is also by definition dynamic.  As your system system evolves, you typically make layers dynamic during development, then remove the dynamic keyword and compile them into the core for deployment.  
 
-When you start StrataCode, you may specify that one or more layers be made dynamic even if its definition is missing the dynamic keyword.  This helps you test or temporarily run the system with one or more layers as dynamic.  There are several ways to do this from the command line option:
-
-* -dyn: any layers specified after the argument (and those they extend) are forced to be dynamic even when missing the dynanimc keyword in their layer definition file (unless they have compiledOnly=true in their definition).  Any non-loaded layers extended by a -dyn layer are made dynamic when they are loaded.  So for example, to run the editor/swing/main layer as a compiled application but to run the unitConverter sample entirely dynamic you can specify:  
-
-    sc editor/swing/main -dyn example/unitConverter/swingui
-
-* -dynall: any layers specified on the command line and any layers they bring in are forced to be dynamic, unless those layers have Layer.compiledOnly set to true.  
-* -dynone layer1, layer2    Only layer1 is made dynamic.  layer2 will be compiled.
+Using the -dyn option helps you temporarily run the system with one or more layers as dynamic.  
 
 ## Running StrataCode Applications With the Interpreter
 
@@ -46,18 +44,22 @@ If you are customizing a StrataCode framework, you might be interested in the go
 
 The sc process goes through the following initialization phases:
 
-* Finds all layer definition files, expands them and computes the list of initial system layers
-* Sorts the list in dependency order - detects and flags cycles as errors
-* Parses and initializes the list of layers by interpreting the .sc definition files
-* Builds the set of top-level folders to compile
-* Reads the process.dep file in the build dir.  If not found, gets list of all compileable files
-* Any files that have changed since the last build are re-parsed and the process.dep is updated.
-* If any Java extensions are required, the new Java file is generated into the buildSrc directory.
+* Finds all layer definition files, and the extended layers computes the list of initial system layers
+* Sorts the list in dependency order - detects and flags cycles as errors.  When there are no dependencies between two layers, compiled layers are put in front of dynamic layers, and framework layers are put ahead of application layers.
+* Constructs each layer object and call the initialize method in each Layer. 
+* Computes the runtimes required for this list of layers (e.g. java only, js only, or java and js)
+* Finds the first build layer in the stack for the first runtime and starts all layers before the build layer.
+* When starting a layer the layer first adds any repository packages it depends on.  Those packages are installed if necessary via git, http, or maven, gradle, etc.
+* The layer then updates its library classpath to include pre-compiled jars it depends on.  The library classpath is added to the system immediately after the layer is started.
+* Once all layers prior to the build layer are started, the build layer computes the set of top-level directories to prepare (if necessary as in android) and then process.  The pre-process phase is used to generate any .java files that need to exist for the main Java files to be parsed and compiled (e.g. android's resource files).
+* For each required phase the .dep file for that phase is used to direct the incremental compile.  This file contains a cache of all source files, the generated files made from those source files, and any dependencies detected in the code on other types.  If this file is not found, the global BuildInfo is not found, or the set of layers used to do the last build has changed, a full build is performed.
+* Any files that have changed since the last build are re-parsed and the .dep files are updated with new dependencies.
+* For StrataCode files or Java files that are pre-processed, the new Java file is generated into the buildSrc directory - (e.g. buildLayer/build/java or buildLayer/build/js)
 * All changed files are compiled by javac or the internal java compiler.
-* At this point, sc either exits or starts the interpreter or a Main.  If it starts, it flushes its type cache and adds the build directory to its visible classpath.  Any dependent classes used during compilation have been loaded but not yet resolved.  At this point, Java will just resolve those classes normally as they have been used by the system.
-* If you run the interpreter, StrataCode will load the source definitions for any types as necessary to give you the richest description of the application.  This lets it for example detect property initialization cycles and things like that, information that is harder to get from the .class representation.
-
-Note: for some frameworks like android require a "prepare" phase.  This is a pass over the source code performed before the "process" phase to deal with any files which may generate Java code needed for the normal process phase.  If so, the prepare phase runs before the process phase for any file processors registered.
+* Any processing specific to the current runtime is performed - e.g. generating Javascript files from the Java
+* This process is repeated for each build layer in each runtime until the final build layer in each runtime reached.  Once each buildLayer is compiled, it's buildDir is added to the system classpath in front of any previous build layers.  SC only loads the compiled version for a class once it's determined that class will no longer be modified in a subsequent build layer.  That way, it is ensured it always has the right compiled version of each class.
+* If any errors have occurred sc exits (or optionally prompts to retry the build to speed up the fix-recompile process)
+* Upon a successful build, sc starts the interpreter and any Main methods and postBuild commands that were registered in the framework layers.  If you use the -c option, it compiles but does not run your application.  It's easy to have StrataCode generate a shell script and the requisite jar file to run and deploy your app as a standard Java application.
 
 ## Options
 
@@ -67,7 +69,11 @@ The -cp option sets the classpath StrataCode uses to find binary descriptions of
 
 The -lp option specifies the layer path.
 
+The -v family of options: -vs, -vsa, -vb, -vba, -vh, -vha turn on verbose for sync, data binding, and html respectively.
+
 By default, sc runs all main classes defined in framework layers, after compiling by loading the generated classes into the same VM.  The -rs option execs the scripts generated by the main commands.  The -r pattern option lets you only run main methods matching a specific pattern.  Each of the -r options consumes the remaining options and provides them to the executed command.  If you use -nr it suppresses running of main.
+
+If you use the -nw option, it suppresses the opening of the default browser window for a Javascript application.
 
 The -t option is like -r but runs tests.  You can specify an individual class name, or a pattern matching all test classes (e.g. -t .* to run all tests or just use -ta)
 
@@ -153,7 +159,15 @@ Two metadata properties stored in the layer for use by the editor.  Lets you tag
 
 ### Adding Code in a Layer
 
-The layer definition file is interpreted so you do not want to do a ton of initialization code in there.  It is a good place though to register framework hooks that are only needed when that layer is included.  For an example look at layers/doc/doc.sc where the "vdoc" extension is added as a new TemplateProcessor.  This TemplateProcessor is an implementation of the TemplateLnguage but with additional semantics.  During code generation time, it translates the "vdoc" suffix into html.  It supports a "markdown" function which you can use to process markdown format inside your file.
+The layer definition file is interpreted so you do not want to do a ton of initialization code in there.  It is a good place though to register framework hooks that are only needed when that layer is included. 
+
+There are three phases for the layer's initialization:
+
+* the instance of sc.layer.Layer is created and all properties are initialized
+* the initialize method on all layers is called
+* the start method on all layers is called
+
+All layers are initialized up front in the order they exist in the layer stack.  Use your initialize method to add any new runtimes required for this layer or add runtime dependencies.  You also can use the initialize method to modify properties set by a downstream layer used in the start method.  Layers can be used to define and refine build state in an organized way so downstream layers can modify state set up by upstream layers.  That build state can be used in the start methods, before the classpath for the layer is defined.  In practice, this setup makes for a flexible build system that requires minimum configuration copying for each layer.
 
 <% ) %>
 

@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="StrataCode Parselets Parsing Framework"/>
 
 <body>
 
@@ -7,54 +8,87 @@
 
 <%= MarkDownPage.markDown(%>
 
-## StrataCode Parsing, Modelling and Code Generation Framework
+## StrataCode Parsing, Modelling and Code Generation/Formatting Framework
 
-The StrataCode language framework has been designed from the ground up to be declarative and thus easily toolable.  The features of parsing, generation of rich component models, transformation of those models from one language variant to the other, and re-generation of the code in the new language is all driven by a single declarative description.
+The StrataCode language framework, called "Parselets" has been engineered from the ground up to make it faster and easier to do operations which require parsing code, modifying the resulting model, and reformatting or regenerating the code again.  This makes it efficient for building code-preprocessors, structured code editing features like those found in IDEs, and language converters (e.g. Java to Javascript). 
+
+With parselets, your grammars are written in Java using a declarative syntax.  This makes reusing grammars very flexible for extending one grammar from another, embedding one grammar inside of another, modifying a grammar for a different purpose etc.  Unlike many parsing solutions out there, there's no generated code for the parsing phase.  This makes it easy to customize your parser for special purposes.  This makes it a much more flexible parser that can parse grammars with lots of context.
+
+The features of parsing, building rich model of the code (ASTs), transformation of these code models from one language variant to the other, and re-generation (or formatting) of the code in the new language easier to implement with less code.  It's also perhaps the only code parsing engine which let's you make incremental changes to the code model, and have those changes incrementally update the resulting code.
+
+Here's an image of the StrataCode architecture showing parselets and the languages that use it.  
 
 <br><img src="images/arch.jpg" width="640" style="border: solid 1px #0">
 
-At the core is a recursive descent parser.  It takes additional class and slot mapping information which it uses to construct a model from the parsed output: the semantic model of the language.  These objects are high level types like "ClassDeclaration", "IdentifierExpression" and though somewhat constrained by the parser are relatively natural in how they express the underlying language.  The grammar to model mapping becomes a guide to understanding the model. 
+Parselets are completely independent of the layers, data binding, dynamic/compiled runtime but have been heavily tested through the implementation of this features:
 
-The framework maintains the mapping from the parse-tree - low level tree-based string representation and the semantic model tree.  As you change properties in the model, the parse-node tree is updated to reflect the changes.  These changes enforce the rules of the grammar - if the changes make an invalid language model, you get an error that helps you trace down the model probelms.  
+Parselets are built using a type of recursive descent grammar, known as a "parsing expression grammar" or PEG.  In addition to the PEG grammar used for parsing, you can provide class and slot mappings for matched entities which are to be retained in the model.  Parselets use those mappings to construct the code model from the parsed output: the semantic model of the language.  These objects are high level types like "ClassDeclaration", "IdentifierExpression" and though somewhat constrained by the parser are relatively natural in how these language properties are expressed in the underlying language.  During an initialization phase, you can compute other properties from these language properties to provide a more natural API.  This is done for expressions for example which are parsed into a linear list, then sorted into a tree after parsing.
 
-As you build your grammar, care must be taken to preserve enough information in the model for efficient bi-directional transformations.  If your grammar does not generate a model which preserves enough information, it can still be parsed but cannot be re-generated.  
+The grammar to model mapping becomes a guide to understanding the model, a validator to validate the model, and a bi-directional mapping to the code all-in-one. 
 
-Spacing and other elements which are not included in the semantic model can be reinserted algorithmically using customized parse node classes.  After we've generated the complete parse-tree, the entire tree is formated.  At this point the smart parse nodes can look at their context and expand themselves to insert or remove space or newlines as appropriate.  With this model is makes it easy to either include or exclude the comments in the model by altering the grammar in a central location.
+Parselets maintains two main data structures which are interlinked in a parallel way: the parse-node tree and the semantic model tree.  The parse-tree represents mapping from text regions in the code to matched entities in the grammar.  The semantic model tree is the AST - the model generated from the grammar.
 
-Though recursive descent parsers are not the most efficient, the StrataCode parser optimizes search where possible using indexed choice nodes.  This makes the system reasonably efficient even with its flexibility.
+The mapping between the two is maintained automatically, even as the semantic model is changed.  For example, as you change properties in the model, the parse-node tree is updated to reflect the changes.  These changes enforce the rules of the grammar - if the changes make an invalid language model, you get an error that helps you trace down the model problems.
 
-The StrataCode parser framework also has a "partial" mode you can enable.  In this case, you can get it to return model fragments and use them for code completion during the editing process.
+As you define the model mappings to your grammar, care must be taken to preserve enough information in the model for bi-directional transformations.  If your grammar does not generate a model which preserves enough information, it can still be parsed but cannot be re-formatted using the same grammar.
 
-The StrataCode parser framework differs from other parsing frameworks in several key ways:
+Spacing and other elements which are not included in the code model still can be formatted as code algorithmically.  These parselets return special parse nodes during the 'generate' phase to re-generate the code.  When the parse node needs to be turned into a string, it is formatted.  At this time, the context is used to choose the right indentation, spacing, etc. 
 
-* A recursive descent algorithm is used rather than a state table with lookahead approach.  Both the lexical and grammar aspects of the language are defined using the same set of rules.  Though this may mean the parsing is a little slower than using a state table, it makes the definition itself simpler and more flexible.  The state table approach requires an unambiguous context-free definition of the grammar and requires a global regeneration of the state table whenever a new language element is added.  Shift-reduce conflicts are difficult to eliminate.  Lexical scanning is very much context-dependent and so requires a separate language and phase of the parsing.  With recursive descent, the grammar is much simpler.   You are just testing rules against the current input stream in a specific order.  This means you can extend grammars by adding additional rules simply.
+## Parsing Efficiency
 
-* Most parsing frameworks need a code-generation phase where a special parsing language is converted into a generated parser implementation.  During this phase, a state table and code to use that state table is generated.  The StrataCode parsing framework does not do any code-generation as an explicit phase.  You define Java objects and those objects drive the parsing and formatting processes.  You can extend the parselets, parse nodes, using Java as needed.  You don't need to learn a new language to read the grammar since it is defined in Java.  This also makes extending and modifying the grammar easy using normal Java concepts.
+Though PEG parsers are not as efficient as LL(*) or LR grammars, the StrataCode parser optimizes search where possible using indexed choices nodes.  We've demonstrated that you can implement very efficient grammars that parse and generate lots of code quickly.
 
-* Most parsing frameworks stop at the parsing phase itself.  They provide you hooks to insert your own code when a node is matched.  From these hooks you typically build the abstract syntax tree or semantic object graph for your language.  The StrataCode parsing framework builds the semantic-model for you using additional information you add to the grammar.  The parse-tree is linked to the semantic model and vice versa.  This means that at any given time, you can get back the original language string from any piece of the semantic model.  It also gives you a declarative way to build the abstract syntax tree automatically.  The StrataCode grammar is clean and easy to read which makes it easy to maintain and extend.  
+## Parsing Invalid Code
 
-For the semantic model annotations, you associate a Java class with a particular grammar node (parselet).  Features of that parselet are assigned as properties of that class.  Most parselets do not define semantic value nodes.  Primitive parselets use their string value as the semantic value - for example, an identifier.  Others omit their value - for example a comment or white space.  Others propagate a child value up as their value.  They may set additional properties on that object.  Others may set properties on a parent node.  For these, the parent marks that slot as including the properties of the child, the child defines the property mapping of its slots.  You do have to provide Java bean classes which the grammar constructs and populates.  Type checking is performed to be sure the model of your Java classes matches the rules in the grammar which eliminates most typos during the validation process. 
+Parselets has very good error reporting for syntax errors.  It also has support for generating partial models when you have invalid code.  You can assemble model fragments and use them to do partial syntax highlighting and context for doing code completion.  
 
-* Because of the above design, the StrataCode parsing framework can also generate a valid language representation from an abstract syntax tree you created from code.  The original grammar you specify contains additional information to go in both directions.  This makes it useful for any type of human readable file format.  For example, StrataCode stores its dependencies in the "src.dep" files.  This format uses a simple custom language.  StrataCode parses that file, turns it into a model, modifies the model during compilation and writes the modified model back to the file.  The file itself is readable to make it easy to understand dependencies in your code, even when they cut across layers.
+## PEG Parsers
 
-## StrataCode Parselets
+Like other PEG parsers, both the lexical and grammar aspects of the language are defined using the same set of rules.  The state table approach requires an unambiguous context-free definition of the grammar and requires a global regeneration of the state table whenever a new language element is added.  Shift-reduce conflicts are difficult to eliminate.  Lexical scanning is very much context-dependent and so requires a separate language and phase of the parsing.  With recursive descent, the grammar is much simpler and i'ts easy to customize the parsing by writing a little code for the "match" and "accept" and "format" methods for any given parselet.   In parsing, You are just testing rules against the current input stream in a specific order.  In formatting, you are turning the data structure back into code using the same rules.  All of the operations can be overriden just by subclassing the parselet.  You can extend grammars by adding additional rules simply.  Overall we've found that you can develop new code processing algorithms more quickly.
 
-Each node in the StrataCode grammar parses some construct, contains the rules to map that construct to a model, and has the rules for turning that model back into the original language representation.  Because of this multi-purpose role, they are called "parselets".  Each language defines a graph of parselets which implement the language.  There is usually a start parselet defined on the language or a language can expose certain "public" parselets so you can parse subsets of the language.  
+The downside of PEG grammars is that they can be slow for some grammars.  This occurs when you face difficult problems which require trying to parse large sections over again in different ways like parsing a file with lots of mismatching open and and close braces.  A real world example is in HTML parser, to parse the tag tree with a mix of tags which might or might not have a close tag.  There are a few ways these problems can be handled - either through caching of matched tags to simplify the search for the end tag, or doing a first pass to find the tags, and another pass to parse the hierarchy.
 
-Some example uses of parselets:
+## Annotating Grammars to Build the Semantic Model
 
-* The SCLanguage class, used to implement the StrataCode language extends the JavaLanguage and makes only a few changes to the grammar to enable the StrataCode features.
-* The TemplateLanguage further extends the SCLanguage to add the template constructs.  It also changes the start parselet used when parsing the template file.
-* The documentation parses code snippets using the "classBodyDeclarations" parselet to get proper syntax coloring.  
-* The code templates used during compilation are evaluated using the TemplateLanguage, converted into Strings, then re-parsed using the StrataCode.  
-* When the StrataCode transformation engine is running, for small changes it modifies the model objects directly without using any source template.
-* The CommandLineLanguage used in the command interpreter extends the SCLanguage.  It adds new grammar definitions to recognize statement fragments.
+Once your parser successfully parses a file, you can add annotations to that grammar so that it automatically generates the AST.
 
-## Recursive Descent Parser
+For these semantic model annotations, you associate a Java class with a particular grammar node (parselet).  When the node matches an instance of that class is returned as it's semantic value.  Features of that parselet, the values of the matched sub parselets, are assigned as properties of that class.  
 
-The recursive descent algorthm is based on matching a given input string with a parsing rule.  The rule can either accept or reject the input string by matching against lower-level rules or against the input string itself.  If it accepts the string, it also produces a semantic result. 
+Only some parselets define specific Java classes which they produce.
 
-The StrataCode grammar is based on just a few simple primitive parselets:
+Some simple parselets just return their string value as the semantic value.  Others simple parselets omit their value - for example a comment or white space.  
+
+A nested parselet, one built out of sub-parselets, can designate a specfiic child's value up as it's own.  It may set add properties on that returned value before returning it.  
+
+Child parselets can indicate in their annotations that they set properties on a yet-to-be-produced parent node.  For these, the parent must marks the child's slot as including the properties of the child (the '*' symbol).  The child parselet omits the class in it's description.  It sets properties normally.  
+
+Type checking of the AST objects is done using the JavaBean pattern.  You can use fields or getX and setX methods.
+
+## Formatting the Semantic Model as Code
+
+Using those same annotations, the StrataCode parsing framework takes your language model and turns it back into code as long as it has enough information to do so.  This makes it easy to do any type of code read, modify, write operation.
+
+In general, this has similar performance characteristics to the parsing.  The model classes are used to choose the right slot going in the opposite direction this time.  Each parselet is required to first determine if it matches the semantic model, and if so it generates the parse nodes required to match that model.  It does that by walking down the tree.  In many cases, this is a quick test because the Java class does not match.  Some required value that should be there isn't etc.  
+
+This algorithm supports incremental updates to the parse-node tree as the model changes using two algorithms.  You can update the parse-node tree in real time, as the properties are changed, or invalidate parse nodes as the model is changed, then re-validate the parse-node tree at a later time.  This latter algorithm can be faster when you are making more than one change to the same code.
+
+One the parse-tree is generated, it is formatted.  It's as this stage which any algorithmically inserted parse-nodes must be turned into a text region.  This is used for indentation, white-space, etc.
+
+## Organizing StrataCode Parselets
+
+Parselets are grouped together and maintained in a subclass of the abstract class Language.  This base class groups the parselets into a name space that makes it easy to find and debug parselets.  All parselets must be assigned to a field in the Language.  The field names are used as the default names for the parselets. 
+
+When one Language class extends another one, it gets its own copy of all of the parent language's parselets.  But because the field names keep the correspondence between the two languages, we can more easily convert one language to another using common base languages to maintain the common names of constrcts that need converting.
+
+Each language defines a graph of parselets which implement the language.  There is usually a start parselet defined on the language or a language can expose certain "public" parselets so you can parse subsets of the language.  
+
+Because we use Java's field initialization semantics, when you have cycles in the graph of parselets (which is common), you must define a parent parselet before you set it's child nodes in some cases to break these initialization cycles.  None of the parselets are initialized until the language itself is initialized so it's safe to modify parselets during the Language class initialization.
+
+## Parser Algorithm
+
+Each parselet can either accept or reject the input string by matching against.  If it accepts the string, it also produces a semantic result.  Nested parselets match child parselets to see if they match.
+
+The StrataCode grammar is based on just a few simple core parselet base-classes that do the heavy lifting of both parsing and code formatting:
 
 * a symbol which matches a single character or consecutive sequence of characters
 * a symbol choice which matches one of a set of characters or sequences of characters
@@ -62,7 +96,7 @@ The StrataCode grammar is based on just a few simple primitive parselets:
 * an ordered choice which takes a list of other language elements and tries to match them in a 
 * an indexed choice - a more efficient way to implement a choice where a prefix string unambiguously selects a potential match.  If there is no indexed match, an ordered choice of parselets can be used as a fallback.
 
-Each parselet provides an "accept" hook which you override to reject the string parsed by that
+Each parselet provides an "accept" method which you override to reject the string parsed by that
 framework.  This provides an easy way to customize the matching logic using Java code.
 
 You can set various flags on each parselet to customize how that parselets matches its input text:

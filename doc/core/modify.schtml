@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="Modifying StrataCode Types"/>
 
 <body>
 
@@ -11,7 +12,11 @@
 
 One of the most subtle and important features of StrataCode is for one layer to modify the types in a layer it extends.  
 
-You can override property values, so when that object is accessed or that class created, it's starting value is changed.  You can override a method and use super to call the original layer's method.  A layer can replace the class entirely, replace a field definition, changing it's type and initialier, or it can modify the extends or implements statements of the superclass.  It is only safe to redefine a class where the new class has a superset of the contract from the base layer - i.e. fields and methods which match the parent methods.  Layers which preserve the contract maintain compatibility with subsequent layers.  StrataCode does not currently enforce the ompatibility contract.
+The rules for modifying a type work just like the rules for overriding a type in a base class. 
+
+You can override property values and methods, and use the super operator to refer to the previous implementation.  You can add new fields, new methods or property assignments.  A layer can replace the class entirely, replace a field definition, changing it's type and initialier, or it can modify the extends or implements statements of the superclass.  
+
+It is only safe to redefine a class where the new class has a superset of the contract from the base layer - i.e. fields and methods which match the parent methods.  Layers which preserve the contract maintain compatibility with subsequent layers.
 
 To modify a type, add a file with the same name in a layer which extends that layer.  Make sure the full package name and file name of your file match that of the downstream layer or you get an error.  Remember the full type name of any file in StrataCode is the combination of the layer's package prefix along with the file name.
 

@@ -44,11 +44,10 @@ This works but requires that you are only building and debugging one layer at a 
 
 With any of these setups, you run apps with:
 
-mainClass:  sc.layer.LayeredSystem
-Working directory:  <your-path>/layers   - points to the layers repo in GIT, assumes you add your layers there.
-Program parameters:  -a -v editor/swing/main  
-
-Use the -a option now cause incremental builds are broken right now.   The -v gives verbose info that's helpful when you're debugging.  
+* mainClass:  sc.layer.LayeredSystem
+* Working directory:  <your-path>   - point it to the layers directory, i.e. the one you checked out from GIT or installed when you ran the sc command.
+* Program parameters: -a -v editor/swing/main  
+* Also use -vs, -vsa, -vh, vha, -vb for debugging sync, html, and data binding events globally.  These correspond roughly to the trace sync, trace bindings, and trace html options in the editor.
 
 <% ) %>
 
