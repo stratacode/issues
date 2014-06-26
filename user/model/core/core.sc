@@ -1,3 +1,6 @@
-public user.model.core {
+package sc.user;
 
+public user.model.core extends util, js.schtml {
+
+    
 }
