@@ -1691,6 +1691,11 @@ js_Page_c.refresh = function() {
    // Do this right before we refresh.  That delays them till after the script code in the page 
    // has been loaded so all of the dependencies are satisfied.  
    sc_runRunLaterMethods();
+   // TODO: should we be refreshing only the body tag, not the head and HTML?
+   /*
+   if (this.body != null)
+      this.body.refresh();
+   else */
    js_HTMLElement_c.refresh.call(this);
    js_Element_c.globalRefreshScheduled = false;
 }
@@ -1928,13 +1933,10 @@ function errorCountChanged() {
 }
 
 function js_Window() {
+   js_Window_c.windowWrapper = this; // avoid recursive infinite loop
    this.document = document;
    this.location = window.location;
    this.documentTag = new js_Document(document);
-   if (window.sc_errorCount != undefined)
-      errorCountChanged();
-   else
-      window.sc_errorCount = 0;
    window.sc_errorCountListener = errorCountChanged;
 }
 
@@ -1943,8 +1945,12 @@ js_Window_c = sc_newClass("js_Window", js_Window, null, null);
 js_Window_c.getWindow = function() {
    if (js_Window_c.windowWrapper === undefined) {
       js_Window_c.windowWrapper = new js_Window();
+      if (window.sc_errorCount != undefined)
+         errorCountChanged();
+      else
+         window.sc_errorCount = 0;
    }
-   return js_Window_c.windowWrapper;;
+   return js_Window_c.windowWrapper;
 }
 
 js_Window_c.getInnerWidth = function() {

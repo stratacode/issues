@@ -85,7 +85,7 @@
          }
       %>
 
-      <img visible=":= icon != null && type != null" src='= icon == null ? "" : icon.path' alt='= icon == null ? "" : icon.desc'/><img visible=":= clientType != null && !clientType.existsInJSRuntime" src="/images/serverIcon.png" style="position: relative; left: -2px;"/>  <%= (type == null ? "null-type" : clientType.declarationType.name) %> <span class="classLabel"><%= type == null ? "" : clientType.typeName %> </span>
+      <img visible=":= icon != null && type != null" src='= icon == null ? "" : icon.path' alt='= icon == null ? "" : icon.desc'/><img visible=":= clientType != null && !clientType.existsInJSRuntime" src="/images/serverIcon.png" style="position: relative; left: -2px;"/>  <%= (clientType == null ? "null-type" : clientType.declarationType.name) %> <span class="classLabel"><%= clientType == null ? "" : clientType.typeName %> </span>
 
       <select id="selectInstance" class="selectInstance" optionDataSource=":= instancesOfType" selectedIndex="=: updateWrapper(selectedValue)" selectedIndex=":= getInstSelectedIndex(instance)">
          <option><%= optionData %></option>
