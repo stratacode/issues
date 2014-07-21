@@ -351,7 +351,7 @@ TypeTreeModel {
       String fileTail = CTypeUtil.getClassName(layerType);
       TreeEnt ent = new TreeEnt(EntType.Type, fileTail, false, m.getModelTypeDeclaration().getFullTypeName(), layer);
       // If this entity is imported into this layer from outside, set the imported flag
-      ent.imported = layer.getImportDecl(fileTail) != null;
+      ent.imported = layer.getImportDecl(fileTail, false) != null;
       ent.prependPackage = prependPackage;
       Object td = ent.typeDeclaration;
       JavaModel jm = null;
@@ -398,7 +398,7 @@ TypeTreeModel {
       ent.prependPackage = true;
       ent.layer = layer;
       // If this entity is imported into this layer from outside, set the imported flag
-      ent.imported = layer.getImportDecl(fileTail) != null;
+      ent.imported = layer.getImportDecl(fileTail, false) != null;
       ent.hasSrc = true;
       if (fileDir == null) {
          layerDirEnt.entries.add(ent);
@@ -863,7 +863,7 @@ TypeTreeModel {
           }
 
           // If this entity is imported into this layer from outside, set the imported flag
-          ent.imported = fileLayer.getImportDecl(fileTail) != null;
+          ent.imported = fileLayer.getImportDecl(fileTail, false) != null;
           ent.transparent = transparentLayer;
           ent.prependPackage = prependPackage;
           if (loadInnerTypesAtStartup) {
