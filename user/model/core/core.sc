@@ -1,6 +1,6 @@
 package sc.user;
 
-public user.model.core extends util, js.schtml {
+public user.model.core extends util, js.schtml, jetty.schtml {
 
     
 }
