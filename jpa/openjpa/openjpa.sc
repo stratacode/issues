@@ -20,7 +20,7 @@ jpa.openjpa extends basejpa {
       // Registers a command, run after the compile in the process phase which enhances any JPA entities that have changed
       system.addPostBuildCommand("JPAEntity", this, sc.layer.BuildPhase.Process, "java",
                                  "-cp",
-                                 "<%= layeredSystem.classPath %>",
+                                 "\"<%= layeredSystem.classPath %>\"",
                                  "org.apache.openjpa.enhance.PCEnhancer",
                                  "[<% sc.layer.LayeredSystem system = getLayeredSystem(); " +
                                  "   java.util.List<sc.layer.TypeGroupMember> entities = system.buildInfo.getTypeGroupMembers(\"JPAEntity\"); " +
