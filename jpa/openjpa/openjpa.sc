@@ -13,14 +13,14 @@ jpa.openjpa extends basejpa {
          classPath=sc.util.FileUtil.listFiles(sc.util.FileUtil.concat(pkg.installedRoot, "lib"),".*\\.jar");
       }
 
-      // Turns on class load time enhancement via command line 
+      // Turns on class load time enhancement via command line.  We use the postBuildCommand enhancer now instead.
       //String jpaFile = getRelativeFile("./lib/openjpa.jar");
       //system.buildInfo.addVMParameter("jpaenhancer", "-javaagent:" + jpaFile + "=addDefaultConstructor=false");
 
       // Registers a command, run after the compile in the process phase which enhances any JPA entities that have changed
       system.addPostBuildCommand("JPAEntity", this, sc.layer.BuildPhase.Process, "java",
                                  "-cp",
-                                 "\"<%= layeredSystem.classPath %>\"",
+                                 "<%= layeredSystem.classPath %>",
                                  "org.apache.openjpa.enhance.PCEnhancer",
                                  "[<% sc.layer.LayeredSystem system = getLayeredSystem(); " +
                                  "   java.util.List<sc.layer.TypeGroupMember> entities = system.buildInfo.getTypeGroupMembers(\"JPAEntity\"); " +
