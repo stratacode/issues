@@ -6,7 +6,6 @@
        UIIcon currentIcon := editorModel.currentPropertyIcon;
    %>
 
-
    <span id="currentTypeTextField" extends="CompletionTextField"
          inputValue=':= editorModel.currentPropertyType == null ? "" : ModelUtil.getInnerTypeName(editorModel.currentPropertyType)'
          enteredText="=: editorModel.currentTypeSearch">

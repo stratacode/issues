@@ -1,5 +1,5 @@
 <div>
-<%! 
+<%!  
    @Component
    BaseTypeTree extends TreeView {}
    @Component
@@ -13,6 +13,7 @@
    String editorViewWidth := menuStyle.editorViewWidth;
    int windowState :=: editorModel.windowState;
    boolean windowOpen := windowState != 0;
+
 
    // When viewType changes, update the visible status of each view
    viewType =: validateViewType();
@@ -52,7 +53,6 @@
                alignRight="true" tipMinWidth="4em"/>
       </span>
    </div>
-
    <div style="clear:both;"/>
           
    <div id="trees" visible=":= windowOpen">

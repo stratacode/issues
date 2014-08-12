@@ -116,7 +116,7 @@ TypeTreeModel {
       if (specifiedLayerNames != null) {
          specifiedLayers = new ArrayList<Layer>(specifiedLayerNames.length);
          for (int i = 0; i < specifiedLayerNames.length; i++) {
-            Layer layer = system.getInactiveLayer(specifiedLayerNames[i]);
+            Layer layer = system.getInactiveLayer(specifiedLayerNames[i], true);
             if (layer == null)
                System.err.println("*** TypeTreeModel: Unable to find layer with specifiedLayerName: " + specifiedLayerNames[i]);
             else {
@@ -357,7 +357,7 @@ TypeTreeModel {
       JavaModel jm = null;
       if (td != null)
          jm = ModelUtil.getJavaModel(td);
-      ent.hasSrc = layer.findSrcFile(jm == null ? layerType : jm.getSrcFile().relFileName) != null;
+      ent.hasSrc = layer.findSrcFile(jm == null ? layerType : jm.getSrcFile().relFileName, true) != null;
       if (fileDir == null) {
          layerDirEnt.entries.add(ent);
       }
@@ -874,7 +874,7 @@ TypeTreeModel {
              if (ent.type == EntType.LayerFile)
                 ent.hasSrc = true;
              else
-                ent.hasSrc = fileLayer.findSrcFile(jm == null ? layerType : jm.getSrcFile().relFileName) != null;
+                ent.hasSrc = fileLayer.findSrcFile(jm == null ? layerType : jm.getSrcFile().relFileName, true) != null;
           }
           else {
              ent.hasSrc = true; // TODO: can't we compute this without parsing the type!
@@ -967,7 +967,7 @@ TypeTreeModel {
                ent.prependPackage = true;
                // If this entity is imported into this layer from outside, set the imported flag
                ent.imported = true;
-               ent.hasSrc = fileLayer.findSrcFile(layerType.replace('.', '/')) != null;
+               ent.hasSrc = fileLayer.findSrcFile(layerType.replace('.', '/'), true) != null;
                layerParent.entries.add(ent);
             }
          }
