@@ -17,7 +17,7 @@
       <sourceFolder url="file://$MODULE_DIR$/wicket" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/junit/lib" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/junit/lib/build" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/js/prebuild/build/js" isTestSource="false" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/js/prebuild/build/js" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/android" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/example" isTestSource="false" />
