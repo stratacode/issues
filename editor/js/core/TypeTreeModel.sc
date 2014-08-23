@@ -269,5 +269,4 @@ TypeTreeModel {
    boolean nodeExists(String typeName) {
       return rootTypeTreeIndex.get(typeName) != null;
    }
-
 }

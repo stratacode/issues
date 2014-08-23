@@ -9,8 +9,9 @@ sys.layeredSystem {
    compiledOnly = true;
 
    void initialize() {
-      // Exclude the javascript runtime.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
-      excludeRuntime("js");
+      // Exclude the runtimes which do not support the LayeredSystem dynamic features.  
+      // All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
+      excludeRuntimes("js", "android", "gwt");
 
       // The servlet stuff requires the default runtime
       addRuntime(null);

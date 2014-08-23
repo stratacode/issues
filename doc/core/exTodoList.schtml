@@ -1,4 +1,5 @@
 <html extends="Example">
+<head title="TodoList Example"/>
 
 <body>
    <div id="content">

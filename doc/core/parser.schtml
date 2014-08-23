@@ -36,11 +36,27 @@ Spacing and other elements which are not included in the code model still can be
 
 ## Parsing Efficiency
 
-Though PEG parsers are not as efficient as LL(*) or LR grammars, the StrataCode parser optimizes search where possible using indexed choices nodes.  We've demonstrated that you can implement very efficient grammars that parse and generate lots of code quickly.
+Though PEG parsers are not as efficient as LL(*) or LR grammars, the StrataCode parser optimizes search where possible using indexed choices nodes.  We've demonstrated that you can implement very efficient grammars that parse and generate lots of code quickly.  For those cases where it's convenient to use parse partial values, you can enable caching on a parselet to cache the intermediate results to avoid N*N operation.  For example, the HTML parser first parses the grammar as a tree tag, then parses it as an open tag without a close.  All of the intermediate results are cached making this relatively fast.
+
+I believe further parsing efficiency can be obtained from the same grammar through generating fragments of more efficient grammars and using them to parse those parselets when that generated code is available.
 
 ## Parsing Invalid Code
 
-Parselets has very good error reporting for syntax errors.  It also has support for generating partial models when you have invalid code.  You can assemble model fragments and use them to do partial syntax highlighting and context for doing code completion.  
+Parselets has very good error reporting for syntax errors.  It also has support for generating partial models when your model does not strictly match the formal grammar.  This is not only useful for building syntax highlighting and code completion in IDEs, but also for dealing gracefully with errors found in input files.   
+
+Parselets are designed so that you first parse a file without the enablePartialValues flag set for performance and only when you find an invalid file, create the partial model from the invalid file by setting it to true and reparsing the model. During this operation the parselets use additional properties to enable the more flexible parsing.  They also generate whatever model fragment they can from the data they match.  All suitable parse errors have a partialValue property which contains the partial model.
+
+Note: parsing invalid models in two passes may not be fundamentally necessary but it safeguards against the possibility that a bug in the partial parsing rules end up creating the wrong grammar on a valid file.  There is also additional overhead to build the partial models and to skip invalid text making the enablePartialValues pass slower than the original.  Since most code we parse is valid, it's overall beneficial to parse it as though it's valid first and only re-parse it using relaxed rules when you suspect it has errors.
+
+When you parse in enablePartialValues=true mode, your parselet has additional properties.  To handle those cases where you want to parse a file which is just missing some required text - perhaps a close paren or a semicolon or close brace, you can mark parselets that can be skipped.
+
+Either a sequence can set the SKIP_ON_ERROR flag, or a parent sequence can set the skipOnErrorSlot to skip a missing child and complete the parse.  If there's an error parsing either the entire sequence (for SKIP_ON_ERROR) or that slot of the parent sequence for skipOnErrorSlot, it will be ignored.  In it's place an ErrorParseNode is inserted that matches no text.  The Parser object records a list of errorParseNodes so you can detect that this model has errors but otherwise a valid model is returned in this situation.
+
+Either a repeating OrderedChoice or a repeating Sequence can set the skipOnErrorParselet.  The skipOnErrorParselet is used when a parent Sequence encounters an error parsing the next child after the child with the skipOnErrorParselet.  In this case, the parseExtendedErrors method of the previous child is called to re-parse but using the skipOnErrorParselet to skip over errors.  If it can skip over errors and match the exit parselet, a new extended match is returned.  This list will return one or more matches of the skipOnErrorParselet.   These results are represented by an ErrorParseNode containing the matched text.
+
+This construct lets you easily terminate String literals that cross a newline or omit an invalid expression till the next semicolon.  
+
+So far, with these three constructs we've built acceptable IDE experiences for several languages, all using declarative grammars.  It's easy to further tune the experience by further refining the grammars, not by writing tricky code dealing with token streams.
 
 ## PEG Parsers
 

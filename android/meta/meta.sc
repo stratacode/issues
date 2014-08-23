@@ -1,5 +1,5 @@
 package android;
 
-android.meta {
+android.meta extends lib {
    annotationLayer = true;
 }

@@ -14,19 +14,19 @@ Android supports only the compiled StrataCode features currently.  Eventually th
 
 First go through the Getting Started for Java Programmers for download, install and to get the basics for StrataCode.  You'll see that the android and swing versions are fairly similar.  StrataCode smooths over the differences and prevents you from needing to learn about various XML files and other android tools.
 
-## Android Requirements
+## Android Installation
 
-You need to install the android SDK.  Make a symbolic link from:
+Either set the ANDROID_SDK environment variable to point to your android SDK directory or just run an application which uses the android framework to use the auto-installer.
 
-    layers/androidLayer/lib -&gt; <androidSDKDir>/platforms/<platformdir>
+We have not found a way to make android's command-line install tools behave so the first time you run it, StrataCode will launch the SDK install/update tool.  You follow the command line prompt on what to select to complete the installation.
 
-for example:
+StrataCode will create a sample device and start that device automatically.
 
-    lrwxr-xr-x  1 root  wheel  23 Mar  4 16:09 /usr/local/androidsdk -&gt; /jjv/android-sdk-mac_86
+## Android Project Configuration
 
-You must also edit the androidLayer/local.properties file to set the sdk.dir property.  
+Typically with android, you run a tool to create a new project.  It copies a bunch of files into a directory which you then must maintain.  With StrataCode, there's no copying involved.  Those files are stored in template form in the android framework layers which you extend.  They'll be copied or are customized and generated into your build dir.  In the event that you need to customize one of these files, you can just add your own file and it overrides the framework version.  
 
-Typically with android, you run a tool to create a new project.  It copies a bunch of files into a directory.  With StrataCode, there's no copying involved.  Those files are stored in template form in the androidLayer which you extend.  They'll be copied into your build dir unless you override them by specifying the explicitly.  In that case, your custom version is used.  So your layer directory can be created via android tools as well.
+If you prefer to use the android project creation tools, you can use them and treat that directory as your layer directory.  In that case, you override all of the defaults. 
 
 Your android project needs a layer.  For the unitConverter, this layer is:
 
@@ -35,13 +35,13 @@ Your android project needs a layer.  For the unitConverter, this layer is:
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>package sc.example.unitConverter;
 
-public example.unitConverter.androidui extends extendedModel, androidWrap, androidAnnotLayer {
+public example.unitConverter.androidui extends extendedModel, android.core {
 }
 <% ) %>
 
 <%= MarkDownPage.markDown(%>
 
-Extend the extendedModel to get base unit converter functionality.  Extend the androidWrap layer to get the set of classes which wrap android classes for data binding: CTextView, CEditText etc.  Extend androidAnnotLayer - an annotation layer - so you can use classes like Activity, LinearLayout (or any ViewGroup subclass) as container types to group their children.
+Extend the extendedModel to get base unit converter functionality.  Extend the android.core layer to get the set of classes which wrap android classes for data binding: CTextView, CEditText etc.  That will also include android.meta - an annotation layer - so you can use classes like Activity, LinearLayout (or any ViewGroup subclass) as container types to group their children.  Android's framework so closely matches StrataCode's patterns that sometimes an annotation layer is all that's needed to directly use the Android classes with all of StrataCode's features.
 
 In Android, your main classes are defined with an Activity instance.  That object has a single content view that gets displayed when that activity is active.  Android has nice LinearLayout controls to organize columns and rows so you don't need data binding to define layout.  Otherwise, the sample looks quite similar to the swingui layer.  
 

@@ -1,4 +1,5 @@
 <html extends="DocPage">
+<head title="StrataCode with GWT"/>
 
 <body>
 
@@ -40,7 +41,7 @@ Annotation your GWTModule class with the @GWTModule annotation.
 
 <% ) %>
 
-<%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("example/unitConverter/gwtui","UnitConverter.sc") %>
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/gwtui","UnitConverter.sc", false, false, false) %>
 
 <%= MarkDownPage.markDown(%>
 

@@ -5,6 +5,10 @@ public js.core extends html.core, html.schtml, js.prebuild, js.sys, js.util, sys
 
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
+
+   public void initialize() {
+      excludeRuntimes("java", "gwt", "android");
+   }
   
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();

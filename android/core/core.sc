@@ -29,6 +29,6 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 
 /** This is a layer for bindable classes that adds data binding and core functionality to various android widgets */
-public android.core extends lib {
+public android.core extends lib, meta {
 
 }

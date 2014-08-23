@@ -1,4 +1,5 @@
 <html extends="Example">
+<head title="UnitConverter Example"/>
 
 <body>
    <div id="content">
@@ -138,7 +139,7 @@ and an HTML file:
 <%= sc.lang.HTMLLanguage.INSTANCE.styleFile("example/unitConverter/wicketui", "UnitConverter.html", false, false) %>
 
 For GWT:
-<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/gwtui", "UnitConverter.sc", false, false) %>
+<%= sc.lang.SCLanguage.INSTANCE.styleFile("example/unitConverter/gwtui", "UnitConverter.sc", false, false, false) %>
 
          </div>
       </div>

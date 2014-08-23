@@ -1,4 +1,5 @@
 <html extends="Example">
+<head title="Program Editor Example"/>
 
 <body>
    <div id="content">

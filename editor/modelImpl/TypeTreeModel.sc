@@ -17,6 +17,7 @@ import java.util.Collections;
 TypeTreeModel {
    ArrayList<String> packageFilter;
 
+
    // TODO: not implemented yet Populated from specifiedLayerNames.  Defines the layers from which we are doing source files.
    ArrayList<Layer> specifiedLayers;
 
@@ -116,7 +117,7 @@ TypeTreeModel {
       if (specifiedLayerNames != null) {
          specifiedLayers = new ArrayList<Layer>(specifiedLayerNames.length);
          for (int i = 0; i < specifiedLayerNames.length; i++) {
-            Layer layer = system.getInactiveLayer(specifiedLayerNames[i], true);
+            Layer layer = system.getInactiveLayer(specifiedLayerNames[i], true, true);
             if (layer == null)
                System.err.println("*** TypeTreeModel: Unable to find layer with specifiedLayerName: " + specifiedLayerNames[i]);
             else {

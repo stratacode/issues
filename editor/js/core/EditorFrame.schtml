@@ -1,4 +1,5 @@
 <div class="editorFrame">
+
    <%! 
        int windowState :=: editorModel.windowState; 
        windowState =: menuStyle.windowState;

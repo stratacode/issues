@@ -4,6 +4,15 @@ gwt.lib extends servlet.webAppBuild, gwt.lang {
    // Tells the system to put the src into a sub-directory of the normal build directory
    buildSrcSubDir = "src";
 
+   // GWT has been decomissioned.  We are keeping it around because it helped expand the integration APIs so it's a good reminder how to do certain things
+   // and to make sure those APIs are still active.  By disabling it we won't try to load any source references in the layer and turn off errors that would otherwise
+   // result.
+   disabled = true;
+
+   public void initialize() {
+      createDefaultRuntime("gwt");
+   }
+
    public void start() {
       String sdkDir = System.getenv("GWT_SDK");
       if (sdkDir == null)
