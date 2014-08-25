@@ -75,7 +75,9 @@ swing.core extends swing.meta, util {
 
       system.registerAnnotationProcessor("sc.swing.MainInit", mainInitProc);
 
-      system.addTypeGroupDependency("Main.sc", "sc.swing.Main", "mainInit");
+      if (activated) {
+         system.addTypeGroupDependency("Main.sc", "sc.swing.Main", "mainInit");
+      }
    }
 
 }

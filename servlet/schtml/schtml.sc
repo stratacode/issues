@@ -6,7 +6,6 @@ public servlet.schtml extends core, html.schtml, webApp {
 
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
-      //system.tagPackageList.add(0, "sc.servlet.tag");
       sc.lang.TemplateLanguage tempLang = (sc.lang.TemplateLanguage) system.getFileProcessorForExtension("schtml");
       tempLang.processPrefix = "web";
 

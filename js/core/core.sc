@@ -16,7 +16,6 @@ public js.core extends html.core, html.schtml, js.prebuild, js.sys, js.util, sys
       if (system.runtimeProcessor instanceof sc.lang.js.JSRuntimeProcessor)
           ((sc.lang.js.JSRuntimeProcessor) system.runtimeProcessor).destinationName = "jsHttp";
 
-      //system.tagPackageList.add(0, "sc.tag");
       sc.lang.TemplateLanguage tempLang = (sc.lang.TemplateLanguage) system.getFileProcessorForExtension("schtml");
       tempLang.processPrefix = "web";
 

@@ -29,7 +29,8 @@ js.lib {
       setLayerRuntime(runtimeProc);
 
       // For Javascript, property mappers are probably not worth it - use just use native hashtable string keys for properties like everyone else
-      sys.usePropertyMappers = false;
+      if (activated)
+         sys.usePropertyMappers = false;
    }
 
    public void start() {

@@ -108,25 +108,29 @@ UnitConverter extends Activity {
 
 <%= MarkDownPage.markDown(%>
 
-With Android, you also include the AndroidManifest.xml file to declare your activities.  This file currently gets passed through though eventually with sc, it could be generated via a mix of xml snippets and annotations.  There are no sc specific variants to this file, but you can see it at: layers/unitConverter/androidui/AndroidManifest.xml.
+With Android, you also include the AndroidManifest.xml file to declare your activities.  This file currently gets passed through though eventually with sc, it could be generated via a mix of xml snippets and annotations.  There are no sc specific variants to this file, but you can see it at: layers/example/unitConverter/androidui/AndroidManifest.xml.
 
 ## Compiling with Android
 
 To compile your application, from the layers directory run: 
 
-    sc unitConverter/androidui
+    sc example/unitConverter/androidui
 
 This generates and android project in the directory: 
 
-    unitConverter/androidui/build
+    sc example/unitConverter/androidui/build
 
 Change to that directory and type:
 
     ant install
+    - or -
+    ant debug install
 
 (or any other android ant command).  
 
-The androidLayer directory defines the default set of files required in an android project.  If you want to override any of those files, simply define them in your layer in the appropriate path name.  Your files will then be copied into the build directory instead.
+The androidLayer directory defines the default set of files required in an android project.  These are merged with any of the previous layer's project files where the later file takes precedence.  The result is copied into the build directory, which is then a standard android project directory.  So if you want to override any of those files, simply define them in your layer in the appropriate path name.  Your files will then be copied into the build directory instead.
+
+Like other StrataCode layers, you can freely mix project files and source files in the same layer directory.  One subtle point is that project files do not use the layer's package prefix when doing the merging.  The name used for merging is the path of the file within the layer directory ignoring any layer package prefix.  Source files: .java, .sc, .schtml, etc. do use the package prefix when doing the merging.  
 
 <% ) %>
 

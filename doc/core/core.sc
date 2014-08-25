@@ -34,13 +34,4 @@ doc.core extends servlet.options.globalScope, doc.tag, jetty.schtml, js.schtml {
 
       System.setProperty("markDown.cmd", getRelativeFile("bin/markdown"));
    }
-
-   public void start() {
-      // For now we are specifying site-wide sections of head etc. using the default tag class.  Alternatively we would add an extends to each page if we need
-      // to customize this further.
-      //layeredSystem.tagPackageList.add(0, "sc.doc.tag");
- 
-      // Don't want to compile the schtml files we use as sample source
-      //sc.parser.Language.removeLanguage("schtml");
-   }
 }

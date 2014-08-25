@@ -12,4 +12,8 @@ junit.lib {
    // chain.
    buildSeparate = true;
    compiledOnly = true;
+
+   void initialize() {
+      excludeRuntimes("js", "gwt", "android");
+   }
 }

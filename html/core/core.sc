@@ -110,7 +110,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       sc.layer.LayeredSystem system = getLayeredSystem();
 
       // Add this here in core even though it's used in schtml so that it's always in front of js.core where the sc.tag package is added.
-      system.tagPackageList.add(0, "sc.html.tag");
+      system.addTagPackageDirectory("sc.html.tag", this, 1);
 
       // Layers web files in the "doc" folder of any downstream layers
       sc.layer.LayerFileProcessor webFileProcessor = new sc.layer.LayerFileProcessor();
@@ -180,9 +180,11 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       mainInitProc.subTypesOnly = true; // Don't include the Html and Page types which set the annotation
       system.registerAnnotationProcessor("sc.html.MainInit", mainInitProc);
 
-      // When either of these type groups change, we need to regenerate the runTest script
-      system.addTypeGroupDependency("runTest.scsh", "runTest", "mainInit");
-      system.addTypeGroupDependency("runTest.scsh", "runTest", "urlTypes");
+      if (activated) {
+         // When either of these type groups change, we need to regenerate the runTest script
+         system.addTypeGroupDependency("runTest.scsh", "runTest", "mainInit");
+         system.addTypeGroupDependency("runTest.scsh", "runTest", "urlTypes");
+      }
    }
 
 }
