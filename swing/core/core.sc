@@ -61,7 +61,8 @@ swing.core extends swing.meta, util {
 
       resourceFileProcessor.definedInLayer = this;    
       resourceFileProcessor.prependLayerPackage = true;
-      resourceFileProcessor.useSrcDir = true;
+      resourceFileProcessor.useSrcDir = false;
+      resourceFileProcessor.useClassesDir = true;
 
       system.registerFileProcessor("png", resourceFileProcessor, this);
       system.registerFileProcessor("gif", resourceFileProcessor, this);

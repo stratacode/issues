@@ -15,9 +15,11 @@ android.lib extends util {
    buildSrcSubDir = "src";
  
    {
-      layeredSystem.runtimePrefix = "";
-      excludedPaths.add("sdk");
-      excludedFiles.add(".*.d");
+      if (activated) {
+         layeredSystem.runtimePrefix = "";
+         excludedPaths.add("sdk");
+         excludedFiles.add(".*.d");
+      }
    }
 
    // Include Android's generated source - R.java in the layer's src path

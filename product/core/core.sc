@@ -1,3 +1,3 @@
-user.product.core {
+product.core {
 
 }

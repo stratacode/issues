@@ -1,5 +1,7 @@
 gwt.jreStub {
 
+   disabled = true;
+
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.layer.LayerFileProcessor configFileProcessor = new sc.layer.LayerFileProcessor();

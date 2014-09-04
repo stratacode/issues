@@ -17,7 +17,7 @@ js.lib {
                                    sc.layer.LayeredSystem.getRuntime("js");
       if (runtimeProc == null) {
          runtimeProc = new sc.lang.js.JSRuntimeProcessor();
-         sc.layer.LayeredSystem.addRuntime(runtimeProc);
+         addRuntime(runtimeProc);
       }
 
       runtimeProc.templatePrefix = "web";

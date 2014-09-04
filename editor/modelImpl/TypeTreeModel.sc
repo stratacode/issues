@@ -117,7 +117,7 @@ TypeTreeModel {
       if (specifiedLayerNames != null) {
          specifiedLayers = new ArrayList<Layer>(specifiedLayerNames.length);
          for (int i = 0; i < specifiedLayerNames.length; i++) {
-            Layer layer = system.getInactiveLayer(specifiedLayerNames[i], true, true);
+            Layer layer = system.getInactiveLayer(specifiedLayerNames[i], true, true, false);
             if (layer == null)
                System.err.println("*** TypeTreeModel: Unable to find layer with specifiedLayerName: " + specifiedLayerNames[i]);
             else {

@@ -12,11 +12,18 @@
                optionDataSource=":= converters" 
                selectedIndex=":=: currentConverterIndex"/>
          <br>
-         <span id="unit1Label" class="unitLabel"><%= currentConverter.unit1 %></span>
-         <input id="unit1Field" value=":=: numberConverter.numberToString(currentConverter.value1)" class="unitField" autoComplete="off"/>
+         <span id="unit1Label" class="unitLabel">
+              <%= currentConverter.unit1 %>
+          </span>
+         <input id="unit1Field" class="unitField" autoComplete="off"
+                value=":=: numberConverter.numberToString(currentConverter.value1)"/>
          <br>
-         <span id="unit2Label" class="unitLabel"><%= currentConverter.unit2 %></span>
-         <input id="unit2Field" value=":=: numberConverter.numberToString(currentConverter.value2)" class="unitField" autoComplete="off"/>
+         <span id="unit2Label" class="unitLabel">
+             <%= currentConverter.unit2 %>
+          </span>
+         <input id="unit2Field" class="unitField" autoComplete="off"
+                value=":=: numberConverter.numberToString(currentConverter.value2)"
+           />
       </form>
 
       <div id="feedback"><%= numberConverter.error %></div>
