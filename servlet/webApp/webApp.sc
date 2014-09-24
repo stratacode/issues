@@ -25,13 +25,13 @@ servlet.webApp extends util, html.schtml {
       servletProc.typeGroupName = "servlets";
       servletProc.validOnField = false;
       servletProc.requiredType = "javax.servlet.Servlet";
-      system.registerAnnotationProcessor("sc.servlet.PathServlet", servletProc);
+      registerAnnotationProcessor("sc.servlet.PathServlet", servletProc);
 
       sc.lang.DefaultAnnotationProcessor servletFiltersProc = new sc.lang.DefaultAnnotationProcessor();
       servletFiltersProc.typeGroupName = "servletFilters";
       servletFiltersProc.validOnField = false;
       servletFiltersProc.requiredType = "javax.servlet.Filter";
-      system.registerAnnotationProcessor("sc.servlet.PathServletFilter", servletFiltersProc);
+      registerAnnotationProcessor("sc.servlet.PathServletFilter", servletFiltersProc);
 
       if (activated) {
          // When either the list of servlets or servlet filters changes, we need to regenerate

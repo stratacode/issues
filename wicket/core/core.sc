@@ -23,7 +23,7 @@ public wicket.core extends meta, util {
       wicketAppProc.validOnField = false;
       wicketAppProc.requiredType = "sc.wicket.WicketApplication";
 
-      system.registerAnnotationProcessor("sc.wicket.ApplicationPath", wicketAppProc);
+      registerAnnotationProcessor("sc.wicket.ApplicationPath", wicketAppProc);
 
       sc.lang.sc.BasicScopeProcessor listItemScope = new sc.lang.sc.BasicScopeProcessor("ListItem");
       listItemScope.validOnClass = false;
@@ -35,7 +35,7 @@ public wicket.core extends meta, util {
       listItemScope.appendInterfaces = new String[] {"sc.dyn.IObjChildren", "sc.wicket.IListItemScope<T>"};
       listItemScope.requiredParentType = "sc.wicket.CListView";
       listItemScope.childGroupName = "ListItem"; // Children with this scope are not included in regular childreNames list - in childScopesByName under the key ListItem instead.
-      system.registerScopeProcessor("ListItem", listItemScope);
+      registerScopeProcessor("ListItem", listItemScope);
 
       // Tells the system to regenerate web.xml when the set of wicketApplications changes
       if (activated)

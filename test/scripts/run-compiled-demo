@@ -1,4 +1,5 @@
 rm -rf unitDemo
+rm -rf temp/build/unitDemo
 sc < test/scripts/compiled-script.txt
 # swingui is dynamic in this version - use run-all-compiled-demo for one which generates swingui entirely as compiled
 sc unitDemo/extendedModel < test/scripts/compiled-script2.txt

@@ -14,6 +14,7 @@ sh test/scripts/run-compiled-demo
 
 
 rm -rf unitDemo
+rm -rf temp/build/unitDemo_*
 sc < test/scripts/ds-swingui2.txt
 
 (cd test/refreshMQ; ./run)

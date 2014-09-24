@@ -3,6 +3,8 @@
 set -e
 
 rm -rf unitDemo
+rm -rf temp/build/unitDemo_*
+rm -rf temp/dynbuild/unitDemo_*
 sc < test/scripts/ds2-script.txt
 
 sh test/scripts/run-all-compiled-demo

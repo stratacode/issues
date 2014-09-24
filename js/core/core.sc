@@ -1,6 +1,6 @@
 package sc.js;
 
-public js.core extends html.core, html.schtml, js.prebuild, js.sys, js.util, sys.sccore {
+public js.core extends html.core, js.prebuild, js.sys, js.util, sys.sccore {
    compiledOnly = true;
 
    codeType = sc.layer.CodeType.Framework;

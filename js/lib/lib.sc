@@ -28,13 +28,16 @@ js.lib {
 
       setLayerRuntime(runtimeProc);
 
-      // For Javascript, property mappers are probably not worth it - use just use native hashtable string keys for properties like everyone else
-      if (activated)
-         sys.usePropertyMappers = false;
    }
 
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
+
+      // For Javascript, property mappers are probably not worth it - use just use native hashtable string keys for properties like everyone else
+      // Need to wait to do this till start because init is called even for the main runtime and we don't want to change the mode for that one
+      if (activated)
+         system.usePropertyMappers = false;
+
       /*
       sc.lang.DefaultAnnotationProcessor mainInitProc = new sc.lang.DefaultAnnotationProcessor();
       mainInitProc.typeGroupName = "mainInit";
@@ -43,7 +46,7 @@ js.lib {
       mainInitProc.inherited = true; // Include any sub-type which has MainInit
       mainInitProc.skipAbstract = true; // Don't include any abstract macro templates
       mainInitProc.subTypesOnly = true; // Don't include the Html and Page types which set the annotation
-      system.registerAnnotationProcessor("sc.js.MainInit", mainInitProc);
+      registerAnnotationProcessor("sc.js.MainInit", mainInitProc);
       */
 
       // Register a file processor that recognizes the generated js src files for each type.

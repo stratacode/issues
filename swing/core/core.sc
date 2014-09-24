@@ -74,7 +74,7 @@ swing.core extends swing.meta, util {
       mainInitProc.validOnObject = true;
       mainInitProc.createOnStartup = true;
 
-      system.registerAnnotationProcessor("sc.swing.MainInit", mainInitProc);
+      registerAnnotationProcessor("sc.swing.MainInit", mainInitProc);
 
       if (activated) {
          system.addTypeGroupDependency("Main.sc", "sc.swing.Main", "mainInit");

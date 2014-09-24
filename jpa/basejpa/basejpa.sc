@@ -52,7 +52,7 @@ jpa.basejpa extends util {
       entityProc.validOnField = false;
       entityProc.validOnMethod = false;
       entityProc.compiledOnly = true; // These types must be compiled, even if put into a dynamic layer as the JPA integration has no dynamic support
-      system.registerAnnotationProcessor("javax.persistence.Entity", entityProc);
+      registerAnnotationProcessor("javax.persistence.Entity", entityProc);
 
 
       // Layers web files in the "doc" folder of any downstream layers

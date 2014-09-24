@@ -35,7 +35,7 @@ public servlet.core extends webApp, meta, html.core {
           "      <%= variableTypeName %> _<%= lowerClassName %> = (<%= variableTypeName %>) _session.getAttribute(\"<%= typeClassName %>\");\n";
       sessionScope.customSetter = 
           "      _session.setAttribute(\"<%= typeClassName %>\", _<%= lowerClassName %>);\n";
-      layeredSystem.registerScopeProcessor("session", sessionScope);
+      registerScopeProcessor("session", sessionScope);
 
       // Like session but stored per-window, per-session 
       sc.lang.sc.BasicScopeProcessor windowScope = new sc.lang.sc.BasicScopeProcessor("window");
@@ -48,7 +48,7 @@ public servlet.core extends webApp, meta, html.core {
           "      <%= variableTypeName %> _<%= lowerClassName %> = (<%= variableTypeName %>) sc.servlet.Context.getWindowScope().getValue(\"<%= typeClassName %>\");\n";
       windowScope.customSetter = 
           "      sc.servlet.Context.getWindowScope().setValue(\"<%= typeClassName %>\", _<%= lowerClassName %>);\n";
-      layeredSystem.registerScopeProcessor("window", windowScope);
+      registerScopeProcessor("window", windowScope);
 
       // Causes PageDispatcher.sc to be regenerated whenever the members of either type group are modified
       if (activated) {
@@ -66,9 +66,9 @@ public servlet.core extends webApp, meta, html.core {
       urlProc.typeGroupName = "URLTypes";
       urlProc.inherited = true; // Include any sub-type which has URL in the type group
       urlProc.skipAbstract = true; // Don't include any abstract classes or templates with abstract="true"
-      layeredSystem.registerAnnotationProcessor("sc.html.URL", urlProc);
+      registerAnnotationProcessor("sc.html.URL", urlProc);
 
-      // Since the new sc.html.URL processor will include dependencies on sc.servlet in this package, if it gets compiled, we need to be compiled along
+      // Since the new sc.html.URL processor will include dependencies on sc.servlet in this package, if html.core gets compiled, we need to be compiled along
       // with it if we are in the same stack.
       addModifiedLayer("html.core");
    }

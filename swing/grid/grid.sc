@@ -17,6 +17,6 @@ public swing.grid extends gui.grid, swing.core {
       listItemScope.appendInterfaces = new String[] {"sc.dyn.IObjChildren", "sc.gui.grid.IListItemScope<T>"};
       listItemScope.requiredParentType = "sc.gui.grid.ListView";
       listItemScope.childGroupName = "ListItem"; // Children with this scope are not included in regular childreNames list - in childScopesByName under the key ListItem instead.
-      system.registerScopeProcessor("ListItem", listItemScope);
+      registerScopeProcessor("ListItem", listItemScope);
    }
 }

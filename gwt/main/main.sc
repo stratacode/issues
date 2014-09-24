@@ -21,7 +21,7 @@ public gwt.main extends lib, meta, jreStub {
       moduleProc.needsCompiledClass = true;
       String[] is = new String[] {"com.google.gwt.core.client.EntryPoint"};
       moduleProc.appendInterfaces = is;
-      system.registerAnnotationProcessor("sc.gwt.GWTModule", moduleProc);
+      registerAnnotationProcessor("sc.gwt.GWTModule", moduleProc);
 
       system.addPostBuildCommand(sc.layer.BuildPhase.Process, this, "ant", "javac");
 

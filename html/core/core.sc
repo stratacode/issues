@@ -169,7 +169,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       urlProc.typeGroupName = "URLTypes";
       urlProc.inherited = true; // Include any sub-type which has URL in the type group
       urlProc.skipAbstract = true; // Don't include any abstract macro templates
-      layeredSystem.registerAnnotationProcessor("sc.html.URL", urlProc);
+      registerAnnotationProcessor("sc.html.URL", urlProc);
 
       sc.lang.DefaultAnnotationProcessor mainInitProc = new sc.lang.DefaultAnnotationProcessor();
       mainInitProc.typeGroupName = "mainInit";
@@ -178,7 +178,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       mainInitProc.inherited = true; // Include any sub-type which has MainInit
       mainInitProc.skipAbstract = true; // Don't include any abstract macro templates
       mainInitProc.subTypesOnly = true; // Don't include the Html and Page types which set the annotation
-      system.registerAnnotationProcessor("sc.html.MainInit", mainInitProc);
+      registerAnnotationProcessor("sc.html.MainInit", mainInitProc);
 
       if (activated) {
          // When either of these type groups change, we need to regenerate the runTest script
