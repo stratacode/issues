@@ -11,6 +11,13 @@ html.schtml extends html.core {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
+   {
+      // We replace the html.core feature - so that any layers which extend html.core are placed after us in the stack.
+      // This must be done in class initialize since it affects the stacking order.
+      replacesLayer("html.core");
+   }
+
+
    void start() { 
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.lang.TemplateLanguage tempLang = (sc.lang.TemplateLanguage) system.getFileProcessorForExtension("schtml");
@@ -19,8 +26,5 @@ html.schtml extends html.core {
       // Note: this sets the templatePrefix for all web files since there's one processor used for all of them.
       sc.layer.LayerFileProcessor webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("css");
       webProc.templatePrefix = "web";
-
-      // We modify the tag library and so need to add a dependency on html.core
-      addModifiedLayer("html.core");
    }
 }
