@@ -5,5 +5,5 @@ import sc.util.ArrayList;
 
 public example.quiz.model {
    codeType = sc.layer.CodeType.Declarative;
-   codeFunction = sc.layer.CodeFunction.Business;
+   codeFunction = sc.layer.CodeFunction.Model;
 }

@@ -57,8 +57,8 @@
                    clickEvent="=: changeCodeFunction(CodeFunction.UI)">UI Code</a></li>
             <li><a class=':= isCodeFunction(codeFunctions, CodeFunction.Style) ? "checkedMenuItem" : ""'
                    clickEvent="=: changeCodeFunction(CodeFunction.Style)">Style Settings</a></li>
-            <li><a class=':= isCodeFunction(codeFunctions, CodeFunction.Business) ? "checkedMenuItem" : ""'
-                   clickEvent="=: changeCodeFunction(CodeFunction.Business)">Domain Model</a></li>
+            <li><a class=':= isCodeFunction(codeFunctions, CodeFunction.Model) ? "checkedMenuItem" : ""'
+                   clickEvent="=: changeCodeFunction(CodeFunction.Model)">Domain Model</a></li>
             <li><a class=':= isCodeFunction(codeFunctions, CodeFunction.Admin) ? "checkedMenuItem" : ""'
                    clickEvent="=: changeCodeFunction(CodeFunction.Admin)">Admin Settings</a></li>
             <li><hr></li>

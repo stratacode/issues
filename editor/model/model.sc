@@ -35,7 +35,7 @@ import sc.lang.EditorContext;
 
 public editor.model extends util, gui.util.core, sys.layeredSystem {
    codeType = sc.layer.CodeType.Declarative;
-   codeFunction = sc.layer.CodeFunction.Business;
+   codeFunction = sc.layer.CodeFunction.Model;
 
    // This layer depends on both JS and Java but we do not want extending layers to pick up 
    // these dependencies

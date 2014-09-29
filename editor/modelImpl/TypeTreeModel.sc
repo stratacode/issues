@@ -50,6 +50,8 @@ TypeTreeModel {
          void layerRemoved(Layer l) {
             removeLayer(l);
          }
+         void runtimeAdded(LayeredSystem sys) {
+         }
       });
    }
 

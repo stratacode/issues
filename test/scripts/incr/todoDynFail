@@ -8,7 +8,7 @@ echo 'Starting todoDynFail: ' `date`
 
 set -e
 
-rm -rf /jjv/layers/editor/js/mixin/dynbuild
+rm -rf /jjv/layers/temp/dynbuild/editor_js_mixin
 
 sc -a -ta -dyn test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
 

@@ -107,7 +107,7 @@ EditorFrame extends AppFrame implements EditorPanelStyle {
          }
          object businessItem extends JCheckBoxMenuItem {
             text = "Domain Model";
-            selected =: selected ? editorModel.changeCodeFunctions(EnumSet.of(CodeFunction.Business)) : null;
+            selected =: selected ? editorModel.changeCodeFunctions(EnumSet.of(CodeFunction.Model)) : null;
          }
          object adminItem extends JCheckBoxMenuItem {
             text = "Admin Settings";
