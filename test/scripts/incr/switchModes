@@ -12,18 +12,18 @@ sc -a -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
 
 sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
 
-sc -a -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -a -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait20.txt
 
-sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
-
-sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
-sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait20.txt
 
 sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
-sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait20.txt
+
+sc -ta editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait20.txt
 
 sc -ta -ee editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
-sc -ta -ee -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait10.txt
+sc -ta -ee -dyn editor/js/mixin example/unitConverter/jsui < test/scripts/wait20.txt
 
 
 # ------
