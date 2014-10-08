@@ -5,10 +5,10 @@ js.clientOrServer extends js.core {
    compiledOnly = true;
    public void initialize() {
       if (layeredSystem.getLayerByDirName("servlet.webApp") != null) {
-         // Exclude the javascript runtime.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
+         // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
          excludeRuntimes("js", "android", "gwt");
 
-         // The servlet stuff requires the default runtime
+         // When used with the servlet.webApp add a dependency so we run on the server only.
          addRuntime(null);
       }
    }

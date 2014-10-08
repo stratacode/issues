@@ -13,7 +13,7 @@ AnalyzeSituation extends CWebPage {
 
       // Display a group of factor value choices
       object factorValueChoiceButtons extends CRadioGroup<FactorValue> {
-	 required = true;
+         required = true;
          object factorValueChoices extends CListView<FactorValue> {
             list = Arrays.asList(FactorValue.values());
 
@@ -31,26 +31,26 @@ AnalyzeSituation extends CWebPage {
       // When Next button is pressed, record the value for the current
       // factor, and iterate to the next factor
       object nextButton extends Button {
-	 visible := (factorIndex < numFactors-1);
-	 public void onSubmit() {
-	    if (!hasError()) {
-	       FactorValue factorValue = factorValueChoiceButtons.currentValue;
+         visible := (factorIndex < numFactors-1);
+         public void onSubmit() {
+            if (!hasError()) {
+	           FactorValue factorValue = factorValueChoiceButtons.currentValue;
                setSituationFactor(factorValue);
-	       factorValueChoiceButtons.clearSelection();
-	    }
-	 }      
+               factorValueChoiceButtons.clearSelection();
+	        }
+	     }
       }
 
       // When Done button is pressed, go to the DisplayResults page
       object doneButton extends Button {
-	 visible := (factorIndex == numFactors-1);
-	 public void onSubmit() {
-	    if (!hasError()) {
-	       FactorValue factorValue = factorValueChoiceButtons.currentValue;
-	       situation.setFactorValue(currentFactor, factorValue);
-	       setResponsePage(new DisplayResults(situation));
-	    }
-	 }
+         visible := (factorIndex == numFactors-1);
+	     public void onSubmit() {
+	        if (!hasError()) {
+	           FactorValue factorValue = factorValueChoiceButtons.currentValue;
+	           situation.setFactorValue(currentFactor, factorValue);
+	           setResponsePage(new DisplayResults(situation));
+	        }
+	     }
       }      
    }
 

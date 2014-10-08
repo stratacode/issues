@@ -25,7 +25,7 @@ doc.core extends servlet.options.globalScope, doc.tag, jetty.schtml, js.schtml {
 
       // Only layers after this one will see this extension
       docLang.definedInLayer = this;  
-      sc.parser.Language.registerLanguage(docLang, "vdoc");
+      registerLanguage(docLang, "vdoc");
 
       sc.layer.LayeredSystem sys = getLayeredSystem();
 

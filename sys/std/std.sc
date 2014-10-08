@@ -30,7 +30,7 @@ sys.std {
       templateResourceLang.useSrcDir = false;
       templateResourceLang.prependLayerPackage = false;
 
-      sc.parser.Language.registerLanguage(templateResourceLang, "scxml");
+      registerLanguage(templateResourceLang, "scxml");
 
       sc.lang.TemplateLanguage scshLang = new sc.lang.TemplateLanguage();
       scshLang.processTemplate = true;
@@ -41,6 +41,6 @@ sys.std {
       scshLang.prependLayerPackage = false;
       scshLang.makeExecutable = true;
 
-      sc.parser.Language.registerLanguage(scshLang, "scsh");
+      registerLanguage(scshLang, "scsh");
    }
 }

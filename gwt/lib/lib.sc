@@ -53,7 +53,7 @@ gwt.lib extends servlet.webAppBuild, gwt.lang {
       templateResourceLang.prependLayerPackage = false;
       // Share one buildDir for web root files since they do not support path searching
       templateResourceLang.useCommonBuildDir = true;
-      sc.parser.Language.registerLanguage(templateResourceLang, "scxml");
+      registerLanguage(templateResourceLang, "scxml");
 
       templateResourceLang = new sc.lang.TemplateLanguage();
       templateResourceLang.processTemplate = true;
@@ -65,6 +65,6 @@ gwt.lib extends servlet.webAppBuild, gwt.lang {
       templateResourceLang.prependLayerPackage = false;
       // Share one buildDir for web root files since they do not support path searching
       templateResourceLang.useCommonBuildDir = true;
-      sc.parser.Language.registerLanguage(templateResourceLang, "schtml");
+      registerLanguage(templateResourceLang, "schtml");
    }
 }

@@ -36,7 +36,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       templateResourceLang.prependLayerPackage = false;
       // Share one buildDir for web root files since they do not support path searching
       //templateResourceLang.useCommonBuildDir = true;
-      sc.parser.Language.registerLanguage(templateResourceLang, "scxml");
+      registerLanguage(templateResourceLang, "scxml");
 
       // We use a singleton here for the IDE in particular so we can match parselets by identity
       templateResourceLang = sc.lang.HTMLLanguage.getHTMLLanguage();
@@ -67,7 +67,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // The .sc and .schtml files replace each other in the type system - i.e. not part of the "processed id" which lets one file in a subsequent layer from processing that file in the next layer
       // the suffix will be .java when compiledTemplate is true and one of process or postBuild template
       //templateResourceLang.processByUniqueSuffix = true;
-      sc.parser.Language.registerLanguage(templateResourceLang, "schtml");
+      registerLanguage(templateResourceLang, "schtml");
 
       sc.lang.TemplateLanguage cssLanguage = new sc.lang.CSSLanguage();
 
@@ -92,7 +92,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
 
       // Only layers after this one will see this extension
       cssLanguage.definedInLayer = this;  
-      sc.parser.Language.registerLanguage(cssLanguage, "scss");
+      registerLanguage(cssLanguage, "scss");
 
       // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
       cssLanguage.prependLayerPackageOnProcess = false;

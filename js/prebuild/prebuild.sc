@@ -31,6 +31,6 @@ js.prebuild {
       jsTypeTemplateLang.needsJavascript = false;
 
       jsTypeTemplateLang.defaultExtendsType = "sc.lang.js.JSTypeTemplateBase";
-      sc.parser.Language.registerLanguage(jsTypeTemplateLang, "sctjs");
+      registerLanguage(jsTypeTemplateLang, "sctjs");
    }
 }

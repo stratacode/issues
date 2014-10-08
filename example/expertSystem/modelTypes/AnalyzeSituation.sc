@@ -2,6 +2,7 @@ class AnalyzeSituation {
    SituationalFactor[] situationalFactors = SituationalFactor.values();
    int numFactors = situationalFactors.length;
    int factorIndex = 0;
+
    SituationalFactor currentFactor := factorIndex < situationalFactors.length ? situationalFactors[factorIndex] : null;
    boolean answersComplete = false;
 

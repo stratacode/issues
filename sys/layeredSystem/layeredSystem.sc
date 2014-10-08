@@ -13,7 +13,7 @@ sys.layeredSystem {
       // All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "android", "gwt");
 
-      // The servlet stuff requires the default runtime
+      // The LayeredSystem is only available in the default Java runtime.
       addRuntime(null);
    }
 }

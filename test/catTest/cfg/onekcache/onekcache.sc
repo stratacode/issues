@@ -1,4 +1,4 @@
 package jpaCat;
 
-catTest.cfg.onekcache extends catTest.baseCat {
+test.catTest.cfg.onekcache extends catTest.baseCat {
 }

@@ -7,10 +7,10 @@ jetty.lib {
    codeFunction = sc.layer.CodeFunction.Program;
 
    public void initialize() {
-      // Exclude the javascript runtime.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
+      // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "android", "gwt");
 
-      // The servlet stuff requires the default runtime
+      // Jetty requires the default runtime
       addRuntime(null);
    }
 
