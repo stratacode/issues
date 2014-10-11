@@ -7,5 +7,4 @@ public swing.meta extends awt.meta {
    annotationLayer = true;
   
    compiledOnly = true; // This layer does not run in dynamic mode
-
 }

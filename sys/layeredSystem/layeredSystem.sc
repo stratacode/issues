@@ -2,6 +2,7 @@
 // When you extend this layer, it's a way to say that your code needs to run on the server because it uses these apis.  Since these apis are already available for all server
 // code there's not much else to do in this layer but exclude the javascript runtime.
 sys.layeredSystem {
+   defaultSyncMode = sc.obj.SyncMode.Automatic;
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 

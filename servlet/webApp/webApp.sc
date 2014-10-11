@@ -14,8 +14,9 @@ servlet.webApp extends util, html.schtml {
       // Exclude the javascript runtime.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "gwt", "android");
 
-      // The servlet stuff requires the default runtime
-      addRuntime(null);
+      // The servlet stuff requires the default runtime, Server process
+      //addRuntime(null);
+      addProcess(sc.layer.ProcessDefinition.create("Server"));
    }
 
    public void start() {

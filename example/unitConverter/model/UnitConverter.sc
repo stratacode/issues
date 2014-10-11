@@ -1,7 +1,8 @@
 /* A simple unit converter using StrataCode objects and data binding. */
 class UnitConverter {
    static class Converter {
-      double value1, value2;
+      double value1;
+      double value2;
       String unit1, unit2; // Unit labels
       String title;
       String toString() {

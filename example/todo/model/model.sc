@@ -1,4 +1,5 @@
 public example.todo.model extends util {
+   defaultSyncMode = sc.obj.SyncMode.Automatic;
    inheritPackage = false;
 
    codeType = sc.layer.CodeType.Declarative;

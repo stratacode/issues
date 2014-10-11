@@ -1,4 +1,5 @@
 CServer {
+
    // Replacing the previous handlers by redefining the HandlerList
    object handlerList extends HandlerList {
       object webAppHandler extends WebAppContext {

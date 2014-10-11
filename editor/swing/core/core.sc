@@ -5,4 +5,11 @@ public editor.swing.core extends editor.modelImpl, editor.coreui, swing.style, s
    codeFunction = sc.layer.CodeFunction.UI;
 
    liveDynamicTypes = false;
+
+/*
+   void initialize() {
+      // Split this layer and it's sublayers out into a new process using the default 'java' runtime
+      addProcess(sc.layer.ProcessDefinition.create("Desktop"));
+   }
+*/
 }

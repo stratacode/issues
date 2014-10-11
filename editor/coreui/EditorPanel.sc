@@ -2,6 +2,7 @@ import sc.lang.java.ModelUtil;
 import java.util.Arrays;
 
 class EditorPanel {
+
    object editorModel extends EditorModel {
    }
 
