@@ -12,7 +12,7 @@ Situation {
                      case HIGH: {
                         FactorValue likelihoodOfCommitment = getFactorValue(SituationalFactor.LIKELIHOOD_OF_COMMITMENT);
                         switch (likelihoodOfCommitment) {
-                           case HIGH: 
+                           case HIGH:
                               return LeadershipStyle.DECIDE;
                            case LOW: {
                               FactorValue goalAlignment = getFactorValue(SituationalFactor.GOAL_ALIGNMENT);

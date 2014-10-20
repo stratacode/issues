@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 public abstract class AbstractRenderNode implements IRenderNode {
+
    static List<IRenderParent> EMPTY_LIST = new ArrayList<IRenderParent>(0);
 
    protected boolean changed;

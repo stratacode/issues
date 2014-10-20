@@ -18,4 +18,11 @@ opengl.lib {
       sc.layer.LayerUtil.addLibraryPath(openGLDir);
       System.out.println(" new path: " + System.getProperty("java.library.path"));
    }
+
+   void initialize() {
+      // For now we can't use the open gl layers for js and android but
+      // theoretically that could change.
+      excludeRuntimes("js", "android", "gwt");
+      addRuntime(null);
+   }
 }
