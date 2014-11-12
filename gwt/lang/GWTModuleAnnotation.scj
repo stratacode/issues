@@ -57,10 +57,10 @@ public class GWTModuleAnnotation extends DefaultAnnotationProcessor {
          return;
 
       // Next look for ModuleName.gt.ckxml and use that as the template
-      template = sys.getTemplate(typeName, "gwt.ckxml", GWTModuleInfo.class, null);
+      template = sys.getTemplate(typeName, "gwt.ckxml", GWTModuleInfo.class, null, null, true);
       if (template == null) {
          // Default to the default dynamic template
-         template = sys.getTemplate(DEFAULT_MODULE_TEMPLATE, null, GWTModuleInfo.class, null);
+         template = sys.getTemplate(DEFAULT_MODULE_TEMPLATE, null, GWTModuleInfo.class, null, null, true);
       }
    }
 

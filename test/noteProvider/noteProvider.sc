@@ -1,5 +1,5 @@
 package com.google.provider;
 
-test.noteProvider extends android.lib {
+test.noteProvider extends android.core {
 
 }

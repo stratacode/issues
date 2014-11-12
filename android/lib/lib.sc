@@ -18,7 +18,8 @@ android.lib extends util {
       if (activated) {
          layeredSystem.runtimePrefix = "";
          excludedPaths.add("sdk");
-         excludedFiles.add(".*.d");
+         // Exclude something.xml.d, R.java.d etc.
+         excludedFiles.add("\\..*\\.d");
       }
    }
 
@@ -29,6 +30,11 @@ android.lib extends util {
 
    public void initialize() {
       createDefaultRuntime("android");
+
+      // Do not load these android classes into the dynamic runtime, just like javascript
+      sc.layer.DefaultRuntimeProcessor rtproc = (sc.layer.DefaultRuntimeProcessor) definedRuntime;
+      rtproc.setLoadClassesInRuntime(false);
+
       excludeRuntimes("js", "gwt", "java");
 
       // These must be in the initialize phase since we need to see the Prepare file processor before we start the layer in "layeredSystem.needsPhase"
@@ -138,11 +144,11 @@ android.lib extends util {
          }
       }
 
-      // Include android.jar into the classpath
-      classPath = sc.util.FileUtil.concat(platformDir, "android.jar");
+      // Include android.jar into the external class path.  We can't load classes like java.lang.AutoCloseable 
+      externalClassPath = sc.util.FileUtil.concat(platformDir, "android.jar");
 
-      if (!(new java.io.File(classPath).canRead())) {
-         throw new IllegalArgumentException("*** Android SDK is missing a readable android.jar at: " + classPath);
+      if (!(new java.io.File(externalClassPath).canRead())) {
+         throw new IllegalArgumentException("*** Android SDK is missing a readable android.jar at: " + externalClassPath);
       }
 
       String adbCommand = sc.util.FileUtil.concat(sdkDir, "platform-tools", "adb");
@@ -205,9 +211,9 @@ android.lib extends util {
 
       // First make the gen folder if necessary
       system.addPreBuildCommand(sc.layer.BuildPhase.Prepare, this, "mkdir", "-p", sc.util.FileUtil.concat(system.buildDir, "gen"), sc.util.FileUtil.concat(system.buildDir, "res"));
-      // Then run the aapt command which requires it - needs a "tools" symbolic link to this directory in the sdk
+      // Then run the aapt command which requires it 
       system.addPreBuildCommand(sc.layer.BuildPhase.Process, this, sc.util.FileUtil.concat(sdkDir,"build-tools/" + buildToolsVersion + "/aapt"),
-                                "package", "-m", "-J", "gen", "-M", "AndroidManifest.xml", "-S", "res", "-I", classPath);
+                                "package", "-m", "-J", "gen", "-M", "AndroidManifest.xml", "-S", "res", "-I", externalClassPath);
 
       system.addPostBuildCommand(sc.layer.BuildPhase.Process, this, adbCommand, "wait-for-device");
       // Change debug to release for the production install or just comment this out and run ant by hand in the build directory
