@@ -24,6 +24,9 @@
       <sourceFolder url="file://$MODULE_DIR$/gwt" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/html" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/js" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/.sc" />
+      <excludeFolder url="file://$MODULE_DIR$/.stratacode" />
       <excludeFolder url="file://$MODULE_DIR$/android/lib" />
       <excludeFolder url="file://$MODULE_DIR$/android/lib/sdk" />
       <excludeFolder url="file://$MODULE_DIR$/catTest" />

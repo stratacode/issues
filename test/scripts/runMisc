@@ -29,3 +29,4 @@ sc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swin
 
 (cd test/wicketMQ; ./run)
 
+rm -rf unitDemo

@@ -6,5 +6,6 @@ wicket.lang {
 
    public void initialize() {
       excludeRuntimes("js", "android", "gwt");
+      excludeProcesses("Desktop");
    }
 }

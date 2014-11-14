@@ -38,8 +38,10 @@ gwt.lib extends servlet.webAppBuild, gwt.lang {
       classPath = classPath + sc.util.FileUtil.PATH_SEPARATOR + file;
       sc.layer.LayeredSystem system = getLayeredSystem();
 
-      // GWT does not support reflection.  Need to compile in references
-      system.useRuntimeReflection = false;
+      if (activated) {
+         // GWT does not support reflection.  Need to compile in references
+         system.useRuntimeReflection = false;
+      }
 
       sc.lang.TemplateLanguage templateResourceLang = new sc.lang.TemplateLanguage();
       templateResourceLang.processTemplate = true;

@@ -34,3 +34,5 @@ sc -a -dynone example/quiz/wicket/makequiz < wicket/bookExamp/script.txt -i -r s
 sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/scripts/editorScript.txt
 
 sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
+
+rm -rf unitDemo
