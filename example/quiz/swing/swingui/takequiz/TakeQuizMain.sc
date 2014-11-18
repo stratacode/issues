@@ -27,8 +27,8 @@ public object TakeQuizMain {
 
       quiz = getQuizByName(quizName);
       if (quiz == null) {
-	 System.out.println("[quiz] Quiz " + quizName + " does not exist.");
-	 shutdown();
+         System.out.println("[quiz] Quiz " + quizName + " does not exist.");
+         shutdown();
       }
    }
 

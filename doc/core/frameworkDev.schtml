@@ -10,7 +10,13 @@
 
 ## Introduction
 
-StrataCode lets you build powerful frameworks easily by exposing just the right set of hinge points.  Your layer definition file specifies jar files required for your project in the layer's class path.  Import classes for subsequent layers.  Flexible mapping of "a.b" to get/set in both compiled and dynamic modes.  Automatic data binding event injection.  Mark classes that need component initialization semantics with the @Component annotation.  Customize framework features via interpreted code in your layer definition file.  Register handlers for annotations.  Associate compile-time code templates with classes for operations like object creation, the new operator, getX/setX conversion handling.  Support dynamic updates of code in development which is later compiled to production.
+StrataCode lets you build powerful frameworks by providing a read-modify-write parser, a powerful dependency and build system, and by exposing just the right set of hinge points to let you assemble and customize the whole thing.  A layer definition file may add normal Java jar files.  When that layer is activated, a new class loader is created adding those classes.  The layer definition file can specify imports that are available to downstream layers.  
+
+Code generation features provide flexible mapping of how an identifier expression like "a.b" is mapped to get and set methods.  The dynamic runtime lets you implement dynamic abstractions which can later be used more efficiently in a compiled mode.  
+
+StrataCode provides automatic data binding event injection.  You can flexibly designate classes that need component initialization semantics (using the @Component annotation).  
+
+The layer definition file lets you register handlers for annotations - which affect how the code is generated when those annotations are present.  You can associate compile-time code templates with classes for operations like object creation, the new operator, getX/setX conversion handling.  Support dynamic updates of code in development which is later compiled to production.
 
 A StrataCode framework mainly consists of one or more layers, wrapper classes which inject data binding events, annotation layers which can set compile-time annotations on any class.  These annotations typically control how those classes are used - including, adding the @Component attribute, marking properties as bindable, constant, or adding code templates for how "object" tags or scopes are interpreted (see @CompilerSettings, @Constant, @Bindable, @BindSettings for details on the StrataCode annotations).
 

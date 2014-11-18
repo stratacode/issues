@@ -2,7 +2,11 @@ gwt.jreStub {
 
    disabled = true;
 
-   public void start() {
+   void initialize() {
+      excludeRuntimes("js", "java", "android");
+   }
+
+   void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.layer.LayerFileProcessor configFileProcessor = new sc.layer.LayerFileProcessor();
 

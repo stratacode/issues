@@ -29,12 +29,12 @@ public class TakeQuiz extends QuizWebPage {
 	 textValue := "Question " + (questionIndex + 1);
       }
       object scoreLabel extends CLabel {
-	 textValue := "Current score: " + currentScore + " of " + numQuestions;
+         textValue := "Current score: " + currentScore + " of " + numQuestions;
       }
 
       // Question text
       object questionText extends CLabel {
-	 textValue := currentQuestion.question;
+         textValue := currentQuestion.question;
       }
 
       // Create a group of radio buttons for the answer choices
@@ -44,7 +44,6 @@ public class TakeQuiz extends QuizWebPage {
          object answerChoices extends CListView<String> {
 	    // TODO: should quietly return null without the check?
             list := (currentQuestion == null) ? null : Arrays.asList(currentQuestion.answerChoices);
-
             scope<ListItem> object answerChoice implements Serializable {
                object answerChoiceRadio extends CRadio<Integer> {
                   choiceValue = listItemIndex;

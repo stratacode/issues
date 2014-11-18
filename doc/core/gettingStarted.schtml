@@ -40,7 +40,7 @@ Some examples you can run:
 
     sc editor/js/mixin example/unitConverter/jsui 
 
-If you have problems, use the '-a' option to do a clean build or remove the layer's build directory.   
+If you have problems, use the '-a' option to do a clean build or remove the layer's build directory in .stratacode/build/layer_name     
 
 There's a usage for the sc command and type "help" at the command line.
 
