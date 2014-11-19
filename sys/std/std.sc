@@ -40,6 +40,7 @@ sys.std {
       scshLang.useSrcDir = false;
       scshLang.prependLayerPackage = false;
       scshLang.makeExecutable = true;
+      scshLang.needsJavascript = false;
 
       registerLanguage(scshLang, "scsh");
    }
