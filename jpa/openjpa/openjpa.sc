@@ -9,7 +9,7 @@ jpa.openjpa extends basejpa {
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("openjpaLibs", "scp", "vsgit@stratacode.com:/home/vsgit/openjpaLibs", false);
-      if (pkg.installedRoot != null) {
+      if (pkg.installedRoot != null && !disabled) {
          classPath=sc.util.FileUtil.listFiles(sc.util.FileUtil.concat(pkg.installedRoot, "lib"),".*\\.jar");
       }
 

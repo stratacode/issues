@@ -3,6 +3,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.JFrame; // avoid the wrapper
 
 public class TextSamplerDemo extends JPanel {
     layout = new BorderLayout();

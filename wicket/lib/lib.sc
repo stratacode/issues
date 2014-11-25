@@ -79,7 +79,7 @@ public wicket.lib extends jetty.servlet, lang {
       system.registerFileProcessor("html", htmlFileProcessor, this);
 
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("wicketLibs", "scp", "vsgit@stratacode.com:/home/vsgit/wicketLibs", false);
-      if (pkg.installedRoot != null) {
+      if (pkg.installedRoot != null && !disabled) {
          classPath=sc.util.FileUtil.listFiles(pkg.installedRoot,".*\\.jar");
       }
    }

@@ -36,7 +36,7 @@ jetty.lib {
 
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "scp", "vsgit@stratacode.com:/home/vsgit/jettyLibs", false);
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "url", "http://stratacode.com/packages/jettyLibs.zip", true);
-      if (pkg.installedRoot != null) {
+      if (pkg.installedRoot != null && !disabled) {
          classPath=sc.util.FileUtil.listFiles(pkg.installedRoot,".*\\.jar");
       }
    }
