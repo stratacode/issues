@@ -1,7 +1,7 @@
 <body>
   <%! boolean tf = true;
       String dynStyle = "width: 50;";%>
-  start
+  start - not supported yet
   <% if (tf) { %> <div id="idn" style="= dynStyle">content</div> <% } %>
   end
 </body>

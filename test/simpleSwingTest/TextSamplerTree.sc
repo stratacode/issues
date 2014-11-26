@@ -3,6 +3,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.JFrame;
 
 public class TextSamplerTree extends JPanel {
     layout = new BorderLayout();
