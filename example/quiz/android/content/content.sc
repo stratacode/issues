@@ -26,5 +26,5 @@ import sc.example.quiz.content.QuizContent.Questions;
 // interested strictly in exposing the content provider API, they
 // could create a separate layer just for the
 // sc.example.quiz.content.QuizContent interface.
-public example.quiz.android.content extends example.quiz.model {
+public example.quiz.android.content extends example.quiz.model, android.lib {
 }
