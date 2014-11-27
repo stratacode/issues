@@ -106,12 +106,14 @@ android.lib extends util {
          sdkDir = sc.util.FileUtil.concat(pkg.installedRoot, "android-sdk-macosx");
 
          if (!(new java.io.File(sdkDir).isDirectory())) {
-            throw new IllegalArgumentException("*** Failed to install android SDK into:  " + sdkDir);
+            disabled = true;
+            System.err.println("*** Failed to install android SDK into:  " + sdkDir);
          }
       }
       else {
          if (!(new java.io.File(sdkDir).isDirectory())) {
-            throw new IllegalArgumentException("*** ANDROID_SDK points to: " + sdkDir + " which does not exist");
+            disabled = true;
+            System.err.println("*** ANDROID_SDK points to: " + sdkDir + " which does not exist");
          }
       }
 
@@ -140,7 +142,8 @@ android.lib extends util {
          String res = sc.util.FileUtil.exec(null, false, androidCmd, "update", "sdk", "-s", "-t", "tools,platform-tools");
 
          if (!(platformFile.isDirectory())) {
-            throw new IllegalArgumentException("Failed to update android SDK - missing directory: " + platformFile + " update command result: " + res);
+            disabled = true;
+            System.err.println("Failed to update android SDK - missing directory: " + platformFile + " update command result: " + res);
          }
       }
 
@@ -154,6 +157,12 @@ android.lib extends util {
       String adbCommand = sc.util.FileUtil.concat(sdkDir, "platform-tools", "adb");
 
       sc.layer.LayeredSystem system = getLayeredSystem();
+
+      if (disabled) {
+         if (activated)
+            throw new IllegalArgumentException("Failed to start android.lib layer");
+         return;
+      }
 
       // Don't worry about the emulator unless we are running an application
       if (activated) {
