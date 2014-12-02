@@ -779,7 +779,8 @@ function sc_capitalizeProperty(prop) {
    if (prop.length > 1) { 
       var first = prop.charAt(1);
       var firstUp = first.toUpperCase();
-      if (first == firstUp) // Weird case for java zMin turns into setzMin 
+      // Include letters but exclude digits for which both are the same
+      if (first == firstUp && firstUp != first.toLowerCase()) // Weird case for java zMin turns into setzMin 
          return prop;
    }
    return zeroUp + prop.substring(1);

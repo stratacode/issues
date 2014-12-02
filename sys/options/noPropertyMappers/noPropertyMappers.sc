@@ -1,5 +1,6 @@
 sys.options.noPropertyMappers {
    void start() {
-      layeredSystem.usePropertyMappers = false;
+      if (activated) 
+         layeredSystem.usePropertyMappers = false;
    }
 }
