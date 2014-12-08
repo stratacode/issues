@@ -1,5 +1,6 @@
 rm -rf unitDemo
-rm -rf temp/build/unitDemo_*
+rm -rf .stratacode/build/unitDemo_*
+rm -rf .stratacode/dynbuild/unitDemo_*
 sc < test/scripts/compiled-script.txt
 # this version has swingui as compiled
 sc unitDemo/extendedModel < test/scripts/all-compiled-script2.txt
