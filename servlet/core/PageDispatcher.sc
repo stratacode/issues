@@ -284,7 +284,7 @@ class PageDispatcher extends InitServlet implements Filter {
 
             if (initial) {
                // Mark this as the initial sync mode
-               SyncManager.setInitialSync("servletToJS", uri, WindowScopeDefinition.scopeId, true);
+               SyncManager.setInitialSync("jsHttp", uri, WindowScopeDefinition.scopeId, true);
             }
             else {
                SyncManager.setSyncAppId(uri);
@@ -521,7 +521,7 @@ class PageDispatcher extends InitServlet implements Filter {
             }
          }
          */
-         CharSequence initSync = SyncManager.getInitialSync("servletToJS", WindowScopeDefinition.scopeId, resetSync);
+         CharSequence initSync = SyncManager.getInitialSync("jsHttp", WindowScopeDefinition.scopeId, resetSync);
          sb.append("\n\n<!-- Init SC JS -->\n");
          sb.append("<script type='text/javascript'>\n");
          if (SyncManager.trace) {
@@ -621,7 +621,7 @@ class PageDispatcher extends InitServlet implements Filter {
             }
             finally {
                // This clears the initial sync flag in case we called setInitialSync(..., true) in initPageObjects.  It also clears the SyncState for the other initPageObjects cases.
-               SyncManager.setInitialSync("servletToJS", uri, WindowScopeDefinition.scopeId, false);
+               SyncManager.setInitialSync("jsHttp", uri, WindowScopeDefinition.scopeId, false);
 
                releaseLocks(locks, session);
             }
@@ -787,7 +787,7 @@ class PageDispatcher extends InitServlet implements Filter {
          }
       }
       finally {
-         SyncManager.setInitialSync("servletToJS", url, WindowScopeDefinition.scopeId, false);
+         SyncManager.setInitialSync("jsHttp", url, WindowScopeDefinition.scopeId, false);
       }
       return pageOutput;
    }

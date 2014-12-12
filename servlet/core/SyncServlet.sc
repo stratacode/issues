@@ -125,7 +125,7 @@ class SyncServlet extends HttpServlet {
          ctx.write("\n\n//@ sourceURL=scSync.js\n");
 
          // Now collect up all changes and write them as the response layer.
-         SyncManager.sendSync("servletToJS", syncGroup, false);
+         SyncManager.sendSync("jsHttp", syncGroup, false);
 
          if (syncSession.lastSyncTime != -1 && sys != null && (refresh != null || sys.options.autoRefresh)) {
             CharSequence out = sys.refreshJS(syncSession.lastSyncTime);

@@ -20,7 +20,7 @@ import sc.obj.GlobalScopeDefinition;
 @MainInit
 @JSSettings(jsModuleFile="js/sync.js", prefixAlias="sc_", requiredModule=true)
 object ClientSyncDestination extends SyncDestination {
-   name = "jsHttp";
+   name = "servletToJS";
 
    public void writeToDestination(String layerDef, String syncGroup, IResponseListener listener, String paramStr) {
       String useParams = paramStr;

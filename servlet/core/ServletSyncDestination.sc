@@ -17,7 +17,7 @@ import sc.util.StringUtil;
 // Create this on startup and run it before application components 
 @CompilerSettings(createOnStartup=true,startPriority=100)
 object ServletSyncDestination extends SyncDestination {
-   name = "servletToJS";
+   name = "jsHttp"; // The name of the destination in the remote runtime
 
    ServletSyncDestination() {
       super();
