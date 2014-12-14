@@ -40,36 +40,33 @@ android.lib extends util {
       // These must be in the initialize phase since we need to see the Prepare file processor before we start the layer in "layeredSystem.needsPhase"
       sc.lang.TemplateLanguage tempLang = new sc.lang.TemplateLanguage();
       tempLang.processTemplate = true; // At build time, generate the xml file
-      tempLang.definedInLayer = this;
       // For android, xml files are used by the compiler itself so they need to be done
       // before the process phase in prepare.
       tempLang.buildPhase = sc.layer.BuildPhase.Prepare;
       tempLang.resultSuffix = "xml";
       tempLang.useSrcDir = false;
-      sc.parser.Language.registerLanguage(tempLang, "scxml");
+      registerLanguage(tempLang, "scxml");
 
       sc.lang.TemplateLanguage propLang = new sc.lang.TemplateLanguage();
       tempLang.processTemplate = true;
-      tempLang.definedInLayer = this;
       tempLang.buildPhase = sc.layer.BuildPhase.Prepare;
       tempLang.resultSuffix = "properties";
       tempLang.useSrcDir = false;
-      sc.parser.Language.registerLanguage(tempLang, "scproperties");
+      registerLanguage(tempLang, "scproperties");
 
       // Recognizes android resources - copies them over to the build directory using a layered merging of paths
       sc.layer.LayerFileProcessor resourceFileProcessor = new sc.layer.LayerFileProcessor();
 
       // Only layers after this one will see this extension
-      resourceFileProcessor.definedInLayer = this;    
       resourceFileProcessor.prependLayerPackage = false;
       resourceFileProcessor.useSrcDir = false;
       // Build this before we process Java files
       resourceFileProcessor.buildPhase = sc.layer.BuildPhase.Prepare;
 
       // Copy these extensions to the output file
-      layeredSystem.registerFileProcessor("xml", resourceFileProcessor, this);
-      layeredSystem.registerFileProcessor("properties", resourceFileProcessor, this);
-      layeredSystem.registerFileProcessor("png", resourceFileProcessor, this);
+      registerFileProcessor(resourceFileProcessor, "xml");
+      registerFileProcessor(resourceFileProcessor, "properties");
+      registerFileProcessor(resourceFileProcessor, "png");
    }
 
    //public static String platformTarget = "android-20";

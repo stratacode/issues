@@ -62,9 +62,6 @@ public wicket.lib extends jetty.servlet, lang {
 
       sc.layer.LayerFileProcessor htmlFileProcessor = new sc.layer.LayerFileProcessor();
 
-      // Override the default jetty html processor entirely, even for the jetty server's index.html file
-      //htmlFileProcessor.definedInLayer = this;    
-
       // We do use the package hierarchy.  An alternate design is to turn this off and pick
       // a fixed doc root.  This design ties paths in the doc root to types in Java.  I like this
       // design but where we can map the web root to some package in the hierarchy.
@@ -75,8 +72,10 @@ public wicket.lib extends jetty.servlet, lang {
       // Do not copy html files in dynamic layers - instead, those directories are put into
       // the resource path (with package prefix prepended)
       htmlFileProcessor.compiledLayersOnly = true;
+      registerFileProcessor(htmlFileProcessor, "html");
 
-      system.registerFileProcessor("html", htmlFileProcessor, this);
+      // Override the default jetty html processor entirely, even for the jetty server's index.html file
+      htmlFileProcessor.definedInLayer = null;    
 
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("wicketLibs", "scp", "vsgit@stratacode.com:/home/vsgit/wicketLibs", false);
       if (pkg.installedRoot != null && !disabled) {

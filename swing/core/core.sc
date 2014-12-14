@@ -63,14 +63,13 @@ swing.core extends swing.meta, util {
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.layer.LayerFileProcessor resourceFileProcessor = new sc.layer.LayerFileProcessor();
 
-      resourceFileProcessor.definedInLayer = this;    
       resourceFileProcessor.prependLayerPackage = true;
       resourceFileProcessor.useSrcDir = false;
       resourceFileProcessor.useClassesDir = true;
 
-      system.registerFileProcessor("png", resourceFileProcessor, this);
-      system.registerFileProcessor("gif", resourceFileProcessor, this);
-      system.registerFileProcessor("jpg", resourceFileProcessor, this);
+      registerFileProcessor(resourceFileProcessor, "png");
+      registerFileProcessor(resourceFileProcessor, "gif");
+      registerFileProcessor(resourceFileProcessor, "jpg");
 
       sc.lang.DefaultAnnotationProcessor mainInitProc = new sc.lang.DefaultAnnotationProcessor();
       mainInitProc.typeGroupName = "mainInit";

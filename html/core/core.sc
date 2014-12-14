@@ -26,7 +26,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // until you run the application.
       sc.lang.TemplateLanguage templateResourceLang = new sc.lang.TemplateLanguage();
       templateResourceLang.processTemplate = true;
-      templateResourceLang.definedInLayer = this;
+      //templateResourceLang.definedInLayer = this;
       // For gwt, xml files are used by the compiler itself so they need to be done
       // before the process phase in prepare.  May need to register a separate xml pattern for the specific build files
       // if we need to scxml elsewhere with different rules (i.e. that go into the web root)
@@ -50,7 +50,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
       templateResourceLang.prependLayerPackageOnProcess = false;
 
-      templateResourceLang.definedInLayer = this;
+      //templateResourceLang.definedInLayer = this;
       templateResourceLang.buildPhase = sc.layer.BuildPhase.Process;
       templateResourceLang.resultSuffix = "html";
       templateResourceLang.useSrcDir = false;
@@ -91,7 +91,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       cssLanguage.processPrefix = "web";
 
       // Only layers after this one will see this extension
-      cssLanguage.definedInLayer = this;  
+      //cssLanguage.definedInLayer = this;  
       registerLanguage(cssLanguage, "scss");
 
       // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
@@ -115,8 +115,6 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // Layers web files in the "doc" folder of any downstream layers
       sc.layer.LayerFileProcessor webFileProcessor = new sc.layer.LayerFileProcessor();
 
-      // Only layers after this one will see this extension
-      webFileProcessor.definedInLayer = this;    
       // We do not use the layer's package in computing the web file names  An alternate design is to turn this off and pick
       // a fixed doc root.  This design ties paths in the doc root to types in Java.  I like this
       // design but where we can map the web root to some package in the hierarchy.
@@ -132,15 +130,15 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       webFileProcessor.processInAllLayers = true;
 
       // Copy these extensions to the output file - TODO: restrict these to files only in the "web" subdir?
-      system.registerFileProcessor("html", webFileProcessor, this);
-      system.registerFileProcessor("jpg", webFileProcessor, this);
-      system.registerFileProcessor("png", webFileProcessor, this);
-      system.registerFileProcessor("gif", webFileProcessor, this);
-      system.registerFileProcessor("pdf", webFileProcessor, this);
-      system.registerFileProcessor("css", webFileProcessor, this);
-      system.registerFileProcessor("js", webFileProcessor, this);
-      system.registerFileProcessor("xml", webFileProcessor, this);
-      system.registerFileProcessor("properties", webFileProcessor, this);
+      registerFileProcessor(webFileProcessor, "html");
+      registerFileProcessor(webFileProcessor, "jpg");
+      registerFileProcessor(webFileProcessor, "png");
+      registerFileProcessor(webFileProcessor, "gif");
+      registerFileProcessor(webFileProcessor, "pdf");
+      registerFileProcessor(webFileProcessor, "css");
+      registerFileProcessor(webFileProcessor, "js");
+      registerFileProcessor(webFileProcessor, "xml");
+      registerFileProcessor(webFileProcessor, "properties");
 
       String openSuffix = system.options.openPattern;
       if (openSuffix == null)

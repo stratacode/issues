@@ -10,21 +10,19 @@ sys.std {
       sc.layer.LayerFileProcessor configFileProcessor = new sc.layer.LayerFileProcessor();
 
       // Only layers after this one will see this extension
-      configFileProcessor.definedInLayer = this;    
       configFileProcessor.prependLayerPackage = false;
       configFileProcessor.useSrcDir = false;
 
       // Copy these extensions to the output file
-      system.registerFileProcessor("xml", configFileProcessor, this);
-      system.registerFileProcessor("properties", configFileProcessor, this);
-      system.registerFileProcessor("css", configFileProcessor, this);
+      registerFileProcessor(configFileProcessor, "xml");
+      registerFileProcessor(configFileProcessor, "properties");
+      registerFileProcessor(configFileProcessor, "css");
 
       // Need to add extensions of any files produced so that we know where they are in the build src index - src dir (e.g. java or js), output dir - e.g. build or build/web).
-      system.registerFileProcessor("sh", configFileProcessor, this);
+      registerFileProcessor(configFileProcessor, "sh");
 
       sc.lang.TemplateLanguage templateResourceLang = new sc.lang.TemplateLanguage();
       templateResourceLang.processTemplate = true;
-      templateResourceLang.definedInLayer = this;
       templateResourceLang.buildPhase = sc.layer.BuildPhase.Process;
       templateResourceLang.resultSuffix = "xml";
       templateResourceLang.useSrcDir = false;
@@ -34,7 +32,6 @@ sys.std {
 
       sc.lang.TemplateLanguage scshLang = new sc.lang.TemplateLanguage();
       scshLang.processTemplate = true;
-      scshLang.definedInLayer = this;
       scshLang.buildPhase = sc.layer.BuildPhase.Process;
       scshLang.resultSuffix = "sh";
       scshLang.useSrcDir = false;
