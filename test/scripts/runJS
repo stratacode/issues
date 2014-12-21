@@ -2,38 +2,38 @@
 
 set -e
  
-sc -a -v -ta example/simpleSync/main < test/scripts/wait10.txt
+sc -a -ta example/simpleSync/main < test/scripts/wait10.txt
 
-sc -a -v -ta example/remoteMethod/main < test/scripts/wait10.txt
+sc -a -ta example/remoteMethod/main < test/scripts/wait10.txt
 
-sc -a -v -ta example/unitConverter/jsui < test/scripts/wait10.txt
+sc -a -ta example/unitConverter/jsui < test/scripts/wait10.txt
 
-sc -a -v -ta -dyn example/unitConverter/jsui < test/scripts/wait10.txt
+sc -a -ta -dyn example/unitConverter/jsui < test/scripts/wait10.txt
 
-sc -a -v -ta -ni js/schtml example/todo/data
+sc -a -ta -ni js/schtml example/todo/data
 
 # This case not yet implemented but it would not be hard if anyone cared.  
-#sc -a -v jetty/schtml example/todo/data
+#sc -a jetty/schtml example/todo/data
 
-sc -a -v -ta js/template jetty/schtml example/todo/data < test/scripts/wait10.txt
+sc -a -ta js/template jetty/schtml example/todo/data < test/scripts/wait10.txt
 
-sc -a -v -ta js/template jetty/schtml -dyn example/todo/data < test/scripts/wait10.txt
+sc -a -ta js/template jetty/schtml -dyn example/todo/data < test/scripts/wait10.txt
 
-sc -a -v -ta -ni test/js/unitConverter/replaceError
+sc -a -ta -ni test/js/unitConverter/replaceError
 
-sc -a -v -ta -ni test/js/unitConverter/swapLabels
+sc -a -ta -ni test/js/unitConverter/swapLabels
 
-sc -a -v -ta -ni test/js/hwDisabled
+sc -a -ta -ni test/js/hwDisabled
 
-sc -a -v -ta -ni test/js/simpleBinding
+sc -a -ta -ni test/js/simpleBinding
 
-sc -a -v -ta -ni test/js/simpleMerge/subLayer
+sc -a -ta -ni test/js/simpleMerge/subLayer
 
-sc -a -v -ta -ni test/js/simplePerson
+sc -a -ta -ni test/js/simplePerson
 
-sc -a -v -ta -ni test/js/interfacePerson
+sc -a -ta -ni test/js/interfacePerson
 
-sc -a -v -ta editor/js/app < test/scripts/wait10.txt
+sc -a -ee -ta editor/js/app < test/scripts/wait10.txt
 
 sc -a -ta test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
 
