@@ -1,5 +1,6 @@
 <html>
-   <%! 
+   <%!
+      // This is an "all in one" version of the TodoList sample we use for testing
       class TodoItem {
          String text;
          boolean done;
