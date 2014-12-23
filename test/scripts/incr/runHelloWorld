@@ -2,7 +2,7 @@
 
 STARTTIME=`date "+%s"`
 echo 'Starting time: ' `date`
-OPTS=-v
+OPTS=
 
 set -e
 
