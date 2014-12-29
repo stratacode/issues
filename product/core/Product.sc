@@ -1,105 +1,3 @@
-
-// Layer: relatedProducts
-class RelatedProduct {
-  String relationDesc;
-  Product relatedProduct;
-}
-
-// Making this an interface so we can add it anywhere.  We might want to add layers which
-// implement this up at a higher level or add this to more components.
-interface TrackableResource {
-   Date startDate;
-   Date endDate;
-   Date lastModified;
-   User lastUpdated;
-}
-
-class CatalogElement implements TrackableResource {
-   String name;
-   String shortDesc, longDesc;
-
-   /** If false, this catalog element should be invisible and is not available for purchase */
-   boolean liveProduct; 
-
-   Category parentCategory;
-
-   /** Used for the direct linking URL */
-   String primaryKeywords;
-   /** Used as page meta data for SEO */
-   List<String> altKeywords;
-
-   // Layer: multiCategory
-   List<Category> parentCategories;
-
-   // Layer: relatedProducts
-   List<RelatedProduct> relatedCategories;
-
-   // Layer for product media
-   ProductImage productImage;
-   ProductImage navImage;
-   List<ProductImage> altViews;
-
-   // TODO: encode in parameterized display template.  Using type groups, annotate a given template
-   // from the page-type here, we can access the instance at runtime.  It will need to extend
-   // the ProductTemplate class which has the annotation... that has a product property which
-   // we populate in the dispatch of the template from the Display page.
-}
-
-class Category extends CatalogElement {
-   /** Display this category in a navigation menu.  Some categories are hidden  */
-   boolean navigateable;
-
-   ProductImage subCategoryImage;
-}
-
-/** A category which acts as a root category for a tree of child products and categories. */
-class Storefront extends Category {
-
-}
-
-class BaseSKU {
-   // Backpointer to the product which owns this sku
-   @Constant 
-   Product product;
-   String skuCode;
-}
-
-// Media layer
-class ProductMedia {
-   // TODO: encode in parameterized display template
-   String mainURL;
-   String captionText;
-
-   // This can be customized to control different representations of the same thing
-   // New media properties should be introduced for assets required by new product templates.
-   // We can match the base class for the product template against the product to determine
-   // a match.
-}
-
-class ProductImage extends ProductMedia {
-   String thumbURL;
-   String zoomedURL;
-
-   int width, height;
-   String altText;
-}
-
-@interface OptionProperty {
-   int priority; // Affects the order of the option in the product's option list, which defaults to the 
-                 // order of the option property in the products source.
-   String skuPattern = "-{value}-";
-}
-
-/** 
-  When you set the @OptionProperty annotation on a property in a Product, an instance of this
-  class is generated.  Each product can retrieve it's list of PropertyOption's that are defined on it and it's super
-  types, in the order specified by priority. 
-  */
-class PropertyOption {
-   String propertyName;
-   String skuPattern; 
-}
-
 /** 
  * The product will represent a family of skus like in most ecommerce systems.  Here there's
  * always a current sku which reflects the current set of product option properties which 
@@ -108,6 +6,36 @@ class PropertyOption {
  * we regenerate the current sku property.  As the sku is changed, we'll similarly adjust
  * the option properties affected by that sku.  The sku-id is generated via a configurable
  * rule from the set of option properties.
+ */
+/** 
+The basic product structure and hinge points for extensions:
+
+Use sub-types for high-level types of products - BrandedProduct, DigitalProduct, etc.
+The framework will let the management UI gather the concrete types in this hierarchy for
+creating specific types of products and letting you have more than one type in the same 
+catalog.
+
+Use ProductType instances which associate a given class with a renderer and add rules for managing that type of product.  Each Product then has a ProductType productType property.
+
+The ProductType should have a method - validateProduct(Product) which returns a list of PropertyErrors (name of property, error code, error args, error message) for the product.
+
+
+Use layers for cross-product policy options.  We could have for example "globalMultiSku" which
+adds the multiSku property to Product or brandedMultiSku which adds it at the BrandedProduct
+level.
+
+Products will have renderers.  there can be a ProductRenderer base class which we define
+that's UI independent.  When you add a particular UI in a layer, it customizes the ProductRenderer
+to be specific to that framework - e.g. it could be an SCHTML type.
+
+Each class can have a defaultRenderer - used for all instances of that class which do not specify a template of their own.
+
+Each ProductType can specify a ProductRenderer type used for that ProductType.
+
+Question: should we push up the ProductClass, ProductType pattern so it's easy to use this for any manageable entity (e.g. sku, category)   ManageableClass, ManageableType, ManageableRenderer.  If so, ManagealbeType can have a list of labels - e.g. catalogElement, product to which this type pertains.  That lets the UI group each manageable thing according to more than one label.
+
+Question: should a ManageableClass have more than one ProductType?  Or if we need more than one dimension to categorize a manageable entity do we just add another property?  It seems like one productType is enough.  If it really represents a way to create and managea a "renderable thing", if we have a new way to render that thing in a different context, that's really a different property of that thing.
+
  */
 class Product extends CatalogElement {
    // Theses are all additional text segments you can display.  As they are populated
@@ -140,59 +68,8 @@ class Product extends CatalogElement {
    // Inventory layer
    ProductInventory inventory;
 
-   // Production - options?  we'll represent them as real properties so we get the benefits of
+   // Product - options?  we'll represent them as real properties so we get the benefits of
    // the type system, better more efficient storage, etc.  But there's a @ProductOption annotation
    // we use so we can gather up all options for each type and support a reflective way to treat
    // special product options in the code.  
 }
-
-class DigitalProduct extends Product {
-   
-}
-
-class PhysicalProduct extends Product {
-   // Product dimensions - 
-   double weight, height, width, length;
-}
-
-
-class ProductBundle extends Product {
-   List<Product> parts;
-}
-
-interface CategoryCrossSell {
-   List<Category> categoryCrossSells;
-}
-
-interface CategoryUpSell {
-   List<Category> categoryUpSells;
-}
-   
-interface ProductCrossSell {
-   List<Product> productCrossSells;
-}
-
-interface ProductUpSell {
-   List<Product> productUpSells;
-}
-
-// Accessories layer in an interface
-interface ProductAccessories {
-   List<Product> accessories;
-}
-
-// Layer: brandedCore
-
-class Brand {
-   String brandName;
-}
-
-interface BrandedProduct {
-   Brand brand;
-}
-
-// Layer: brandedProduct
-
-Product implements BrandedProduct {
-}
-
