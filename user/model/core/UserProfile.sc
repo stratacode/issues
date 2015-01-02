@@ -13,6 +13,4 @@ class UserProfile {
     }
 
     LoginStatus loginStatus = LoginStatus.NotLoggedIn;
-
-
 }

@@ -37,6 +37,7 @@ Question: should we push up the ProductClass, ProductType pattern so it's easy t
 Question: should a ManageableClass have more than one ProductType?  Or if we need more than one dimension to categorize a manageable entity do we just add another property?  It seems like one productType is enough.  If it really represents a way to create and managea a "renderable thing", if we have a new way to render that thing in a different context, that's really a different property of that thing.
 
  */
+
 class Product extends CatalogElement {
    // Theses are all additional text segments you can display.  As they are populated
    // the template will adjust itself to display them.  
@@ -50,10 +51,10 @@ class Product extends CatalogElement {
    List<RelatedProduct> relatedProducts;
 
    // When you set the SKU it should populate any associated options and vice versa
-   ProductSKU sku;
+   BaseSKU sku;
 
    // Layer: multiSku
-   List<ProductSKU> productSkus;
+   List<BaseSKU> productSkus;
 
    // ?? Joda money package or BigDecimal for storing prices?  Wrap in a container
    // so prices are more configurable
