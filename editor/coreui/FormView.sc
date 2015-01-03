@@ -26,7 +26,13 @@ class FormView {
    JavaModel currentJavaModel := editorModel.currentJavaModel;
    currentJavaModel =: invalidateForm();
 
-   public void invalidateForm() {
+   void invalidateForm() {
    }
+
+   class ClassView {
+      Object instance;
+      Object oldInstance;
+   }
+
 
 }

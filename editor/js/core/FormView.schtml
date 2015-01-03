@@ -12,8 +12,6 @@
          ClientTypeDeclaration clientType := ModelUtil.getClientTypeDeclaration(type);;
          UIIcon icon := type == null ? null : GlobalResources.lookupUIIcon(type);
          type =: updateInstance(null);
-         Object instance = null; 
-         Object oldInstance = null;
          List<InstanceWrapper> instancesOfType := editorModel.ctx.getInstancesOfType(type, 10, true);
          int instSelectedIndex = 0;
 
