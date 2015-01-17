@@ -1,1 +1,1 @@
-public test.js.todoList extends js.template, util {}
+public test.js.todoList extends js.schtml, util {}

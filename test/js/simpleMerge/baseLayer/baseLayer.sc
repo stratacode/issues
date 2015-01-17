@@ -1,1 +1,1 @@
-public test.js.simpleMerge.baseLayer extends js.template {}
+public test.js.simpleMerge.baseLayer extends js.schtml {}

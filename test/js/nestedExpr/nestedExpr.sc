@@ -1,4 +1,4 @@
 package;
 
-public test.js.nestedExpr extends js.template {
+public test.js.nestedExpr extends js.schtml {
 }

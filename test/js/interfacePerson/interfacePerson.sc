@@ -1,1 +1,1 @@
-public test.js.interfacePerson extends js.template {}
+public test.js.interfacePerson extends js.schtml {}

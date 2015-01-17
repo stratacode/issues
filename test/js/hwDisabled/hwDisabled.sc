@@ -1,1 +1,1 @@
-test.js.hwDisabled extends js.template {}
+test.js.hwDisabled extends js.schtml {}
