@@ -2,7 +2,8 @@ package sc.editor;
 
 @sc.js.JSSettings(jsModuleFile="js/sceditor.js")
 public editor.coreui extends model, gui.util.core {
-   defaultSyncMode = sc.obj.SyncMode.Automatic;
+   // This is one of those layers which could go either way...
+   //defaultSyncMode = sc.obj.SyncMode.Automatic;
    codeType = sc.layer.CodeType.Application;
    codeFunction = sc.layer.CodeFunction.UI;
 

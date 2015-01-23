@@ -6,7 +6,11 @@
       visible :=: viewVisible;
    %>
 
-   <div id="ClassView" class="classView" abstract="true">
+   <div id="BaseView" abstract="true">
+       <%! abstract void updateListeners(); %>
+   </div>
+
+   <div id="ClassView" class="classView" abstract="true" class="classView" extends="BaseView">
       <%! 
          BodyTypeDeclaration type; 
          ClientTypeDeclaration clientType := ModelUtil.getClientTypeDeclaration(type);;
@@ -57,8 +61,7 @@
             for (Object child:children) {
                if (child instanceof propList_Repeat.propList) {
                   propList_Repeat.propList pchild = (propList_Repeat.propList) child;
-                  pchild.eview.updateListeners();
-                  pchild.cview.updateListeners();
+                  ((BaseView) pchild.repeatVar).updateListeners();
                }
             }
          }
@@ -72,16 +75,47 @@
                if (child instanceof propList_Repeat.propList) {
                   propList_Repeat.propList pchild = (propList_Repeat.propList) child;
 
-                  ClassView childCView = pchild.cview;
-                  BodyTypeDeclaration childType = childCView.type;
-                  if (childType != null && ModelUtil.isObjectType(childType) && !ModelUtil.hasModifier(childType, "static")) {
-                     Object childInst = instance == null ? null : DynUtil.getPropertyValue(instance, childType.typeName);
-                     childCView.updateInstance(childInst);
+                  BaseView childView = (BaseView) pchild.repeatVar;
+
+                  if (childView instanceof ClassView) {
+                      ClassView childCView = (ClassView) childView;
+                      BodyTypeDeclaration childType = childCView.type;
+                      if (childType != null && ModelUtil.isObjectType(childType) && !ModelUtil.hasModifier(childType, "static")) {
+                         Object childInst = instance == null ? null : DynUtil.getPropertyValue(instance, childType.typeName);
+                         childCView.updateInstance(childInst);
+                      }
                   }
                }
             }
          }
       %>
+
+      <div id="ClassViewChild" extends="ClassView" abstract="true" type=":= (BodyTypeDeclaration) repeatVar">
+      </div>
+
+       <div id="ElementRepeatWrapper" implements="sc.lang.html.IRepeatWrapper">
+          <%! Element createElement(Object value, int ix, Element oldTag) {
+             Element res;
+             if (ModelUtil.isProperty(value)) {
+                if (oldTag instanceof ElementView)
+                   return oldTag;
+                ElementView eview = new ElementView();
+                //eview.propC = value;
+                res = eview;
+             }
+             else {
+                if (oldTag instanceof ClassViewChild)
+                   return oldTag;
+                ClassViewChild cview = new ClassViewChild();
+                //cview.type = (BodyTypeDeclaration) value;
+                res = cview;
+             }
+             res.setRepeatVar(value);
+             res.setRepeatIndex(ix);
+
+             return res;
+           } %>
+       </div>
 
       <img visible=":= icon != null && type != null" src='= icon == null ? "" : icon.path' alt='= icon == null ? "" : icon.desc'/><img visible=":= clientType != null && !clientType.existsInJSRuntime" src="/images/serverIcon.png" style="position: relative; left: -2px;"/>  <%= (clientType == null ? "null-type" : clientType.declarationType.name) %> <span class="classLabel"><%= clientType == null ? "" : clientType.typeName %> </span>
 
@@ -89,9 +123,9 @@
          <option><%= optionData %></option>
       </select>
 
-      <div id="ElementView" abstract="true" component="true">
+      <div id="ElementView" abstract="true" component="true" class="propView" extends="BaseView">
          <%! 
-            Object propC; 
+            Object propC := repeatVar; 
             IVariableInitializer varInit := propC instanceof IVariableInitializer ? (IVariableInitializer) propC : null;
             UIIcon icon := propC == null ? null : GlobalResources.lookupUIIcon(propC, ModelUtil.isDynamicType(type));
             String errorText;
@@ -190,11 +224,7 @@
           </form>
        </div>
 
-       <div id="propList" repeat=":= editorModel.getPropertiesForType(type)" repeatVarName="propObj">
-          <%! boolean isProperty := ModelUtil.isProperty(propObj); %>
-          <div id="eview" visible=":= isProperty && getPropVisible(instance, varInit)" extends="ElementView" propC=":= isProperty ? propObj : null" class="propView"/>
-          <div id="cview" visible=":= !isProperty" extends="ClassView" type=":= !isProperty ? (BodyTypeDeclaration) propObj : null" class="classView"/>
-      </div>
+       <div id="propList" repeat=":= editorModel.getPropertiesForType(type)" repeatVarName="propObj" repeatWrapper="ElementRepeatWrapper"/>
    </div>
 
    <div id="formScroll" style="height: 100%; width: 100%; overflow: auto;">

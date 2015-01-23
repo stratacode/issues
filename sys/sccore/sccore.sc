@@ -12,7 +12,6 @@ sys.sccore {
 
    compiled = true; // This layer stores src files that are already compiled - by marking this as both final and compiled, we do not have to load the source unless re-generating these classes in javascript.
 
-   defaultSyncMode = sc.obj.SyncMode.Disabled;
    public void initialize() {
       sc.layer.LayeredSystem system = getLayeredSystem();
 

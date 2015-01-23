@@ -93,7 +93,7 @@ The server applies that layer of changes and records any subsequent changes made
 
 The client applies the response which typically updates the user interface displays or triggers additional UI display logic.
 
-There is a lot of moving parts but they are all carefully designed to be flexible, efficient, and maintainable.  For example, it's easy to trace the generated code injected into the Java for synchronization to be sure it matches what you want.  Also, The formats exchanged are very easy to read and debug.
+There is a lot of moving parts but they are all carefully designed to be flexible, efficient, and maintainable.  For example, it's easy to trace the generated code injected into the Java for synchronization to be sure it matches what you want.  Also, The formats exchanged are very easy to read and debug.  See [debugging](debugging.html) for details.
 
 Overall we believe the sync framework provides a clean way to implement declarative, client/server from a single code base.
 
@@ -101,7 +101,7 @@ You can of course mix in explicit RPC or use data binding to call remote methods
 
 ## Data Synchronization - Client/Server Communication
 
-The @sc.obj.Sync annotation is used to mark classes that should be synchronized.  For layers which set the defaultSyncMode property to Automatic (the default), any property which exists in both the client and server runtime is synchronized automatically.
+The @sc.obj.Sync annotation is used to mark classes that should be synchronized.  For layers, types, or properties which set the @Sync(syncMode=SyncMode.Automatic), any property which exists in the same type in both the client and server runtime is synchronized automatically.
 
 For example, the shared model code runs on both client and server:
 

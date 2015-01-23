@@ -33,8 +33,9 @@ import sc.lang.java.TypeDeclaration;
 import sc.lang.java.ClientTypeDeclaration;
 import sc.lang.EditorContext;
 
+@sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic)
 public editor.model extends util, gui.util.core, sys.layeredSystem {
-   defaultSyncMode = sc.obj.SyncMode.Automatic;
+   //defaultSyncMode = sc.obj.SyncMode.Automatic;
    codeType = sc.layer.CodeType.Declarative;
    codeFunction = sc.layer.CodeFunction.Model;
 

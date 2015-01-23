@@ -1,11 +1,14 @@
 import sc.lang.java.ModelUtil;
 import java.util.Arrays;
 
+@sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic)
 class EditorPanel {
 
+   @sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic, includeSuper=true)
    object editorModel extends EditorModel {
    }
 
+   @sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic, includeSuper=true)
    object typeTreeModel extends TypeTreeModel {
       editorModel := EditorPanel.this.editorModel;
    }
@@ -16,6 +19,7 @@ class EditorPanel {
 
    Object createTypeModeName;
 
+   @sc.obj.Sync
    ViewType viewType = ViewType.FormViewType;
 
    String newTypeNameField :=: editorModel.createModeTypeName;  // Set on selection to a value to pre-populate the 'extends' form field
@@ -24,6 +28,7 @@ class EditorPanel {
    @sc.obj.Sync(syncMode=sc.obj.SyncMode.Disabled)
    boolean staleSelection = false;
 
+   @sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic)
    class BaseTypeTree implements TypeTreeSelectionListener {
       // When a package is selected, stores the name of that package
       String currentPackageNode;

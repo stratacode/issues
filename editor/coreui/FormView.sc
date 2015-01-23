@@ -10,6 +10,8 @@ import java.util.Iterator;
 
 class FormView {
    EditorModel editorModel;
+
+   @sc.obj.Sync
    boolean viewVisible;
 
    int numCols = 1;

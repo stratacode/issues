@@ -168,6 +168,8 @@ You can enable tracing of all binding events to figure out what's happening.  It
 
 Better tools could make it easier to trace down logic errors of all kinds in data binding expressions, capturing the log files for selected properties, providing both the organization and access to stack traces for specific changes.
 
+See [debugging](debugging.html) for details.
+
 <% ) %>
 
 

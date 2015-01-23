@@ -1,10 +1,13 @@
 import sc.dyn.DynUtil;
 import java.util.Collection;
 
+@sc.obj.Sync(syncMode = sc.obj.SyncMode.Automatic)
 class CodeView {
    EditorModel editorModel;
    int maxEditorHeight = 251, minEditorHeight = 150;
    int numEditors;
+
+   @sc.obj.Sync
    boolean viewVisible;
 
    List<CodeEditor> editors = new ArrayList<CodeEditor>();
@@ -54,6 +57,7 @@ class CodeView {
 
    abstract void updateCaretPositions();
 
+   @sc.obj.Sync(syncMode = sc.obj.SyncMode.Automatic)
    class CodeEditor {
       @sc.obj.Sync(syncMode=sc.obj.SyncMode.Disabled)
       EditorModel.SelectedFile file;

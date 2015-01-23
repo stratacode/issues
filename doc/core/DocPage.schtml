@@ -27,6 +27,7 @@
          <div extends="DocIndex" title="Build Runtime" url="runtime.html"/>
          <div extends="DocIndex" title="Template Language" url="templateLang.html"/>
          <div extends="DocIndex" title="Generated Code" url="genCode.html"/>
+         <div extends="DocIndex" title="Debugging" url="debugging.html"/>
          <div extends="DocIndex" title="Parsing and Code Gen Framework" url="parser.html"/>
          <div extends="DocIndex" title="Framework Development" url="frameworkDev.html"/>
          <div extends="DocIndex" title="Servlets, Junit, Jetty" url="moreFrameworks.html"/>

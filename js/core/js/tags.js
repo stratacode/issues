@@ -670,7 +670,7 @@ js_HTMLElement_c.syncRepeatTags = function(updateDOM) {
                   console.error("Null or undefined value for repeat element: " + i);
                   continue;
                }
-               var newElem = this.createRepeatElement(toAddArrayVal, i);
+               var newElem = this.createRepeatElement(toAddArrayVal, i, null);
                repeatTags.push(newElem);
             }
          }
@@ -691,12 +691,19 @@ js_HTMLElement_c.syncRepeatTags = function(updateDOM) {
                         // Either replace or insert a row
                         var curNewIx = this.repeatElementIndexOf(repeat, i, oldArrayVal);
                         if (curNewIx == -1) { // Reuse the existing object so this turns into an incremental refresh
-                           oldElem.setRepeatIndex(i);
-                           oldElem.setRepeatVar(arrayVal);
+                           var newElem = this.createRepeatElement(arrayVal, i, oldElem);
+                           if (oldElem == newElem) {
+                              oldElem.setRepeatIndex(i);
+                              oldElem.setRepeatVar(arrayVal);
+                           }
+                           else {
+                              needsRefresh = this.removeElement(oldElem, i, updateDOM) || needsRefresh;
+                              needsRefresh = this.insertElement(newElem, i, updateDOM) || needsRefresh;
+                           }
                         }
                         else {
                            // Assert curNewIx > i - if it is less, we should have already moved it when we processed the old guy
-                           var newElem = this.createRepeatElement(arrayVal, i);
+                           var newElem = this.createRepeatElement(arrayVal, i, null);
                            needsRefresh = this.insertElement(newElem, i, updateDOM) || needsRefresh;
                         }
                      }
@@ -727,7 +734,7 @@ js_HTMLElement_c.syncRepeatTags = function(updateDOM) {
                else {
                   // If the current array val is not in the current list then append it
                   if (curIx == -1) {
-                     var arrayElem = this.createRepeatElement(arrayVal, i);
+                     var arrayElem = this.createRepeatElement(arrayVal, i, null);
                      needsRefresh = this.appendElement(arrayElem, updateDOM) || needsRefresh;
                   }
                   // Otherwise need to move it into its new location.
@@ -809,7 +816,8 @@ js_HTMLElement_c.insertElement = function(tag, ix, updateDOM) {
           repeatTag.updateDOM();
           curElem = repeatTag.element;
           if (curElem == null) {
-             console.log("Unable to insert element to repeat - no element in sibling repeat tag at spot: " + sz-1);
+             if (js_Element_c.verbose)
+                console.log("Unable to insert element to repeat - no element in sibling repeat tag at spot: " + ix);
              return true;
           }
        }
@@ -1063,11 +1071,11 @@ js_HTMLElement_c.output = function() {
    return sb;
 }
 
-js_HTMLElement_c.createRepeatElement = function(rv, ix) {
+js_HTMLElement_c.createRepeatElement = function(rv, ix, oldTag) {
    var elem;
    var flush = sc_SyncManager_c.beginSyncQueue();
    if (sc_instanceOf(this, js_IRepeatWrapper)) {
-       elem = this.createElement(rv, ix);
+       elem = this.createElement(rv, ix, oldTag);
    }
    else {  // TODO: remove? This is the older case where the generated code did not generate the separate wrapper class
       elem = sc_DynUtil_c.createInnerInstance(this.constructor, null, this.outer);
