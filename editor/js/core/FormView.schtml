@@ -93,8 +93,8 @@
       <div id="ClassViewChild" extends="ClassView" abstract="true" type=":= (BodyTypeDeclaration) repeatVar">
       </div>
 
-       <div id="ElementRepeatWrapper" implements="sc.lang.html.IRepeatWrapper">
-          <%! Element createElement(Object value, int ix, Element oldTag) {
+      <div id="elementRepeatWrapper" implements="sc.lang.html.IRepeatWrapper">
+         <%! Element createElement(Object value, int ix, Element oldTag) {
              Element res;
              if (ModelUtil.isProperty(value)) {
                 if (oldTag instanceof ElementView)
@@ -224,7 +224,7 @@
           </form>
        </div>
 
-       <div id="propList" repeat=":= editorModel.getPropertiesForType(type)" repeatVarName="propObj" repeatWrapper="ElementRepeatWrapper"/>
+       <div id="propList" repeat=":= editorModel.getPropertiesForType(type)" repeatVarName="propObj" repeatWrapper="elementRepeatWrapper"/>
    </div>
 
    <div id="formScroll" style="height: 100%; width: 100%; overflow: auto;">
