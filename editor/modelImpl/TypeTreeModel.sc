@@ -115,7 +115,7 @@ TypeTreeModel {
 
       TreeEnt cent = typeEmptyCommentNode = new TreeEnt(EntType.Comment, "No visible types", true, null, null);
 
-      Set<String> srcTypeNames = system.getSrcTypeNames(true, loadInnerTypesAtStartup, false, true);
+      Set<String> srcTypeNames = system.getSrcTypeNames(true, loadInnerTypesAtStartup, false, true, true, true);
       if (specifiedLayerNames != null) {
          specifiedLayers = new ArrayList<Layer>(specifiedLayerNames.length);
          for (int i = 0; i < specifiedLayerNames.length; i++) {
