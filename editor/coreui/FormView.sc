@@ -8,33 +8,12 @@ import sc.bind.IListener;
 
 import java.util.Iterator;
 
-class FormView {
-   EditorModel editorModel;
-
-   @sc.obj.Sync
-   boolean viewVisible;
-
-   int numCols = 1;
-   int nestWidth = 10;
-
-   int tabSize = 140;
-
+class FormView extends BaseFormView {
    /** When making change to a type, do we go ahead and update all instances? */
    boolean updateInstances = true;
-
-   editorModel =: invalidateForm();
-   viewVisible =: invalidateForm();
-
-   JavaModel currentJavaModel := editorModel.currentJavaModel;
-   currentJavaModel =: invalidateForm();
-
-   void invalidateForm() {
+   
+   class ClassView extends TypeView {
+      //ElementView {
+      //}
    }
-
-   class ClassView {
-      Object instance;
-      Object oldInstance;
-   }
-
-
 }

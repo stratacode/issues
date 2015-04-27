@@ -37,4 +37,11 @@ sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/
 
 sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
 
+sc -ni -ta test/lambda
+sc -ni -ta test/java7Misc
+sc -ni -ta js/allInOne/main test/java7Misc 
+sc -ni -ta test/java7Thread
+sc -ni -ta test/defaultMethods
+
 rm -rf unitDemo
+

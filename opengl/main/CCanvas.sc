@@ -1,7 +1,7 @@
-import javax.media.opengl.awt.GLCanvas;
-import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLProfile;
-import javax.media.opengl.GLCapabilities;
+import com.jogamp.opengl.awt.GLCanvas;
+import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.GLCapabilities;
 
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -56,7 +56,7 @@ public class CCanvas extends GLCanvas implements IRenderParent {
       return children;
    }
 
-   static GLProfile profile = javax.media.opengl.GLProfile.getDefault();
+   static GLProfile profile = com.jogamp.opengl.GLProfile.getDefault();
    static GLCapabilities capabilities = new GLCapabilities(profile);
    static {
       capabilities.setSampleBuffers(true);

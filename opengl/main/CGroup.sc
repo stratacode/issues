@@ -1,4 +1,3 @@
-import javax.media.opengl.awt.GLCanvas;
 import sc.util.ArrayList;
 
 @Component

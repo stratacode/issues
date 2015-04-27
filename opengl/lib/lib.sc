@@ -6,11 +6,12 @@ opengl.lib {
    codeFunction = sc.layer.CodeFunction.UI;
 
    {
-      sc.repos.RepositoryPackage pkg = addRepositoryPackage("javaOpenGL", "scp", "vsgit@stratacode.com:/home/vsgit/opengl", false);
+      sc.repos.RepositoryPackage pkg = addRepositoryPackage("javaOpenGL", "url", "http://www.stratacode.com/packages/opengl.zip", true);
       if (!disabled) {
-         String openGLDir = sc.util.FileUtil.concat(pkg.installedRoot, "lib") + "/";
-         classPath=openGLDir + "jogl.all.jar:" + openGLDir + "nativewindow.all.jar:" + 
-                   openGLDir + "gluegen-rt.jar:" + openGLDir + "newt.all.jar";
+         String openGLDir = sc.util.FileUtil.concat(pkg.installedRoot, "lib");
+         classPath = sc.util.FileUtil.listFiles(openGLDir,".*\\.jar");
+         //classPath=openGLDir + "jogl.all.jar:" + openGLDir + "nativewindow.all.jar:" + 
+         //          openGLDir + "gluegen-rt.jar:" + openGLDir + "newt.all.jar";
          /*String path = System.getProperty("java.library.path");
          if (path == null) path = "";
          else path += ":";

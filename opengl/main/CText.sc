@@ -1,4 +1,4 @@
-import com.sun.opengl.util.awt.TextRenderer;
+import com.jogamp.opengl.util.awt.TextRenderer;
 import java.awt.Font;
 
 public class CText extends AbstractRenderNode {
@@ -55,10 +55,14 @@ public class CText extends AbstractRenderNode {
          }
       }
       else {
+         System.err.println("*** No more 2D text mode");
+      /*
+         // these getWidth and getHeight methods no longer exist
          renderer.beginRendering(draw.getWidth(), draw.getHeight());
          renderer.setColor((float)r, (float)g, (float)b, (float)a);
          renderer.draw3D(text, (float) x, (float) y, (float) z, (float) scale);
          renderer.endRendering();
+      */
       }
    }
 }

@@ -53,7 +53,7 @@ public class EditQuestion extends JPanel {
       // We must call get/setAnswerChoice here to force Openjpa to
       // detect the property change.  
       // text :=: question.answerChoices[0];
-      text :=: question.getAnswerChoice(0);
+      text :=: question.retAnswerChoice(0);
       location := SwingUtil.point(xpad + answerChoice0.size.width + gap, answerChoice0.location.y);
       size := SwingUtil.dimension(displayWidth - answerChoice0.size.width - gap, preferredSize.height);
    }
@@ -63,7 +63,7 @@ public class EditQuestion extends JPanel {
       size := preferredSize;
    }
    object answerChoice1Text extends JTextField {
-      text :=: question.getAnswerChoice(1);
+      text :=: question.retAnswerChoice(1);
       location := SwingUtil.point(xpad + answerChoice1.size.width + gap, answerChoice1.location.y);
       size := SwingUtil.dimension(displayWidth - answerChoice1.size.width - gap, preferredSize.height);
    }
@@ -73,7 +73,7 @@ public class EditQuestion extends JPanel {
       size := preferredSize;
    }
    object answerChoice2Text extends JTextField {
-      text :=: question.getAnswerChoice(2);
+      text :=: question.retAnswerChoice(2);
       location := SwingUtil.point(xpad + answerChoice2.size.width + gap, answerChoice2.location.y);
       size := SwingUtil.dimension(displayWidth - answerChoice2.size.width - gap, preferredSize.height);
    }
@@ -83,7 +83,7 @@ public class EditQuestion extends JPanel {
       size := preferredSize;
    }
    object answerChoice3Text extends JTextField {
-      text :=: question.getAnswerChoice(3);
+      text :=: question.retAnswerChoice(3);
       location := SwingUtil.point(xpad + answerChoice3.size.width + gap, answerChoice3.location.y);
       size := SwingUtil.dimension(displayWidth - answerChoice3.size.width - gap, preferredSize.height);
    }

@@ -5,7 +5,9 @@ import sc.bind.Bind;
 
 import java.util.List;
 
-/** The client view of this file (a subset of the original one - yes, should be using layers to keep them in sync but that will require needing to build SC with SC which adds a tooling challenge! */
+/** The client view of this file (a subset of the original one -
+ * TODO: should be using layers to keep them in sync but that will require breaking the cord with Java and building SC with SC
+ */
 @Sync(onDemand=true)
 public class LayeredSystem {
    public List<Layer> layers;

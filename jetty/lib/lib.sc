@@ -1,6 +1,6 @@
 package sc.jetty;
 
-jetty.lib {
+jetty.lib extends log4j {
    compiledOnly = true;
 
    codeType = sc.layer.CodeType.Framework;

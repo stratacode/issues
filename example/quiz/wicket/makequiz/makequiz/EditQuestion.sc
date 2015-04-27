@@ -68,7 +68,7 @@ public class EditQuestion extends DataManagedWebPage {
 		  // We must call get/setAnswerChoice here to force
 		  // Openjpa to detect the property change.
 		  // fieldValue :=: question.answerChoices[listItemIndex];
-		  fieldValue :=: question.getAnswerChoice(listItemIndex);
+		  fieldValue :=: question.retAnswerChoice(listItemIndex);
 	       }
 	    }
 	 }

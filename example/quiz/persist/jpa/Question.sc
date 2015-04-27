@@ -15,15 +15,17 @@ Question {
    /**
     * Returns the answer choice at the given index.
     */
-   @BindSettings(reverseMethod="setAnswerChoice")
-   public String getAnswerChoice(int index) {
+   @BindSettings(reverseMethod="updateAnswerChoice")
+   public String retAnswerChoice(int index) {
       return answerChoices[index];
    }
+
+   override @Lob answerChoices;
 
    /**
     * Sets the answer choice at the given index to the given value.
     */
-   public int setAnswerChoice(String value, int index) {
+   public int updateAnswerChoice(String value, int index) {
       if (!StringUtil.equalStrings(value, answerChoices[index])) {
 	 answerChoices[index] = value;
 	 // Openjpa doesn't detect that this property has changed if

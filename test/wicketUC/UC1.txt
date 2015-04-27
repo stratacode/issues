@@ -1,5 +1,5 @@
 public class UnitConverter extends CWebPage {
-   static class Converter {
+   static class Converter implements java.io.Serializable {
       double value1, value2;
       String unit1, unit2;
       String title;

@@ -13,7 +13,7 @@ GlobalResources {
          Object propType = ModelUtil.getPropertyType(type);
 
          // For icon purposes just convert these to Object for now.
-         if (ModelUtil.isParameterizedType(propType))
+         if (ModelUtil.isTypeVariable(propType))
             propType = ModelUtil.getTypeParameterDefault(propType);
 
          Object enclType = ModelUtil.getEnclosingType(type);

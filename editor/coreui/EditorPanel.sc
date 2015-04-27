@@ -1,4 +1,3 @@
-import sc.lang.java.ModelUtil;
 import java.util.Arrays;
 
 @sc.obj.Sync(syncMode=sc.obj.SyncMode.Automatic)

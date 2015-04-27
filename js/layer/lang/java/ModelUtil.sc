@@ -75,7 +75,6 @@ public class ModelUtil {
       return DynUtil.getTypeName(type, false);
    }
 
-
    public static boolean hasModifier(Object type, String modName) {
       if (type instanceof TypeDeclaration) {
          ArrayList<String> modifiers = ((TypeDeclaration) type).getClientModifiers();
@@ -91,4 +90,5 @@ public class ModelUtil {
          return (ClientTypeDeclaration) type;
       return null;
    }
+
 }

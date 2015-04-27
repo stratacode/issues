@@ -14,16 +14,10 @@ import sc.type.IBeanMapper;
 
 import java.util.Iterator;
 
-FormView extends JScrollPane implements EditorPanelStyle {
+
+FormView {
    /** Current selected widget (if any) */
    JTextField currentTextField;
-   visible :=: viewVisible;
-
-   viewportView = contentPanel;
-
-   void invalidateForm() {
-      contentPanel.invalidateForm();
-   }
 
    Object getDefaultCurrentObj(Object type) {
       return editorModel.ctx.getDefaultCurrentObj(type);
@@ -35,17 +29,7 @@ FormView extends JScrollPane implements EditorPanelStyle {
 
    static int FORM_NUM_STATIC_COMPONENTS = 0;
 
-   interface IElementView {
-      int getX();
-      int getY();
-      int getWidth();
-      int getHeight();
-      IElementView getPrev();
-      void setPrev(IElementView view);
-
-      void updateListeners();
-      void removeListeners();
-   }
+   int tabSize = 140;
 
    static class LinkButton extends JButton implements MouseListener {
       borderPainted = false;
@@ -59,7 +43,6 @@ FormView extends JScrollPane implements EditorPanelStyle {
       {
          addMouseListener(this);
       }
-
 
       public void mouseClicked(MouseEvent e) {}
 
@@ -82,20 +65,15 @@ FormView extends JScrollPane implements EditorPanelStyle {
    // Some editor operations we make from the UI will change the model and cause a form rebuild.  A quick way to avoid those - just set this to true before making those types of changes
    boolean disableFormRebuild = false;
 
-  // The form view panel for classes, objects, etc.
-  ClassView extends JPanel implements IElementView {
+   // The form view panel for classes, objects, etc.
+   ClassView implements IElementView {
      ClassView parentView;
-     Object type;
      Object[] properties;
      String operatorName := type == null ? null : ModelUtil.isEnumType(type) ? "enum" : ModelUtil.isEnum(type) ? "enum constant" : ModelUtil.isInterface(type) ? "interface" : "class";
      IElementView lastView;
      IElementView prev;
 
-     Layer classViewLayer = editorModel.currentLayer;  // Gets set to the current layer when we are created
-
      ArrayList<IElementView> childViews = new ArrayList<IElementView>();
-
-     int nestLevel = 0;
 
      int numStaticComponents = 5;
 
@@ -109,19 +87,10 @@ FormView extends JScrollPane implements EditorPanelStyle {
 
      int row, col;
 
-     int scrollBorder = 25; // space for the scroll bar should it be needed
-
-     int columnWidth := (int) ((FormView.this.size.width - scrollBorder - 2 * borderSize) / numCols - xpad);
-     int startY := ypad + borderTop;
-
      size := SwingUtil.dimension(width, height);
      location := SwingUtil.point(x, y);
 
      boolean transparentType := !ModelUtil.isTypeInLayer(type, classViewLayer);
-
-     int borderSize = 2;
-     int borderTop = 25;
-     int borderBottom = 0;
 
      int titleBorderX = 30;
 
@@ -215,31 +184,6 @@ FormView extends JScrollPane implements EditorPanelStyle {
         }
      }
 
-     abstract class ElementView extends ComponentGroup implements IElementView {
-        Object value;  // The property or method object
-        IElementView prev;
-        int row, col;
-
-        @Bindable
-        int x := columnWidth * col + xpad,
-            y := prev == null ? ypad + startY : prev.y + prev.height,
-            width := columnWidth - (nestWidth + 2*xpad) * nestLevel, height;
-
-        String propertyName := propertyNameString(value);
-        String propertyOperator := propertyOperator(instance, value);
-
-        Object propertyType := value == null ? null : ModelUtil.getVariableTypeDeclaration(value);
-        String propertyTypeName := value == null ? "<no type>" : String.valueOf(propertyType);
-
-        boolean propertyInherited := ModelUtil.getLayerForMember(null, value) != classViewLayer;
-
-        String propertyNameString(Object val) {
-           return val == null ? "<null>" : ModelUtil.getPropertyName(val) + (ModelUtil.isArray(propertyType) || propertyType instanceof List ? "[]" : "");
-        }
-        String propertyOperator(Object instance, Object val) {
-           return val == null ? "" : (instance != null ? "" : ModelUtil.getOperator(val) != null ? " " + ModelUtil.getOperator(val) : " =");
-        }
-     }
 
      abstract class LabeledView extends ElementView {
         object label extends JLabel {
@@ -253,9 +197,9 @@ FormView extends JScrollPane implements EditorPanelStyle {
 
            text := propertyName + propertyOperator;
 
-           icon := GlobalResources.lookupIcon(value);
+           icon := GlobalResources.lookupIcon(propC);
 
-           toolTipText := "Property of type: " + ModelUtil.getPropertyType(value) + (value instanceof PropertyAssignment ? " set " : " defined ") + "in: " + ModelUtil.getEnclosingType(value);
+           toolTipText := "Property of type: " + ModelUtil.getPropertyType(propC) + (propC instanceof PropertyAssignment ? " set " : " defined ") + "in: " + ModelUtil.getEnclosingType(propC);
         }
         height := (int) label.size.height;
      }
@@ -266,7 +210,7 @@ FormView extends JScrollPane implements EditorPanelStyle {
      class TextFieldView extends LabeledView {
         // Want value set in the constructor both so it is not null and does not send an extra set of change events during initialization
         TextFieldView(Object prop) {
-           value = prop;
+           propC = prop;
         }
 
         void displayFormError(String msg) {
@@ -291,11 +235,11 @@ FormView extends JScrollPane implements EditorPanelStyle {
               disableFormRebuild = true;
               String error = editorModel.setElementValue(type, inst, val, text, updateInstances, inst == null);
               // Refetch the member since we may have just defined one for this type
-              value = ModelUtil.definesMember(type, ModelUtil.getPropertyName(val), JavaSemanticNode.MemberType.PropertyAnySet, null, null);
+              propC = ModelUtil.definesMember(type, ModelUtil.getPropertyName(val), JavaSemanticNode.MemberType.PropertyAnySet, null, null);
               // Update this manually since we change it when moving the operator into the label
-              propertyName = propertyNameString(value);
-              propertyOperator = propertyOperator(instance, value);
-              textField.enteredText = propertyValueString(instance, value);
+              propertyName = getPropertyNameString(propC);
+              propertyOperator = propertyOperator(instance, propC);
+              textField.enteredText = propertyValueString(instance, propC, changeCt);
               if (error != null)
                  displayFormError(error);
            }
@@ -308,7 +252,7 @@ FormView extends JScrollPane implements EditorPanelStyle {
            }
         }
 
-        String propertyValueString(Object instance, Object val) {
+        String propertyValueString(Object instance, Object val, int changeCt) {
            return editorModel.ctx.propertyValueString(type, instance, val);
         }
 
@@ -317,20 +261,13 @@ FormView extends JScrollPane implements EditorPanelStyle {
         JavaModel oldListenerModel = null;
         String oldPropName = null;
 
-        private object valueEventListener extends AbstractListener {
-           public boolean valueValidated(Object obj, Object prop, Object eventDetail, boolean apply) {
-              textField.enteredText = propertyValueString(instance, value);
-              return true;
-           }
-        }
-
         void removeListeners() {
-           removed = true;
-           instance = null;
-           updateListeners();
+            removed = true;
+            instance = null;
+            updateListeners();
 
-           DynUtil.dispose(this);
-        }
+            DynUtil.dispose(this);
+         }
 
         void updateListeners() {
            String propName = propertyName;
@@ -368,6 +305,7 @@ FormView extends JScrollPane implements EditorPanelStyle {
            oldPropName = propName;
         }
 
+
         object textField extends CompletionTextField {
            location := SwingUtil.point(label.location.x + label.size.width + xpad, TextFieldView.this.y);
            size := SwingUtil.dimension(TextFieldView.this.width - label.size.width - label.location.x - 2*xpad-borderSize, preferredSize.height);
@@ -377,16 +315,16 @@ FormView extends JScrollPane implements EditorPanelStyle {
            }
 
            // If we have a fromString converter registered, we can edit this guy in value mode
-           boolean settable := instance == null || RTypeUtil.canConvertTypeFromString(ModelUtil.getPropertyType(value));
+           boolean settable := instance == null || RTypeUtil.canConvertTypeFromString(ModelUtil.getPropertyType(propC));
            foreground := settable ? ComponentStyle.defaultForeground : SwingUtil.averageColors(ComponentStyle.defaultForeground, ComponentStyle.defaultBackground);
 
            // instance could be retrieved through type hierarchy but we need to update the binding when the instance changes
-           enteredText := propertyValueString(instance, value);
+           enteredText := propertyValueString(instance, propC, changeCt);
 
            // Only trigger the change to the model when the user enters the text.  Not when we set enteredText because the value changed
-           userEnteredCount =: settable ? setElementValue(type, ClassView.this.instance, value, enteredText) : errorLabel.text = "This view shows the toString output of property: " + propertyName + " No string conversion for type: " ;
+           userEnteredCount =: settable ? setElementValue(type, ClassView.this.instance, propC, enteredText) : errorLabel.text = "This view shows the toString output of property: " + propertyName + " No string conversion for type: " ;
 
-           focus =: focusChanged(this, value, ClassView.this.instance, focus);
+           focus =: focusChanged(this, propC, ClassView.this.instance, focus);
         }
         object errorLabel extends JLabel {
           location := SwingUtil.point(textField.location.x, textField.location.y + textField.size.height + ypad);
@@ -525,8 +463,7 @@ FormView extends JScrollPane implements EditorPanelStyle {
      startY := ypad + borderTop;
   }
 
-
-   object contentPanel extends JPanel {
+   contentPanel {
       int maxChildWidth, maxChildHeight;
       preferredSize := SwingUtil.dimension(maxChildWidth, maxChildHeight);
 
@@ -543,7 +480,6 @@ FormView extends JScrollPane implements EditorPanelStyle {
 
          }
       }
-
 
       List<ClassView> childViews = new ArrayList<ClassView>();
 
@@ -633,7 +569,6 @@ FormView extends JScrollPane implements EditorPanelStyle {
 
          currentTextField = null;
       }
-
    }
 
   class InstanceView extends ClassView {

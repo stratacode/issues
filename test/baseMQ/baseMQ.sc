@@ -4,5 +4,5 @@ import java.io.Serializable;
 import sc.bind.BindSettings;
 import sc.util.StringUtil;
 
-public test.baseMQ extends jpa.openjpa {
+public test.baseMQ extends jpa.datanucleus {
 }

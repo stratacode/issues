@@ -1,11 +1,19 @@
 import sc.layer.ITestProcessor;
 import sc.dyn.RDynUtil;
 import sc.dyn.DynUtil;
+import org.junit.runner.notification.RunListener;
+import org.junit.runner.notification.Failure;
 
-public class JUnitTestProcessor implements ITestProcessor {
+public class JUnitTestProcessor extends RunListener implements ITestProcessor {
    public boolean executeTest(Object cl) {
-      if (cl instanceof Class)
-         return JUnitCore.runClasses((Class) cl).wasSuccessful();
+      if (cl instanceof Class) {
+         JUnitCore core = new JUnitCore();
+         core.addListener(this);
+         Result res = core.run((Class) cl);
+         if (!res.wasSuccessful())
+            System.err.println(res.getFailures());
+         return res.wasSuccessful();
+      }
       else {
          boolean result = true;
          Object testInst = DynUtil.createInstance(cl, null);
@@ -38,4 +46,9 @@ public class JUnitTestProcessor implements ITestProcessor {
       }
       return result;
    }
+
+   public void testFailure(Failure failure) throws Exception {
+       System.err.println("*** Test failed: " + failure.getMessage() + " trace: " + failure.getTrace());
+   }
+                   
 }

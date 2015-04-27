@@ -30,6 +30,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
+import javax.persistence.Lob;
 
 jpa.basejpa extends util {
    codeType = sc.layer.CodeType.Framework;

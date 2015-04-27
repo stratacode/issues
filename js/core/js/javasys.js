@@ -28,6 +28,15 @@ Number_c.valueOf = function(v) {
    return res;
 }
 
+Number_c.compare = function(a,b) {
+   if (a == b)
+      return 0;
+   else if (a > b) 
+      return 1;
+   else
+      return -1;
+}
+
 Number_c.toHexString = function(v) {
    return v.toString(16);
 }
