@@ -12,6 +12,9 @@ import sc.gwt.GWTModule;
 
 public gwt.main extends lib, meta, jreStub {
 
+   // GWT is decommissioned for now
+   disabled = true;
+
    public void start() {
       sc.lang.DefaultAnnotationProcessor moduleProc = new sc.gwt.lang.GWTModuleAnnotation();
       sc.layer.LayeredSystem system = getLayeredSystem();
