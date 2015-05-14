@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 echo 'Prepping demo: ' `date`
 
 sc -vl -a -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait20.txt
