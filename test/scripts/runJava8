@@ -1,0 +1,16 @@
+#!/bin/sh
+
+
+java -version 2>&1 | grep "\"1\.8\."
+if [ "$?" = "1" ] ; then
+  echo "Skipping Java8 tests"
+  exit 0
+fi
+
+set -e
+
+sc -a -ni -ta test/lambda
+sc -a -ni -ta test/java7Misc
+sc -a -ni -ta js/allInOne/main test/java7Misc 
+sc -a -ni -ta test/java7Thread
+sc -a -ni -ta test/defaultMethods
