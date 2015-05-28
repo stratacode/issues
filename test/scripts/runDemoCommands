@@ -5,7 +5,7 @@ set -e
 
 STARTTIME=`date "+%s"`
 
-sc -ta editor/js/mixin -dyn unitConverter/jsui < test/scripts/wait20.txt
+sc -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait20.txt
 sc -ta -ni example/todo/clientOnly
 sc -ta -ee -dyn editor/js/mixin example/todo/clientServer < test/scripts/wait20.txt
 sc -ta example/todo/clientServer editor/js/options/windowScope < test/scripts/wait20.txt
