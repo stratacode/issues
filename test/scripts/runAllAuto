@@ -5,6 +5,8 @@ echo 'Starting time: ' `date`
 
 set -e
 
+test/scripts/runJava8
+
 test/scripts/runDemoAll
 
 test/scripts/runJS
