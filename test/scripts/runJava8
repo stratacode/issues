@@ -14,3 +14,5 @@ sc -a -ni -ta test/java7Misc
 sc -a -ni -ta js/allInOne/main test/java7Misc 
 sc -a -ni -ta test/java7Thread
 sc -a -ni -ta test/defaultMethods
+
+sc -a -ni -ta test/jool

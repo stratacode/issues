@@ -37,6 +37,10 @@ sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/
 
 sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
 
+# Runs the older version of the editor just to increase code-coverage since there were lots of changes
+sc -a test/editor/swing/main example/expertSystem/swingui  < test/scripts/editorScript.txt
+sc -a -dyn test/editor/swing/main example/expertSystem/swingui < test/scripts/editorScript.txt
+
 
 rm -rf unitDemo
 
