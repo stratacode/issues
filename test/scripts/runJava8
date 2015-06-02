@@ -22,3 +22,7 @@ sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/
 
 sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
 
+(cd test/refreshMQ; ./run)
+
+(cd test/wicketMQ; ./run)
+

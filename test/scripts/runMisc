@@ -17,8 +17,6 @@ rm -rf unitDemo
 rm -rf temp/build/unitDemo_*
 sc < test/scripts/ds-swingui2.txt
 
-(cd test/refreshMQ; ./run)
-
 sc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swing.Main
 
 #  Annoying tests that pop up lots of windows
@@ -26,7 +24,5 @@ sc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swin
 (cd test/wicketUC; ./run)
 
 (cd test/wicketQuiz; ./run)
-
-(cd test/wicketMQ; ./run)
 
 rm -rf unitDemo
