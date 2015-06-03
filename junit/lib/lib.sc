@@ -20,7 +20,8 @@ junit.lib {
 
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
-      sc.repos.RepositoryPackage pkg = addRepositoryPackage("junit", "mvn", "mvn://junit/junit/4.12",  false);
+      // Add the maven package mvn://groupId/artifactId/version
+      sc.repos.RepositoryPackage pkg = addRepositoryPackage("mvn://junit/junit/4.12");
       if (pkg.installedRoot != null && !disabled) {
          classPath=pkg.classPath;
       }
