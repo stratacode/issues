@@ -33,6 +33,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       templateResourceLang.buildPhase = sc.layer.BuildPhase.Prepare;
       templateResourceLang.resultSuffix = "xml";
       templateResourceLang.useSrcDir = false;
+      templateResourceLang.srcPathTypes = new String[] {null, "web"};
       templateResourceLang.prependLayerPackage = false;
       // Share one buildDir for web root files since they do not support path searching
       //templateResourceLang.useCommonBuildDir = true;
@@ -89,6 +90,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // Use processPrefix here so that the processedName is computed as a regular java type
       // name so we can replace scss files with sc files.
       cssLanguage.processPrefix = "web";
+      cssLanguage.srcPathTypes = new String[] {null, "web"};
 
       // Only layers after this one will see this extension
       //cssLanguage.definedInLayer = this;  
@@ -128,6 +130,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // and that is where jetty starts.
       //webFileProcessor.useCommonBuildDir = true;
       webFileProcessor.processInAllLayers = true;
+      webFileProcessor.srcPathTypes = new String[] {null, "web"};
 
       // Copy these extensions to the output file - TODO: restrict these to files only in the "web" subdir?
       registerFileProcessor(webFileProcessor, "html");

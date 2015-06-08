@@ -5,11 +5,11 @@ jdbc.mysql {
       sc.layer.LayeredSystem system = getLayeredSystem();
 
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "scp", "vsgit@stratacode.com:/home/vsgit/jettyLibs", false);
-      sc.repos.RepositoryPackage pkg = addRepositoryPackage("mysqlJDBC", "url", "http://stratacode.com/packages/" + componentName + version + ".zip", true);
+      //sc.repos.RepositoryPackage pkg = addRepositoryPackage("mysqlJDBC", "url", "http://stratacode.com/packages/" + componentName + version + ".zip", true);
+      sc.repos.RepositoryPackage pkg = addRepositoryPackage("mvn://mysql/mysql-connector-java/5.1.6");
 
       if (pkg.installedRoot != null && !disabled) {
-         String rootName = sc.util.FileUtil.concat(pkg.installedRoot, componentName + version);
-         classPath = sc.util.FileUtil.listFiles(rootName,".*\\.jar");
+         classPath = pkg.classPath;
       }
    }
 }

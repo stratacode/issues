@@ -6,10 +6,9 @@ sys.std {
    compiledOnly = true;
 
    public void start() {
-      sc.layer.LayeredSystem system = getLayeredSystem();
-      sc.layer.LayerFileProcessor configFileProcessor = new sc.layer.LayerFileProcessor();
+      LayeredSystem system = getLayeredSystem();
+      LayerFileProcessor configFileProcessor = new LayerFileProcessor();
 
-      // Only layers after this one will see this extension
       configFileProcessor.prependLayerPackage = false;
       configFileProcessor.useSrcDir = false;
 

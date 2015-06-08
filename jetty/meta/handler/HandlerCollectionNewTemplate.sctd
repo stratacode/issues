@@ -8,7 +8,7 @@
    <%=lowerClassName%>._preInit();
    <%=propertyAssignments%>
    java.util.List _children = java.util.Arrays.asList(<%=childrenNames%>);
-   <%=lowerClassName%>.setHandlers(new org.mortbay.jetty.Handler[] {<%=childrenNames%>});
+   <%=lowerClassName%>.setHandlers(new org.eclipse.jetty.server.Handler[] {<%=childrenNames%>});
    if (doInit) {
       <%=lowerClassName%>._init();
       try {

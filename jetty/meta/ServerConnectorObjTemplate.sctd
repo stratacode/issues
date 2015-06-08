@@ -13,16 +13,16 @@
      _t._preInit();
      <%=propertyAssignments%>
      java.util.List _children = java.util.Arrays.asList(<%=childrenNames%>);
-     for (Object _child:_children) {
-        if (_child instanceof org.mortbay.jetty.Connector)
-           _t.addConnector((org.mortbay.jetty.Connector) _child);
-        else if (_child instanceof org.mortbay.jetty.Handler)
-           _t.addHandler((org.mortbay.jetty.Handler)_child);
-        else if (_child instanceof org.mortbay.jetty.security.UserRealm)
-           _t.addUserRealm((org.mortbay.jetty.security.UserRealm)_child);
-        else if (_child instanceof org.mortbay.component.LifeCycle)
-           _t.addLifeCycle((org.mortbay.component.LifeCycle)_child);
-     }
+     //for (Object _child:_children) {
+        //if (_child instanceof org.eclipse.jetty.server.Connector)
+        //   _t.addConnector((org.eclipse.jetty.server.Connector) _child);
+        //else if (_child instanceof org.eclipse.jetty.server.Handler)
+        //   System.out.println("*** No handler add"); //_t.addHandler((org.eclipse.jetty.server.Handler)_child);
+        //else if (_child instanceof org.eclipse.jetty.security.LoginService)
+        //   _t.addUserRealm((org.eclipse.jetty.security.LoginService)_child);
+        //else if (_child instanceof org.eclipse.jetty.util.component.LifeCycle)
+        //   _t.addLifeCycle((org.eclipse.jetty.util.component.LifeCycle)_child);
+     //}
      if (doInit) {
        _t._init();
        try {

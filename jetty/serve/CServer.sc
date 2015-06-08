@@ -1,5 +1,5 @@
 object CServer extends Server {
-   object httpConnector extends SelectChannelConnector {
+   object httpConnector extends ServerConnector {
       // TODO: should this value be derived from system.URL at some point?
       port = 8080;
    }

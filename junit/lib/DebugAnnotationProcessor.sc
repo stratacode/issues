@@ -4,8 +4,11 @@ import sc.lang.DefaultAnnotationProcessor;
 import sc.lang.ILanguageModel;
 import sc.lang.java.Definition;
 import sc.lang.java.MethodDefinition;
+import sc.lang.java.TypeDeclaration;
 import sc.lang.java.Annotation;
 import sc.lang.java.ModelUtil;
+
+import java.util.Iterator;
 
 public class DebugAnnotationProcessor extends DefaultAnnotationProcessor {
    public void process(Definition def, Annotation annot) {
@@ -14,12 +17,25 @@ public class DebugAnnotationProcessor extends DefaultAnnotationProcessor {
       }
       else {
          LayeredSystem sys = def.getLayeredSystem();
-
-         String enclosingTypeName = ModelUtil.getTypeName(def.getEnclosingType());
          BuildInfo bi = sys.buildInfo;
+         TypeDeclaration td = def.getEnclosingType();
+         addTestType(sys, bi, td);
+      }
+   }
 
-         if (bi.getTestInstance(enclosingTypeName) == null)
-            bi.addTestInstance(new BuildInfo.TestInstance(enclosingTypeName, "junit"));
+   private void addTestType(LayeredSystem sys, BuildInfo bi, TypeDeclaration td) {
+      if (!ModelUtil.isAbstractType(td)) {
+         String typeName = ModelUtil.getTypeName(td);
+
+         if (bi.getTestInstance(typeName) == null)
+            bi.addTestInstance(new BuildInfo.TestInstance(typeName, "junit"));
+      }
+      Iterator<TypeDeclaration> subTypes = sys.getSubTypesOfType(td);
+      if (subTypes != null) {
+          while (subTypes.hasNext()) {
+              TypeDeclaration next = subTypes.next();
+              addTestType(sys, bi, next);
+          }
       }
    }
 }

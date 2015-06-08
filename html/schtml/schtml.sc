@@ -26,5 +26,8 @@ html.schtml extends html.core {
       // Note: this sets the templatePrefix for all web files since there's one processor used for all of them.
       sc.layer.LayerFileProcessor webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("css");
       webProc.templatePrefix = "web";
+
+      // Any files under the 'web' directory are of srcPathType = 'web'. 
+      addSrcPath("web", "web");
    }
 }

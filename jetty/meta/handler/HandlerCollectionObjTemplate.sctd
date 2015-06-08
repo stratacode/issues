@@ -12,7 +12,7 @@
 <% } %>
       <%=lowerClassName%>._preInit();
       <%=propertyAssignments%>
-      <%=lowerClassName%>.setHandlers(new org.mortbay.jetty.Handler[] {<%=childrenNames%>});
+      <%=lowerClassName%>.setHandlers(new org.eclipse.jetty.server.Handler[] {<%=childrenNames%>});
       if (doInit) {
          <%=lowerClassName%>._init();
          try {
