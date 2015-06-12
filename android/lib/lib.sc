@@ -57,7 +57,6 @@ android.lib extends util {
       // Recognizes android resources - copies them over to the build directory using a layered merging of paths
       sc.layer.LayerFileProcessor resourceFileProcessor = new sc.layer.LayerFileProcessor();
 
-      // Only layers after this one will see this extension
       resourceFileProcessor.prependLayerPackage = false;
       resourceFileProcessor.useSrcDir = false;
       // Build this before we process Java files

@@ -25,11 +25,9 @@ tomcat.lib extends log4j {
 
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "scp", "vsgit@stratacode.com:/home/vsgit/jettyLibs", false);
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "url", "http://stratacode.com/packages/jettyLibs.zip", true);
-      RepositoryPackage pkg = addRepositoryPackage("mvn://org.apache.tomcat/tomcat-catalina/8.0.23");
       //RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415");
-      if (pkg.installedRoot != null && !disabled) {
-         //classPath = sc.util.FileUtil.listFiles(pkg.installedRoot,".*\\.jar");
-         classPath = pkg.classPath;
-      }
+      installPackages(new String[] {
+         "mvn://org.apache.tomcat/tomcat-catalina/8.0.23", 
+         "mvn://org.apache.tomcat/tomcat-jasper/8.0.23"});
    }
 }

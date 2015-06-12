@@ -1,6 +1,6 @@
 // These are now picked up by setting includeRuntime = true
 //spring.example.petclinic extends tomcat.lib, tomcat.jdbc, aspectj.rt, aspectj.weaver, slf4j, jdbc.hsql {
-spring.example.petclinic extends tomcat.lib {
+spring.example.petclinic extends tomcat.servlet {
    inheritPackage = false;
    public void initialize() {
       // git-mvn uses git to check out the src, and maven to get the dependencies

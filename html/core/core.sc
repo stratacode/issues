@@ -140,6 +140,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       registerFileProcessor(webFileProcessor, "pdf");
       registerFileProcessor(webFileProcessor, "css");
       registerFileProcessor(webFileProcessor, "js");
+      registerFileProcessor(webFileProcessor, "jsp");
       registerFileProcessor(webFileProcessor, "xml");
       registerFileProcessor(webFileProcessor, "properties");
 
