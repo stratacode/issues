@@ -4,4 +4,5 @@ package org.eclipse.jetty;
 // TODO: make including this dependent on the jetty version so there's one place to
 // change it.
 jetty.v8compat extends lib {
+   compiledOnly = true;
 }
