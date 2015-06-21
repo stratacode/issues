@@ -32,7 +32,7 @@ public class Layer {
    @Constant public List<String> baseLayerNames;
 
    /** Set by the system to the full path to the directory containing LayerName.sc (layerFileName = layerPathName + layerBaseName) */
-   @Constant String layerPathName;
+   @Constant public String layerPathName;
 
    /** Just the LayerName.sc part */
    @Constant public String layerBaseName;
@@ -44,7 +44,7 @@ public class Layer {
    @Constant public String layerDirName;
 
    /** The integer position of the layer in the list of layers */
-   @Constant int layerPosition;
+   @Constant public int layerPosition;
 
    @Constant public CodeType codeType = CodeType.Application;
 
