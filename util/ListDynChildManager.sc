@@ -25,4 +25,8 @@ public class ListDynChildManager implements sc.dyn.IDynChildManager {
       List parent = (List) parentObj;
       return parent.toArray();
    }
+
+   public boolean getInitChildrenOnCreate() {
+      return true;
+   }
 }
