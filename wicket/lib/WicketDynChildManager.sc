@@ -104,4 +104,9 @@ public class WicketDynChildManager implements sc.dyn.IDynChildManager {
          System.err.println("*** Unrecognized parent: " + parentObj);
       return null;
    }
+
+   @Override
+   public boolean getInitChildrenOnCreate() {
+      return true;
+   }
 }

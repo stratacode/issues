@@ -112,4 +112,9 @@ public class SwingDynChildManager implements sc.dyn.IDynChildManager {
       }
       return null;
    }
+
+   @Override
+   public boolean getInitChildrenOnCreate() {
+      return true;
+   }
 }

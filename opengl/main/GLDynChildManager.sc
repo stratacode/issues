@@ -41,4 +41,9 @@ public class GLDynChildManager extends SwingDynChildManager {
          return ((IRenderParent) parentObj).getChildren().toArray();
       return super.getChildren(parentObj);
    }
+
+   @Override
+   public boolean getInitChildrenOnCreate() {
+      return true;
+   }
 }
