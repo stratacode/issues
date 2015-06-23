@@ -27,7 +27,7 @@ js_Element_c = js_HTMLElement_c = sc_newClass("js_HTMLElement", js_HTMLElement, 
 
 // This is part of the SemanticNode class on the server and so the component code gen uses it even for client code
 // involving component types which extend Element.  Just noop it here.
-js_Element_c.start = js_Element_c.stop = function() {};
+js_Element_c.init = js_Element_c.start = js_Element_c.stop = function() {};
 js_Element_c.refreshStartTags = [];
 js_Element_c.refreshBodyTags = [];
 js_Element_c.refreshRepeatTags = [];

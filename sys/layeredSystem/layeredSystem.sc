@@ -10,7 +10,7 @@ sys.layeredSystem {
    hidden = true;
    compiledOnly = true;
 
-   void initialize() {
+   void init() {
       // Exclude the runtimes which do not support the LayeredSystem dynamic features.  
       // All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "android", "gwt");

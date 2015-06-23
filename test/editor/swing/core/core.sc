@@ -7,7 +7,7 @@ public test.editor.swing.core extends editor.modelImpl, test.editor.coreui, swin
    liveDynamicTypes = false;
 
 /*
-   void initialize() {
+   void init() {
       // Split this layer and it's sublayers out into a new process using the default 'java' runtime
       addProcess(sc.layer.ProcessDefinition.create("Desktop"));
    }

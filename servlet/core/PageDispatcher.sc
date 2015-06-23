@@ -722,7 +722,7 @@ class PageDispatcher extends InitServlet implements Filter {
 
    public void init(FilterConfig filterConfig) {
       // Registers a scheduler to handle the invokeLater
-      ServletScheduler.initialize();
+      ServletScheduler.init();
       // Create the global scope first, before the session scope and other application defined scopes are defined.
       sc.obj.GlobalScopeDefinition.getGlobalScopeDefinition();
 

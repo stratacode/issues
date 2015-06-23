@@ -2,7 +2,7 @@
 //spring.example.petclinic extends tomcat.lib, tomcat.jdbc, aspectj.rt, aspectj.weaver, slf4j, jdbc.hsql {
 spring.example.petclinic extends tomcat.servlet {
    inheritPackage = false;
-   public void initialize() {
+   public void init() {
       // git-mvn uses git to check out the src, and maven to get the dependencies
       // Adding it in the initialize method so that downstream layers can modify the package - e.g. to turn on loading of 'tests'
       RepositoryPackage pkg = addRepositoryPackage("spring-petclinic", "git-mvn", "git@github.com:spring-projects/spring-petclinic.git", false);

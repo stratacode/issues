@@ -5,7 +5,7 @@ test.layerType.subLayer extends baseLayer {
       subField1 = 2;
    }
 
-   void initialize() {
+   void init() {
       System.out.println("layerField from subLayer - 444 = " + layerField);
       System.out.println("subField from subLayer.init - 3 = " + subObject.subField1);
    }

@@ -1,5 +1,5 @@
 jool.lib {
-   public void initialize() {
+   public void init() {
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("org.jooq/jool", "git-mvn", "git@github.com:jOOQ/jOOL.git",  false);
    }
    public void start() {

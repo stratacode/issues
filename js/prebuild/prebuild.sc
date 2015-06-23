@@ -8,7 +8,7 @@ js.prebuild {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
-   public void initialize() {
+   public void init() {
       includeRuntime("js");
    }
 

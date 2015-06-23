@@ -55,7 +55,7 @@ swing.core extends swing.meta, util {
 
    compiledOnly = true; // No real reason to make this layer dynamic ever and something about Main.sc seems to make it not work
 
-   void initialize() {
+   void init() {
       addProcess(sc.layer.ProcessDefinition.create("Desktop"));
    }
 

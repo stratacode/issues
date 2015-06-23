@@ -11,7 +11,7 @@ js.lib {
    compiledOnly = true;
    finalLayer = true;
 
-   public void initialize() {
+   public void init() {
       sc.layer.LayeredSystem sys = getLayeredSystem();
       sc.lang.js.JSRuntimeProcessor runtimeProc = (sc.lang.js.JSRuntimeProcessor)
                                    sc.layer.LayeredSystem.getRuntime("js");

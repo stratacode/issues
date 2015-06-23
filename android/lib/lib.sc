@@ -28,7 +28,7 @@ android.lib extends util {
 
    needsIndexRefresh = true; // We add files to the "gen" directory in the pre-build commands.  This tells the layer to flush the cache after each phase
 
-   public void initialize() {
+   public void init() {
       createDefaultRuntime("android");
 
       // Do not load these android classes into the dynamic runtime, just like javascript
@@ -37,7 +37,7 @@ android.lib extends util {
 
       excludeRuntimes("js", "gwt", "java");
 
-      // These must be in the initialize phase since we need to see the Prepare file processor before we start the layer in "layeredSystem.needsPhase"
+      // These must be in the init phase since we need to see the Prepare file processor before we start the layer in "layeredSystem.needsPhase"
       sc.lang.TemplateLanguage tempLang = new sc.lang.TemplateLanguage();
       tempLang.processTemplate = true; // At build time, generate the xml file
       // For android, xml files are used by the compiler itself so they need to be done

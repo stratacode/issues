@@ -46,7 +46,7 @@ public editor.model extends util, gui.util.core, sys.layeredSystem {
 
    liveDynamicTypes = layeredSystem.options.editEditor;
 
-   void initialize() {
+   void init() {
       // When the editor is enabled, by default we turn on dynamic types
       layeredSystem.options.liveDynamicTypes = true;
    }

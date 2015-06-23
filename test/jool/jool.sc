@@ -1,5 +1,5 @@
 test.jool extends junit.main, jool.lib {
-   public void initialize() {
+   public void init() {
       sc.repos.RepositoryPackage pkg = getRepositoryPackage("org.jooq/jool");
       pkg.includeTests = true;
    }

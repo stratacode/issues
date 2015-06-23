@@ -2,7 +2,7 @@ gwt.jreStub {
 
    disabled = true;
 
-   void initialize() {
+   void init() {
       excludeRuntimes("js", "java", "android");
    }
 

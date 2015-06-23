@@ -1,6 +1,6 @@
 test.petclinic extends spring.example.petclinic, junit.main {
    // Set includeTests in initialize so that it's set when we install the package - starting the downstream layer
-   public void initialize() {
+   public void init() {
       RepositoryPackage pkg = getRepositoryPackage("spring-petclinic");
       pkg.includeTests = true;
    }

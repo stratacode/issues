@@ -53,7 +53,7 @@ public wicket.lib extends jetty.servlet, lang {
    compiledOnly = true;
    //classPath=sc.util.FileUtil.listFiles(getRelativeFile("./lib"),".*\\.jar");
 
-   public void initialize() {
+   public void init() {
       layeredSystem.serverEnabled = true;
    }
 

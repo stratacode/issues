@@ -34,7 +34,7 @@ class ServletScheduler implements sc.dyn.IScheduler {
       ctx.execLaterJobs();
    }
 
-   static void initialize() {
+   static void init() {
       if (DynUtil.frameworkScheduler == null)
          DynUtil.frameworkScheduler = new ServletScheduler();
    }

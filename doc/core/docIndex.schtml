@@ -216,7 +216,7 @@ in a "template string".
 // layer extends baseLayer
 foo extends bar {
    // ... layer properties here
-   void initialize() { //... init code ...  }
+   void init() { //... init code ...  }
    void start() { //... start code ...  }
 }</pre>
                      You define a new layer by adding a new directory in the layer path, then creating a StrataCode layer definition file in that directory: directoryName.sc e.g. the layer foo is defined by the file: foo/foo.sc.  The layer definition file is interpreted when the system starts and acts like the build script.   Layers are initialized in two passes and can update and modify properties from previous layers in each pass. Unlike most build systems, you copy much less config into your project, you extend the layer and customize it only in framework layers or for special circumstances. (<a href="layerDefinition.html">more</a>)

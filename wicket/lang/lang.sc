@@ -4,7 +4,7 @@ wicket.lang {
    buildSeparate = true;
    compiledOnly = true;
 
-   public void initialize() {
+   public void init() {
       excludeRuntimes("js", "android", "gwt");
       excludeProcesses("Desktop");
    }

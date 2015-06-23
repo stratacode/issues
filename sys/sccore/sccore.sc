@@ -12,7 +12,7 @@ sys.sccore {
 
    compiled = true; // This layer stores src files that are already compiled - by marking this as both final and compiled, we do not have to load the source unless re-generating these classes in javascript.
 
-   public void initialize() {
+   public void init() {
       sc.layer.LayeredSystem system = getLayeredSystem();
 
       // Pick up the src files for this layer from the system's corert directory

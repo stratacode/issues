@@ -16,7 +16,7 @@ test.layerType.baseLayer {
       extensions = {"html"};
    }
 
-   void initialize() {
+   void init() {
       System.out.println("layerField from baseLayer.init - 444 = " + layerField);
       System.out.println("subField from baseLayer.init - 3 = " + subObject.subField1);
    }

@@ -18,7 +18,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
-   public void initialize() {
+   public void init() {
       sc.layer.LayeredSystem system = getLayeredSystem();
      
       // Languages are defined in the initialization stage so that they are available to help process

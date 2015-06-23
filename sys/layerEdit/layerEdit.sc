@@ -8,7 +8,7 @@ sys.layerEdit {
    compiledOnly = true;
 
 /*
-   public void initialize() {
+   public void init() {
       if (layeredSystem.getLayerByDirName("js.core") != null) {
          layeredSystem.insertLayer("js.layer", getLayerPosition());
       }

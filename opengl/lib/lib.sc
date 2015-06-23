@@ -22,7 +22,7 @@ opengl.lib {
       }
    }
 
-   void initialize() {
+   void init() {
       // For now we can't use the open gl layers for js and android but
       // theoretically that could change.
       excludeRuntimes("js", "android", "gwt");

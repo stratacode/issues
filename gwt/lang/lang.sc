@@ -4,7 +4,7 @@ gwt.lang {
    buildSeparate = true;
    disabled = true;
 
-   void initialize() {
+   void init() {
       excludeRuntimes("js", "java", "android");
    }
 }
