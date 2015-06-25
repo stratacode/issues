@@ -4,7 +4,7 @@ public editor.swing.core extends editor.modelImpl, editor.coreui, swing.style, s
    codeType = sc.layer.CodeType.Application;
    codeFunction = sc.layer.CodeFunction.UI;
 
-   liveDynamicTypes = false;
+   liveDynamicTypes = layeredSystem.options.editEditor;
 
 /*
    void init() {

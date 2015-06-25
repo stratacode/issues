@@ -15,97 +15,114 @@ import sc.lang.html.Document;
 html.core extends sys.std {  // Extending sys.std because we override the standard file type handling.  Need to then have us after sys.std.
    compiledOnly = true;
 
-   codeType = sc.layer.CodeType.Framework;
-   codeFunction = sc.layer.CodeFunction.Program;
+   codeType = CodeType.Framework;
+   codeFunction = CodeFunction.Program;
 
-   public void init() {
-      sc.layer.LayeredSystem system = getLayeredSystem();
-     
-      // Languages are defined in the initialization stage so that they are available to help process
-      // files in the IDE.  The IDE will initialize the layer when source is loaded but won't start it
-      // until you run the application.
-      sc.lang.TemplateLanguage templateResourceLang = new sc.lang.TemplateLanguage();
-      templateResourceLang.processTemplate = true;
-      //templateResourceLang.definedInLayer = this;
+   object templateResourceLang extends TemplateLanguage {
+      extensions = {"scxml"};
+      // We will process or generate this file at build time - i.e. for static files or those used in the build.
+      processTemplate = true;
       // For gwt, xml files are used by the compiler itself so they need to be done
       // before the process phase in prepare.  May need to register a separate xml pattern for the specific build files
       // if we need to scxml elsewhere with different rules (i.e. that go into the web root)
-      templateResourceLang.buildPhase = sc.layer.BuildPhase.Prepare;
-      templateResourceLang.resultSuffix = "xml";
-      templateResourceLang.useSrcDir = false;
-      templateResourceLang.srcPathTypes = new String[] {null, "web"};
-      templateResourceLang.prependLayerPackage = false;
-      // Share one buildDir for web root files since they do not support path searching
+      buildPhase = BuildPhase.Prepare;
+      resultSuffix = "xml";
+      useSrcDir = false;
+      srcPathTypes = new String[] {null, "web"};
+
+     // Share one buildDir for web root files since they do not support path searching
       //templateResourceLang.useCommonBuildDir = true;
-      registerLanguage(templateResourceLang, "scxml");
+      prependLayerPackage = false;
+   }
 
-      // We use a singleton here for the IDE in particular so we can match parselets by identity
-      templateResourceLang = sc.lang.HTMLLanguage.getHTMLLanguage();
+   // Layers web files in the "doc" folder of any downstream layers
+   object webFileProcessor extends LayerFileProcessor {
+      // We do not use the layer's package in computing the web file names  An alternate design is to turn this off and pick
+      // a fixed doc root.  This design ties paths in the doc root to types in Java.  I like this
+      // design but where we can map the web root to some package in the hierarchy.
+      prependLayerPackage = false;
+      // Should we prepend the 'web' prefix onto .css and other files so they can live in the top-level layer folder?
+      // Right now, this prefix gets added in the servlet.schtml, js.schtml and wicket.core libraries.
+      // GWT requires a separate doc root which got messed up by this scheme so it is not set here.
+      //webFileProcessor.templatePrefix = "web";
+      useSrcDir = false;
+      // Since jetty does not support path searching, all web files go into the one common buildDir
+      // and that is where jetty starts.
+      //webFileProcessor.useCommonBuildDir = true;
+      processInAllLayers = true;
+      srcPathTypes = new String[] {null, "web"};
 
-      // Generating both an .html and a .java file from this type.  The html file is generated during the postBuild
-      // phase - aftr the system has been built and those classes are loaded.
-      templateResourceLang.compiledTemplate = true;
-      templateResourceLang.postBuildTemplate = true;
+      extensions = {"html", "jpg", "png", "gif", "pdf", "css", "js", "jsp", "xml", "properties"};
+   }
 
-      templateResourceLang.prependLayerPackage = true;
-      // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
-      templateResourceLang.prependLayerPackageOnProcess = false;
+   object cssLanguage extends sc.lang.CSSLanguage {
+      extensions = {"scss"};
 
-      //templateResourceLang.definedInLayer = this;
-      templateResourceLang.buildPhase = sc.layer.BuildPhase.Process;
-      templateResourceLang.resultSuffix = "html";
-      templateResourceLang.useSrcDir = false;
-
-      // Share one buildDir for web root files since they do not support path searching
-      templateResourceLang.useCommonBuildDir = true;
-      // To support more natural "code behind", schtml will do a modify by default of the previous file
-      templateResourceLang.defaultModify = true;
-      // for a file composed of for example just <html>...</html>, the type of the file is taken from the root element, not made a child of a "Page" class
-      templateResourceLang.compressSingleElementTemplates = true;
-      templateResourceLang.defaultExtendsType = "sc.lang.html.Page";
-      // Do not try to generate .html files for types which do not have <html> or otherwise indicate they are addressed by a URL or have MainInit set on them.
-      templateResourceLang.processOnlyURLs = true;
-      // The .sc and .schtml files replace each other in the type system - i.e. not part of the "processed id" which lets one file in a subsequent layer from processing that file in the next layer
-      // the suffix will be .java when compiledTemplate is true and one of process or postBuild template
-      //templateResourceLang.processByUniqueSuffix = true;
-      registerLanguage(templateResourceLang, "schtml");
-
-      sc.lang.TemplateLanguage cssLanguage = new sc.lang.CSSLanguage();
-
-      // For now generating the class for these types like schtml; TODO write a CSSLanguage with its' owner parser for better expressions and CSS syntax for layering
-      cssLanguage.compiledTemplate = true;
-      cssLanguage.postBuildTemplate = true;
+      compiledTemplate = true;
+      postBuildTemplate = true;
 
       // For a simpler implementation, when your css files are static for the site, just process them at compile time.  Won't allow access to runtime 
       // state but for this use case you don't need that.
-      //cssLanguage.processTemplate = true;
+      //processTemplate = true;
 
       // do generate the java class with the layer's package name
-      cssLanguage.prependLayerPackage = true;
+      prependLayerPackage = true;
 
       // But not the file generated in the process phase
-      cssLanguage.prependLayerPackageOnProcess = false;
+      prependLayerPackageOnProcess = false;
 
-      cssLanguage.resultSuffix = "css";
+      resultSuffix = "css";
       // Use processPrefix here so that the processedName is computed as a regular java type
       // name so we can replace scss files with sc files.
-      cssLanguage.processPrefix = "web";
-      cssLanguage.srcPathTypes = new String[] {null, "web"};
-
-      // Only layers after this one will see this extension
-      //cssLanguage.definedInLayer = this;  
-      registerLanguage(cssLanguage, "scss");
+      processPrefix = "web";
+      srcPathTypes = {null, "web"};
 
       // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
-      cssLanguage.prependLayerPackageOnProcess = false;
-      cssLanguage.useSrcDir = false;
+      prependLayerPackageOnProcess = false;
+      useSrcDir = false;
 
       // Share one buildDir for web root files since they do not support path searching
-      cssLanguage.useCommonBuildDir = true;
+      useCommonBuildDir = true;
       // To support more natural "code behind", schtml will do a modify by default of the previous file
-      cssLanguage.defaultModify = true;
+      defaultModify = true;
 
-      cssLanguage.defaultExtendsType = "sc.lang.css.StyleSheet";
+      defaultExtendsType = "sc.lang.css.StyleSheet";
+   }
+
+   public void init() {
+      LayeredSystem system = getLayeredSystem();
+     
+      // We use a singleton here for the IDE in particular so we can match parselets by identity
+      sc.lang.HTMLLanguage htmlLang = sc.lang.HTMLLanguage.getHTMLLanguage();
+
+      // Generating both an .html and a .java file from this type.  The html file is generated during the postBuild
+      // phase - aftr the system has been built and those classes are loaded.
+      htmlLang.compiledTemplate = true;
+      htmlLang.postBuildTemplate = true;
+
+      htmlLang.prependLayerPackage = true;
+      // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)
+      htmlLang.prependLayerPackageOnProcess = false;
+
+      //templateResourceLang.definedInLayer = this;
+      htmlLang.buildPhase = sc.layer.BuildPhase.Process;
+      htmlLang.resultSuffix = "html";
+      htmlLang.useSrcDir = false;
+
+      // Share one buildDir for web root files since they do not support path searching
+      htmlLang.useCommonBuildDir = true;
+      // To support more natural "code behind", schtml will do a modify by default of the previous file
+      htmlLang.defaultModify = true;
+      // for a file composed of for example just <html>...</html>, the type of the file is taken from the root element, not made a child of a "Page" class
+      htmlLang.compressSingleElementTemplates = true;
+      htmlLang.defaultExtendsType = "sc.lang.html.Page";
+      // Do not try to generate .html files for types which do not have <html> or otherwise indicate they are addressed by a URL or have MainInit set on them.
+      htmlLang.processOnlyURLs = true;
+      // The .sc and .schtml files replace each other in the type system - i.e. not part of the "processed id" which lets one file in a subsequent layer from processing that file in the next layer
+      // the suffix will be .java when compiledTemplate is true and one of process or postBuild template
+      //htmlLang.processByUniqueSuffix = true;
+      registerLanguage(htmlLang, "schtml");
+
    }
 
    public void start() {
@@ -113,36 +130,6 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
 
       // Add this here in core even though it's used in schtml so that it's always in front of js.core where the sc.tag package is added.
       system.addTagPackageDirectory("sc.html.tag", this, 1);
-
-      // Layers web files in the "doc" folder of any downstream layers
-      sc.layer.LayerFileProcessor webFileProcessor = new sc.layer.LayerFileProcessor();
-
-      // We do not use the layer's package in computing the web file names  An alternate design is to turn this off and pick
-      // a fixed doc root.  This design ties paths in the doc root to types in Java.  I like this
-      // design but where we can map the web root to some package in the hierarchy.
-      webFileProcessor.prependLayerPackage = false;
-      // Should we prepend the 'web' prefix onto .css and other files so they can live in the top-level layer folder?
-      // Right now, this prefix gets added in the servlet.schtml, js.schtml and wicket.core libraries.
-      // GWT requires a separate doc root which got messed up by this scheme so it is not set here.
-      //webFileProcessor.templatePrefix = "web";
-      webFileProcessor.useSrcDir = false;
-      // Since jetty does not support path searching, all web files go into the one common buildDir
-      // and that is where jetty starts.
-      //webFileProcessor.useCommonBuildDir = true;
-      webFileProcessor.processInAllLayers = true;
-      webFileProcessor.srcPathTypes = new String[] {null, "web"};
-
-      // Copy these extensions to the output file - TODO: restrict these to files only in the "web" subdir?
-      registerFileProcessor(webFileProcessor, "html");
-      registerFileProcessor(webFileProcessor, "jpg");
-      registerFileProcessor(webFileProcessor, "png");
-      registerFileProcessor(webFileProcessor, "gif");
-      registerFileProcessor(webFileProcessor, "pdf");
-      registerFileProcessor(webFileProcessor, "css");
-      registerFileProcessor(webFileProcessor, "js");
-      registerFileProcessor(webFileProcessor, "jsp");
-      registerFileProcessor(webFileProcessor, "xml");
-      registerFileProcessor(webFileProcessor, "properties");
 
       String openSuffix = system.options.openPattern;
       if (openSuffix == null)

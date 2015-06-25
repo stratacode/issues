@@ -4,7 +4,7 @@ public editor.modelImpl extends model, sys.layeredSystem {
    codeType = sc.layer.CodeType.Application;
    codeFunction = sc.layer.CodeFunction.Program;
 
-   liveDynamicTypes = true;
+   liveDynamicTypes = layeredSystem.options.editEditor;
 
 /*
    void init() {
