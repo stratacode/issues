@@ -22,6 +22,8 @@ public wicket.core extends meta, util {
       wicketAppProc.typeGroupName = "wicketApplications";
       wicketAppProc.validOnField = false;
       wicketAppProc.requiredType = "sc.wicket.WicketApplication";
+      // These need to be compiled for wicket to find them.
+      wicketAppProc.compiledOnly = true;
 
       registerAnnotationProcessor("sc.wicket.ApplicationPath", wicketAppProc);
 
