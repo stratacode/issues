@@ -27,7 +27,8 @@ tomcat.lib extends log4j {
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "url", "http://stratacode.com/packages/jettyLibs.zip", true);
       //RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415");
       installPackages(new String[] {
-         "mvn://org.apache.tomcat/tomcat-catalina/8.0.23", 
-         "mvn://org.apache.tomcat/tomcat-jasper/8.0.23"});
+         "mvn://org.apache.tomcat/tomcat-catalina/7.0.47", 
+         "mvn://org.apache.tomcat/tomcat-jasper/7.0.47"
+         /* "mvn://javax.el/javax.el-api/3.0.0"*/});
    }
 }

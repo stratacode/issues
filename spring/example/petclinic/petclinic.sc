@@ -7,6 +7,7 @@ spring.example.petclinic extends tomcat.servlet {
       // Adding it in the initialize method so that downstream layers can modify the package - e.g. to turn on loading of 'tests'
       RepositoryPackage pkg = addRepositoryPackage("spring-petclinic", "git-mvn", "git@github.com:spring-projects/spring-petclinic.git", false);
       pkg.includeRuntime = true;
+      RepositoryPackage validatorPkg = addRepositoryPackage("mvn://javax.validation/validation-api/1.1.0.Final");
    }
    public void start() {
       // TODO - move this to some base layer - spring, or something?
@@ -18,6 +19,8 @@ spring.example.petclinic extends tomcat.servlet {
       registerFileProcessor(resourceFileProcessor, "sql");
       registerFileProcessor(resourceFileProcessor, "properties");
 
+      RepositoryPackage validatorPkg = getRepositoryPackage("javax.validation/validation-api");
+
       // TODO: move to a MvnRepository method - Mvn.addPackage(this, name)
       // git-mvn uses git to check out the src, and maven to get the dependencies
       RepositoryPackage pkg = getRepositoryPackage("spring-petclinic");
@@ -26,7 +29,7 @@ spring.example.petclinic extends tomcat.servlet {
          addSrcPath(FileUtil.concat(mainDir, "java"), null);
          addSrcPath(FileUtil.concat(mainDir, "resources"), null);
          addSrcPath(FileUtil.concat(mainDir, "webapp"), "web");
-         classPath = pkg.classPath;
+         classPath = validatorPkg.classPath + ":" + pkg.classPath;
       }
    }
 }

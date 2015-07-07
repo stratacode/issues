@@ -120,15 +120,8 @@
                resourceName="UserDatabase"/>
       </Realm>
 
-      <Host name="localhost"  appBase="web"
+      <Host name="localhost"  appBase="webapps"
             unpackWARs="true" autoDeploy="true">
-
-         <!-- For Stratacode, we define the default 'web' directory as the main web application.  This setting is designed to 
-              reload files in place so we can take advantage of SC's dynamic and refresh capabilities in the default web app.
-              TODO: Not sure about the virtualClasspath setting.  Resources also takes a directory search path which we could use. -->
-         <Context path="" docBase=".">
-         </Context>
-
         <!-- SingleSignOn valve, share authentication between web applications
              Documentation at: /docs/config/valve.html -->
         <!--

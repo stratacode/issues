@@ -40,5 +40,7 @@ servlet.webApp extends util, html.schtml {
          system.addTypeGroupDependency("web/WEB-INF/web.scxml", "web.WEB-INF.web", "servlets");
          system.addTypeGroupDependency("web/WEB-INF/web.scxml", "web.WEB-INF.web", "servletFilters");
       }
+
+      addSrcPath("web", "web", "web");
    }
 }

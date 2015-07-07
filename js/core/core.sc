@@ -17,14 +17,16 @@ public js.core extends html.core, js.prebuild, js.sys, js.util, sys.sccore {
           ((sc.lang.js.JSRuntimeProcessor) system.runtimeProcessor).destinationName = "jsHttp";
 
       sc.lang.TemplateLanguage tempLang = (sc.lang.TemplateLanguage) system.getFileProcessorForExtension("schtml");
-      tempLang.processPrefix = "web";
+      //tempLang.processPrefix = "web";
 
       // This can either be the web file processor or the one from util
       sc.layer.LayerFileProcessor webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("css");
-      webProc.templatePrefix = "web";
+      //webProc.templatePrefix = "web";
 
       // This will always be the web file processor
       webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("html");
-      webProc.templatePrefix = "web";
+      //webProc.templatePrefix = "web";
+
+      setSrcPathBuildPrefix("web", "web");
    }
 }

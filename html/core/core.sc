@@ -74,7 +74,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       resultSuffix = "css";
       // Use processPrefix here so that the processedName is computed as a regular java type
       // name so we can replace scss files with sc files.
-      processPrefix = "web";
+      //processPrefix = "web";
       srcPathTypes = {null, "web"};
 
       // As a type we need the package but for saving the result file we do not (when compiledTemplate=true and processTemplate=true)

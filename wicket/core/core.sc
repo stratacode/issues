@@ -45,7 +45,8 @@ public wicket.core extends meta, util {
 
       // Note: this sets the templatePrefix for all web files since there's one processor used for all of them.
       sc.layer.LayerFileProcessor webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("css");
-      webProc.templatePrefix = "web";
+      //webProc.templatePrefix = "web";
+      addSrcPath("web", "web", "web");
    }
 
 }

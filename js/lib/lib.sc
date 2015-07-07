@@ -21,14 +21,14 @@ js.lib {
          addRuntime(runtimeProc);
       }
 
-      runtimeProc.templatePrefix = "web";
+      //runtimeProc.templatePrefix = "web";
+      runtimeProc.srcPathType = "web";
       runtimeProc.genJSPrefix = GEN_JS_PREFIX;  // Prefix to store the generated per-type JS files
       runtimeProc.typeTemplateName = "sc.js.JSTypeTemplate";
       runtimeProc.syncMergeTemplateName = "sc.js.JSSyncMergeTemplate";
       runtimeProc.updateMergeTemplateName = "sc.js.JSUpdateMergeTemplate";
 
       setLayerRuntime(runtimeProc);
-
    }
 
    public void start() {

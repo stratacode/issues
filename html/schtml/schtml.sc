@@ -21,13 +21,13 @@ html.schtml extends html.core {
    void start() { 
       sc.layer.LayeredSystem system = getLayeredSystem();
       sc.lang.TemplateLanguage tempLang = (sc.lang.TemplateLanguage) system.getFileProcessorForExtension("schtml");
-      tempLang.processPrefix = "web";
+      //tempLang.processPrefix = "web";
 
       // Note: this sets the templatePrefix for all web files since there's one processor used for all of them.
       sc.layer.LayerFileProcessor webProc = (sc.layer.LayerFileProcessor) system.getFileProcessorForExtension("css");
-      webProc.templatePrefix = "web";
+      //webProc.templatePrefix = "web";
 
       // Any files under the 'web' directory are of srcPathType = 'web'. 
-      addSrcPath("web", "web");
+      addSrcPath("web", "web", "web");
    }
 }
