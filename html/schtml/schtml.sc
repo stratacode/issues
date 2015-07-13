@@ -17,6 +17,9 @@ html.schtml extends html.core {
       replacesLayer("html.core");
    }
 
+   webFileProcessor {
+      templatePrefix = defaultWebRoot;
+   }
 
    void start() { 
       sc.layer.LayeredSystem system = getLayeredSystem();
@@ -28,6 +31,6 @@ html.schtml extends html.core {
       //webProc.templatePrefix = "web";
 
       // Any files under the 'web' directory are of srcPathType = 'web'. 
-      addSrcPath("web", "web", "web");
+      addSrcPath("web", "web", defaultWebRoot);
    }
 }

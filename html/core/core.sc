@@ -18,6 +18,8 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
    codeType = CodeType.Framework;
    codeFunction = CodeFunction.Program;
 
+   public String defaultWebRoot = "web";
+
    object templateResourceLang extends TemplateLanguage {
       extensions = {"scxml"};
       // We will process or generate this file at build time - i.e. for static files or those used in the build.
