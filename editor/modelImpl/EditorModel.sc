@@ -382,7 +382,7 @@ EditorModel {
                }
             }
          }
-      }
+      } 
       int allIx = newTypeLayers.indexOf(layer);
       if (allIx == -1) {
          int i;

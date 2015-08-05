@@ -1,4 +1,4 @@
-tomcat.servlet extends tomcat.serve, servlet.webApp {
+tomcat.servlet extends tomcat.serve, servlet.schtml {
    defaultWebRoot = "webapps/ROOT";
 
    public void start() {

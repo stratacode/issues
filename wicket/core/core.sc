@@ -17,15 +17,17 @@ public wicket.core extends meta, util {
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
 
-      sc.lang.DefaultAnnotationProcessor wicketAppProc = new sc.wicket.ApplicationPathProcessor();
-      //sc.lang.DefaultAnnotationProcessor wicketAppProc = new sc.lang.DefaultAnnotationProcessor();
-      wicketAppProc.typeGroupName = "wicketApplications";
-      wicketAppProc.validOnField = false;
-      wicketAppProc.requiredType = "sc.wicket.WicketApplication";
-      // These need to be compiled for wicket to find them.
-      wicketAppProc.compiledOnly = true;
+      if (activated) {
+         sc.lang.DefaultAnnotationProcessor wicketAppProc = new sc.wicket.ApplicationPathProcessor();
+         //sc.lang.DefaultAnnotationProcessor wicketAppProc = new sc.lang.DefaultAnnotationProcessor();
+         wicketAppProc.typeGroupName = "wicketApplications";
+         wicketAppProc.validOnField = false;
+         wicketAppProc.requiredType = "sc.wicket.WicketApplication";
+         // These need to be compiled for wicket to find them.
+         wicketAppProc.compiledOnly = true;
 
-      registerAnnotationProcessor("sc.wicket.ApplicationPath", wicketAppProc);
+         registerAnnotationProcessor("sc.wicket.ApplicationPath", wicketAppProc);
+      }
 
       sc.lang.sc.BasicScopeProcessor listItemScope = new sc.lang.sc.BasicScopeProcessor("ListItem");
       listItemScope.validOnClass = false;

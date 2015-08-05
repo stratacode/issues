@@ -6,6 +6,18 @@ jetty.lib extends log4j {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
+   object servletPkg extends MvnRepositoryPackage {
+      url = "mvn://javax.servlet/javax.servlet-api/3.0.1";
+   }
+
+   object jettyPkg extends MvnRepositoryPackage {
+      url = "mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415";
+   }
+
+   object log4jPkg extends MvnRepositoryPackage {
+      url = "mvn://org.slf4j/slf4j-log4j12/1.7.0";
+   }
+
    public void init() {
       // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "android", "gwt");
@@ -37,10 +49,12 @@ jetty.lib extends log4j {
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "scp", "vsgit@stratacode.com:/home/vsgit/jettyLibs", false);
       //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "url", "http://stratacode.com/packages/jettyLibs.zip", true);
       //RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/9.2.11.v20150529");
-      RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415");
+      //RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415");
+/*
       if (pkg.installedRoot != null && !disabled) {
          //classPath = sc.util.FileUtil.listFiles(pkg.installedRoot,".*\\.jar");
          classPath = pkg.classPath;
       }
+*/
    }
 }

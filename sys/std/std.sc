@@ -5,8 +5,24 @@ sys.std {
    hidden = true;
    compiledOnly = true;
 
+   object configFileProcessor extends LayerFileProcessor {
+      prependLayerPackage = false;
+      useSrcDir = false;
+      extensions = {"xml", "properties", "css", "sh", "policy", "xsd"};
+      srcPathTypes = {null, "config"};
+   }
+
+   object resourceFileProcessor extends LayerFileProcessor {
+      prependLayerPackage = false;
+      useSrcDir = false;
+      useClassesDir = true;
+      extensions = {"xml", "properties", "css", "sql"};
+      srcPathTypes = {"resource"};
+   }
+
    public void start() {
       LayeredSystem system = getLayeredSystem();
+/*
       LayerFileProcessor configFileProcessor = new LayerFileProcessor();
 
       configFileProcessor.prependLayerPackage = false;
@@ -19,6 +35,7 @@ sys.std {
 
       // Need to add extensions of any files produced so that we know where they are in the build src index - src dir (e.g. java or js), output dir - e.g. build or build/web).
       registerFileProcessor(configFileProcessor, "sh");
+*/
 
       sc.lang.TemplateLanguage templateResourceLang = new sc.lang.TemplateLanguage();
       templateResourceLang.processTemplate = true;

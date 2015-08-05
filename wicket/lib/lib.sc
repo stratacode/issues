@@ -49,12 +49,20 @@ import org.apache.wicket.util.resource.*;
 
 import org.apache.wicket.settings.*;
 
-public wicket.lib extends jetty.servlet, lang {
+public wicket.lib extends jetty.servlet, lang, log4j {
    compiledOnly = true;
    //classPath=sc.util.FileUtil.listFiles(getRelativeFile("./lib"),".*\\.jar");
 
    public void init() {
       layeredSystem.serverEnabled = true;
+   }
+
+   object wicketPkg extends MvnRepositoryPackage {
+      url = "mvn://org.apache.wicket/wicket/1.4.6";
+   }
+
+   object portletPkg extends MvnRepositoryPackage {
+      url = "mvn://javax.portlet/portlet-api/2.0";
    }
 
    public void start() {
@@ -77,9 +85,11 @@ public wicket.lib extends jetty.servlet, lang {
       // Override the default jetty html processor entirely, even for the jetty server's index.html file
       htmlFileProcessor.definedInLayer = null;    
 
+/*
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("wicketLibs", "scp", "vsgit@stratacode.com:/home/vsgit/wicketLibs", false);
       if (pkg.installedRoot != null && !disabled) {
          classPath=sc.util.FileUtil.listFiles(pkg.installedRoot,".*\\.jar");
       }
+*/
    }
 }

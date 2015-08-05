@@ -19,7 +19,7 @@ EditorFrame extends AppFrame implements EditorPanelStyle {
          object newItem extends JMenu implements ComponentStyle {
             text = "Add...";
             object layerItem extends JMenuItem {
-               text = "Layeri";
+               text = "Layer";
                clickCount =: doAddLayer();
 
             }

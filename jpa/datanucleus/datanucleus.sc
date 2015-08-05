@@ -6,6 +6,12 @@ jpa.datanucleus extends basejpa, log4j, jdbc.mysql {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
+   object dataNucleusPkg extends MvnRepositoryPackage {
+      //url = "mvn://org.datanucleus/datanucleus-rdbms/4.0.6";
+      url = "mvn://org.datanucleus/datanucleus-accessplatform-jpa-rdbms/4.0.6";
+      includeProvided = true; // includes javax.persistence
+   }
+
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
 
@@ -13,14 +19,17 @@ jpa.datanucleus extends basejpa, log4j, jdbc.mysql {
       system.useIndexSetForArrays = false;
 
       // Currently only using the RDMS - we can break this into sub-layers and depend on different packages
+/*
       String componentName = "datanucleus-accessplatform-rdbms-";
       String version = "4.0.6";
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("dataNucleusRDBMS", "scp", "vsgit@stratacode.com:/home/vsgit/" + componentName + version + ".zip", true);
+     
       if (pkg.installedRoot != null && !disabled) {
          String rootName = sc.util.FileUtil.concat(pkg.installedRoot, componentName + version);
          classPath = sc.util.FileUtil.listFiles(sc.util.FileUtil.concat(rootName, "deps"),".*\\.jar")
                      + sc.util.FileUtil.PATH_SEPARATOR + sc.util.FileUtil.listFiles(sc.util.FileUtil.concat(rootName, "lib"),".*\\.jar");
       }
+*/
 
       // Turns on class load time enhancement via command line.  We use the postBuildCommand enhancer now instead.  Ideally we'd just generate the enhanced code at build time.
       //String jpaFile = getRelativeFile("./lib/datanucleus-core.jar");  

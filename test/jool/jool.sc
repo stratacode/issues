@@ -1,8 +1,13 @@
 test.jool extends junit.main, jool.lib {
+   joolPkg {
+      includeTests = true;
+   }
+/*
    public void init() {
       sc.repos.RepositoryPackage pkg = getRepositoryPackage("org.jooq/jool");
       pkg.includeTests = true;
    }
+*/
 
    public void start() {
       // TODO - move this to some base layer - sys/resourceFiles or something?   Spring, swing, also put various file types in the

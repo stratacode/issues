@@ -27,3 +27,5 @@ sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < t
 (cd test/wicketMQ; ./run)
 
 sc -a -ni -ta test/jool
+
+sc -a -ta spring/example/petclinic < test/scripts/wait20.txt
