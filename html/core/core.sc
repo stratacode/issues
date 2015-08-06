@@ -30,7 +30,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       buildPhase = BuildPhase.Prepare;
       resultSuffix = "xml";
       useSrcDir = false;
-      srcPathTypes = new String[] {null, "web"};
+      srcPathTypes = {null, "web"};
 
      // Share one buildDir for web root files since they do not support path searching
       //templateResourceLang.useCommonBuildDir = true;
@@ -52,9 +52,9 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       // and that is where jetty starts.
       //webFileProcessor.useCommonBuildDir = true;
       processInAllLayers = true;
-      srcPathTypes = new String[] {null, "web"};
+      srcPathTypes = {null, "web"};
 
-      extensions = {"html", "jpg", "png", "gif", "pdf", "css", "js", "jsp", "xml", "properties"};
+      extensions = {"html", "jpg", "png", "gif", "pdf", "css", "js", "jsp", "xml", "properties", "tag"};
    }
 
    object cssLanguage extends sc.lang.CSSLanguage {
