@@ -1,30 +1,21 @@
-log4j {
+log4j extends sys.std {
    compiledOnly = true;
+
+   // Log4j complains if we include two incompatible implementation classes and so higher level 
+   // packages need to define the impl library.  Here we only pull in the api.
 
    object slf4jApiPkg extends MvnRepositoryPackage {
       url = "mvn://org.slf4j/slf4j-api/1.7.0";
    }
 
-/*
-   object log4jPkg extends MvnRepositoryPackage {
-      url = "mvn://org.slf4j/slf4j-log4j12/1.7.0";
+   resourceFileProcessor {
+      {
+         // Treat this file as a resource so it goes in the classpath
+         addPatterns("log4j\\.properties");
+      }
    }
-*/
 
-   public void start() {
-      sc.layer.LayeredSystem system = getLayeredSystem();
-
-      // Layers web files in the "doc" folder of any downstream layers
-      LayerFileProcessor log4jprops = new sc.layer.LayerFileProcessor();
-
-      // Only layers after this one will see this extension
-      log4jprops.definedInLayer = this;    
-      log4jprops.prependLayerPackage = false;
-      // Copy this to the same place compiled classes go
-      log4jprops.useSrcDir = false;
-      log4jprops.useClassesDir = true;
-
-      // Copy this file into the top-level of the buildDir
-      system.registerPatternFileProcessor("log4j\\.properties", log4jprops);
+   public void init() {
+      excludeRuntimes("js", "android", "gwt");
    }
 }

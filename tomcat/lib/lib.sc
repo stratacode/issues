@@ -1,5 +1,4 @@
 package sc.tomcat;
-
 tomcat.lib extends log4j {
    compiledOnly = true;
 
@@ -25,8 +24,6 @@ tomcat.lib extends log4j {
       // WEB-INF is not path searchable so the real build dir is the common build dir (doesn't change for dyn layers)
       system.options.useCommonBuildDir = true;
 
-      //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "scp", "vsgit@stratacode.com:/home/vsgit/jettyLibs", false);
-      //sc.repos.RepositoryPackage pkg = addRepositoryPackage("jettyLibs", "url", "http://stratacode.com/packages/jettyLibs.zip", true);
       //RepositoryPackage pkg = addRepositoryPackage("mvn://org.eclipse.jetty/jetty-webapp/8.1.17.v20150415");
       installPackages(new String[] {
          "mvn://org.apache.tomcat.embed/tomcat-embed-core/" + tomcatVersion, 

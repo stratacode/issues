@@ -2,6 +2,7 @@ sys.std {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.Program;
 
+
    hidden = true;
    compiledOnly = true;
 
@@ -11,6 +12,7 @@ sys.std {
       extensions = {"xml", "properties", "css", "sh", "policy", "xsd"};
       srcPathTypes = {null, "config"};
    }
+
 
    object resourceFileProcessor extends LayerFileProcessor {
       prependLayerPackage = false;
