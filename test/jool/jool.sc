@@ -1,6 +1,9 @@
 test.jool extends junit.main, jool.lib {
    joolPkg {
       includeTests = true;
+      {
+         addSrcPath("src/test/java");
+      }
    }
 /*
    public void init() {

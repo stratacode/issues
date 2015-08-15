@@ -14,12 +14,11 @@ Why another web framework?  Here are the [advantages](webFrameworkAdvantages.htm
 
 Let's get started:
 
-Download and install the layer cake dist, and layers distributions.  Put the dist files into your paths so that you can run the sc command.  Go to the layers folder and run:
+Download and install StrataCode.  Put the 'bin' directory into your path or create an alias for bin/sc.   Go to the layers folder and run:
 
     sc example/simpleSync/main
 
 This runs a simple hello world application that uses both client and server.
-
 
 ### Simple Example
 
@@ -31,7 +30,7 @@ Here's a simple hello world template:
 
 <%= MarkDownPage.markDown(%>
 
-The &lt;%! directive works like in JSP - you are adding a type declaration, in this case a field named yourName that's visible using the same scoping rules as Java.  In this case, it's visible to the other children of the 'div class="appFrame"' tag.
+The &lt;%! directive works like in JSP - you are adding a type declaration, in this case a field named yourName that's visible using the same scoping rules as Java when you consider each tag as an object where inner tags are inner objects.  In this case, it's visible to the other children of the 'div class="appFrame"' tag.
 
 The input tag's value attribute uses a data binding expression to bind the value to yourName.  Attributes can refer to Java expressions with or without data binding by prefixing the attribute value with the "=" operator, or one of the [data binding operators](dataBinding.html): ":=", ":=:", or "=:".  
 
@@ -65,15 +64,17 @@ For templates that you want to run in any configuration, have their layer extend
 
 ### HTML and Javascript Applications
 
-When you use just js.schtml, you'll build a website from only html and javascript files.  You can open those files in your browser or publish them with another web server.  In this configuration, StrataCode generates .java files for your .js files in the build/js directory.
+When you use just js.schtml, you'll build a website from only html and javascript files.  You can open those files in your browser or publish them with another web server.  In this configuration, StrataCode generates .java files from the schtml and sc files in your project, then converts those files to .js which is loaded by the browser.   
 
 After you build your project, the layer's build directory contains a directory called web - the top-level directory for your site.  Your browser opens to the index.html file unless you run StrataCode with the -nw (no window) option. 
 
-StrataCode generates a default index.html file which contains links to the top-level URLs defined in your project.  This includes all of the schtml files that have an html tag in them or types you mark with @URL.  Other schtml files are typically used as  HTML fragments.  If you add an @URL annotation you can expose any type as a page.
+StrataCode generates a default index.html file which contains links to the top-level URLs defined in your project.  This includes all of the schtml files that have an html tag in them or types you mark with @URL.  As soon as you add an index.html or index.schtml file to your project, it overrides the default one.  Like any other path in the source directory, a subsequent layer can simply override it by adding one to replace it.  
+
+Some schtml files are typically used as  HTML fragments.  Those pages do not start with the html tag itself.  If you add an @URL annotation to any Servlet or schtml page, you can access it from a pre-defined URL instead of using the paths of the pages directly.
 
 ### Client/Server Applications
 
-When you include the jetty.schtml layer, StrataCode generates a class called PageInit to initializes all of the top level URLs and registers them with the PageDispatcher servlet.  This will include those types marked with @URL or which have an <html> tag as their root but this is configurable.   This servlet maps the page requests from URLs to code which uses your server-side template object to generate an HTML response.
+When you include the jetty.schtml layer, StrataCode generates a class called PageInit to initializes all of the top level URLs and registers them with the PageDispatcher servlet.  This will include those types marked with @URL or which have an &lt;html&gt; tag as their root but this is configurable.   This servlet maps the page requests from URLs to code which uses your server-side template object to generate an HTML response.
 
 ### URLs and Template Pages
 
@@ -85,7 +86,13 @@ You can also control what URLs map to which pages via the @URL annotation.  This
 
 When your layers extend both jetty.schtml and js.schtml, you can also enable StrataCode synchronization.
 
-In the synchronized version, an initial static HTML page is delivered to the browser based on the URL request.  The server code for the template page is executed to provide that current page using the version of any synchronized objects currently maintained on the server.   After the initial HTML is displayed to the user, the client starts downloading the Javascript code to incrementally update the page.  It then downloads a Javascript code snippet to initialize the state of any synchronized objects.
+You can set the defaultSyncMode to SyncMode.Automatic in your layer definition file for any layers which are run in more than one runtime.  Types and properties defined in that layer are all registered with the synchronization system using the same get/set conversion and data binding logic.   Rather than writing marshalling and unmarshalling code using explicit client/server APIs, most of your application can be moved seamlessly between the client and server, or both based on how you want the data to flow.  
+
+You can augment the automatic synchronization by annotation driven synchronization.  Here you explicitly mark properties and types with @Sync annotation, using attributes to control how and when the object is fetched and updated.
+
+Using StrataCode synchronization provides you with high-end application behavior from your domain model in a pure state.  You get immediate page loads and can refresh the page at any point without losing any browser state.  You have the efficiency of sticky-session load balancing, and the robustness of stateless operation - where all server-side state can be recovered from the client when the server process restarts.  All of this happens transparently when you properly partition your code into layers and turn on automatic synchronization.
+
+Here's how this complex behavior works.  The server renders an initial HTML page is delivered to the browser based on the URL request.  After the initial HTML is displayed to the user, the client starts downloading the Javascript code to incrementally update the page and perform the synchronization.  This includes the JS code from your schtml templates, your domain model layers included on the client, and the synchronization hooks injected into your code for firing change events as well as the JS code for implementing the SC web framework.  It then downloads a Javascript code snippet to initialize the state of any synchronized object.  This is called a "sync layer", representing the changes for the first sync from the server to the client.
 
  As changes are made on the client those changes are recorded in a runtime layer of data called a "sync layer".  When necessary, the client sends its current sync layer to the server.  This sync layer works like a JSON file though it can supports any kind of change you might make to the server.  It can include method calls, new instance creation, etc.
 
@@ -93,7 +100,7 @@ The server applies that layer of changes and records any subsequent changes made
 
 The client applies the response which typically updates the user interface displays or triggers additional UI display logic.
 
-There is a lot of moving parts but they are all carefully designed to be flexible, efficient, and maintainable.  For example, it's easy to trace the generated code injected into the Java for synchronization to be sure it matches what you want.  Also, The formats exchanged are very easy to read and debug.  See [debugging](debugging.html) for details.
+There is a lot of moving parts but they are all carefully designed to be flexible, efficient, and maintainable.  For example, it's easy to trace the generated code injected into the Java for synchronization to be sure it matches what you want.  Also, The formats exchanged are easy to read and debug.  See [debugging](debugging.html) for details.
 
 Overall we believe the sync framework provides a clean way to implement declarative, client/server from a single code base.
 
