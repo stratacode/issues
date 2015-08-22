@@ -21,7 +21,7 @@
          todos.add(new TodoItem(todoText, false));
       }
  
-      int getRemaining(List<TodoItem> todoList, boolean doneFlag) {
+      int getRemaining(List<TodoItem> todoList) {
          int count = 0;
          for (TodoItem todo: todoList) {
             if (!todo.done)

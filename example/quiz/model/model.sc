@@ -1,9 +1,6 @@
 package sc.example.quiz;
 
-import java.util.List;
-import sc.util.ArrayList;
-
-public example.quiz.model {
+public example.quiz.model extends util {
    codeType = sc.layer.CodeType.Declarative;
    codeFunction = sc.layer.CodeFunction.Model;
 }

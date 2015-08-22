@@ -11,8 +11,6 @@ tomcat.lib extends log4j {
       // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
       excludeRuntimes("js", "android", "gwt");
 
-      // Jetty requires the default runtime - Server process
-      //addRuntime(null);
       addProcess(sc.layer.ProcessDefinition.create("Server"));
    }
 

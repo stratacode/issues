@@ -8,6 +8,7 @@ import java.util.HashSet;
 import jpaCat.CacheTest;
 
 test.catTest.baseCat extends jpa.basejpa {
+   disabled = true;
    public void start() {
       sc.layer.LayeredSystem system = getLayeredSystem();
       system.addVMParameter("verbosegc", "-verbose:gc");

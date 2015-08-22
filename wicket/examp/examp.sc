@@ -1,5 +1,5 @@
 package sc.wicket;
 
-public wicket.examp extends wicket.lib {
+public wicket.examp extends wicket.core {
 
 }

@@ -17,4 +17,6 @@ import java.util.Iterator;
 test.catTest.reposCat extends jpaCat {
    buildDir="/atg/home/locallib";
    classPath=sc.util.FileUtil.listFiles(getRelativeFile("./lib"),".*\\.jar");
+
+   disabled = true;
 }
