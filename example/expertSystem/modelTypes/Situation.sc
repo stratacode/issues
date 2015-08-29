@@ -11,4 +11,10 @@ class Situation {
    void setFactorValue(SituationalFactor factor, FactorValue factorValue) {
       factorValues.put(factor, factorValue);
    }
+
+   // Note: these methods are abstract but the class is not.  The implementations
+   // must be supplied by a subsequent layer.  
+   abstract LeadershipStyle timeDrivenModel();
+
+   abstract LeadershipStyle developmentDrivenModel();
 }
