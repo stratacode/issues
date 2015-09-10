@@ -5,7 +5,7 @@ public class Base1 {
    { 
       testList.add(hm); 
       List<String> l1 = new ComponentList<String>();
-      l1.add("subName00");
+      l1.add("subName0");
       l1.add("subName1");
       hm.put("name1", l1);
       List<String> l2 = new ComponentList<String>();
@@ -30,7 +30,7 @@ public class Base1 {
 
       //System.out.println("*** <noList>=" + b1.testBinding);
 
-      System.out.println("*** null=" + b1.testBinding);
+      System.out.println("*** subName0=" + b1.testBinding);
 
       b1.currentName = "name1";
 
