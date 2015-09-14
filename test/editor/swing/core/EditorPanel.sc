@@ -297,7 +297,7 @@ EditorPanel extends JPanel implements EditorPanelStyle {
       topComponent = scrollTypeTree;
       bottomComponent = scrollLayerTree;
       int treeHeight := (int) (EditorPanel.this.size.height - belowToolBarY - 2 * ypad - yframeoff - statusPanelHeight);
-      dividerLocation := (int) (treeHeight / 2 - 2*ypad);
+      dividerPosition := (int) (treeHeight / 2 - 2*ypad);
       orientation = VERTICAL_SPLIT;
       location := SwingUtil.point(xpad, belowToolBarY);
       size := SwingUtil.dimension(treeWidth, treeHeight);

@@ -10,22 +10,34 @@ fi
 set -e
 
 sc -a -ni -ta test/lambda
+sc -a -ni -ta -cc test/lambda
+
 sc -a -ni -ta test/java7Misc
+sc -a -ni -ta -cc test/java7Misc
+
 sc -a -ni -ta js/allInOne/main test/java7Misc 
+sc -a -ni -ta -cc js/allInOne/main test/java7Misc 
+
 sc -a -ni -ta test/java7Thread
+sc -a -ni -ta -cc test/java7Thread
+
 sc -a -ni -ta test/defaultMethods
+sc -a -ni -ta -cc test/defaultMethods
 
 sc -a example/quiz/wicket/makequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
 sc -a -dynone example/quiz/wicket/makequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
 
 sc -a editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/scripts/editorScript.txt
+sc -a -cc editor/swing/threeD editor/swing/vim example/expertSystem/swingui  < test/scripts/editorScript.txt
 
 sc -a -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
+sc -a -cc -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingui < test/scripts/editorScript.txt
 
 (cd test/refreshMQ; ./run)
 
 (cd test/wicketMQ; ./run)
 
 sc -a -ni -ta test/jool
+sc -a -ni -ta -cc test/jool 
 
 sc -a -ta spring/example/petclinic < test/scripts/wait20.txt

@@ -25,13 +25,13 @@ public class MakeQuiz extends AppFrame {
       leftComponent = innerSplitPane;
       rightComponent = editQuestionPanel;
       orientation = HORIZONTAL_SPLIT;
-      dividerLocation = 150;
+      dividerPosition = 150;
       size := displaySize;
 
       // Compute the outer split pane's display size (without the
       // border), and the sizes of its left and right components
       Dimension outerDisplaySize := SwingUtil.subInsets(size, insets);
-      int leftWidth := outerSplitPane.dividerLocation - outerSplitPane.insets.left;
+      int leftWidth := outerSplitPane.dividerPosition - outerSplitPane.insets.left;
       int rightWidth := (int) outerDisplaySize.width - leftWidth - outerSplitPane.dividerSize;
 
       // A split pane with the quiz list on the left side, and the
@@ -40,13 +40,13 @@ public class MakeQuiz extends AppFrame {
 	 topComponent = quizListPanel;
 	 bottomComponent = questionListPanel;
 	 orientation = VERTICAL_SPLIT;
-	 dividerLocation = 200;
+	 dividerPosition = 200;
 	 size := SwingUtil.dimension(leftWidth, outerDisplaySize.height);
 
 	 // Compute the inner split pane's display size (without the
 	 // border), and the sizes of its top and bottom components
 	 Dimension innerDisplaySize := SwingUtil.subInsets(size, insets);
-	 int topHeight := innerSplitPane.dividerLocation - innerSplitPane.insets.top;
+	 int topHeight := innerSplitPane.dividerPosition - innerSplitPane.insets.top;
 	 int bottomHeight := (int) innerDisplaySize.height - topHeight - innerSplitPane.dividerSize;
 
 	 // The QuizList panel lets the user select the quiz

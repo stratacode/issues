@@ -26,8 +26,8 @@ CodeView extends JScrollPane implements EditorPanelStyle {
       errorText := editorModel.ctx.getErrors(file.model, editorModel.ctx.errorsChanged);
 
       size := SwingUtil.dimension(maxChildWidth,
-                                  parentSplit.topComponent == this ? parentSplit.dividerLocation :
-                                                                     parentSplit.size.height - parentSplit.dividerLocation);
+                                  parentSplit.topComponent == this ? parentSplit.dividerPosition :
+                                                                     parentSplit.size.height - parentSplit.dividerPosition);
 
       fileLabel extends JLabel {
          location := SwingUtil.point(xpad, ypad);
@@ -183,7 +183,7 @@ CodeView extends JScrollPane implements EditorPanelStyle {
                   editor.parentSplit = lastSplit;
                   split.topComponent = lastSplit;
                }
-               split.dividerLocation = maxHeight;
+               split.dividerPosition = maxHeight;
                lastSplit = split;
             }
             editors.add(editor);

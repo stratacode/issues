@@ -25,6 +25,8 @@ jetty.lib extends log4j {
       // Jetty requires the default runtime - Server process
       //addRuntime(null);
       addProcess(sc.layer.ProcessDefinition.create("Server"));
+
+      System.setProperty("org.eclipse.jetty.xml.XmlParser.Validating", "false");
    }
 
    public void start() {
