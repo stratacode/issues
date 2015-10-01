@@ -5,7 +5,14 @@ opengl.lib {
    codeType = sc.layer.CodeType.Framework;
    codeFunction = sc.layer.CodeFunction.UI;
 
-   {
+   void init() {
+      // For now we can't use the open gl layers for js and android but
+      // theoretically that could change.
+      excludeRuntimes("js", "android", "gwt");
+      addRuntime(null);
+   }
+
+   void start() {
       sc.repos.RepositoryPackage pkg = addRepositoryPackage("javaOpenGL", "url", "http://www.stratacode.com/packages/opengl.zip", true);
       if (!disabled) {
          String openGLDir = sc.util.FileUtil.concat(pkg.installedRoot, "lib");
@@ -20,12 +27,5 @@ opengl.lib {
          sc.layer.LayerUtil.addLibraryPath(openGLDir);
          System.out.println("opengl.lib layer updated system library path: " + System.getProperty("java.library.path"));
       }
-   }
-
-   void init() {
-      // For now we can't use the open gl layers for js and android but
-      // theoretically that could change.
-      excludeRuntimes("js", "android", "gwt");
-      addRuntime(null);
    }
 }

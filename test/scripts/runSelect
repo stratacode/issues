@@ -28,6 +28,7 @@ sc -ni -a -ta test.innerLevels
 sc -dyn -a -ni -ta test.innerLevels
 
 sc -ni -a test/langTest
+sc -ni -a -dyn test/langTest
 
 # Tests mixed compiled/dynamic modes
 sc -ni -a test/dyn -r "test.*"

@@ -30,6 +30,12 @@ class ConstRef {
       Set<Person> personSet = copyElements(people, () -> { return new HashSet<Person>(); });
       assertEquals(personSet.size(), 3);
 
+      Set<Person> refSetOldWay = copyElements(people, new Supplier<HashSet<Person>>() {
+            HashSet<Person> get() {
+                return new HashSet<Person>();
+            }
+      });
+
       // Constructor
       Set<Person> refSet = copyElements(people, HashSet::new);
 
