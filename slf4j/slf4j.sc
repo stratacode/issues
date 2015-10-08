@@ -8,7 +8,7 @@ slf4j {
       }
       pkg = addRepositoryPackage("mvn://org.slf4j/slf4j-simple/1.7.12");
       if (pkg.installedRoot != null && !disabled) {
-         classPath += ":" + pkg.classPath;
+         classPath += FileUtil.PATH_SEPARATOR + pkg.classPath;
       }
    }
 }

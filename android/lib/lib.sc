@@ -24,7 +24,7 @@ android.lib extends util {
    }
 
    // Include Android's generated source - R.java in the layer's src path
-   srcPath = "${buildDir}/gen:.";
+   srcPath = FileUtil.concat("${buildDir}", "gen") + FileUtil.PATH_SEPARATOR + ".";
 
    needsIndexRefresh = true; // We add files to the "gen" directory in the pre-build commands.  This tells the layer to flush the cache after each phase
 
