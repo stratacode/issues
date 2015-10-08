@@ -8,6 +8,6 @@ cp takequiz/TQM0.txt takequiz/TakeQuizMain.sc
 cp takequiz/TQ0.txt takequiz/TakeQuiz.sc
 
 echo "Running refreshQuiz"
-sc -a . < script.txt
+scc -a . < script.txt
 
 rm model/Quiz.sc model/Question.sc data/QuizData.sc takequiz/TakeQuizMain.sc takequiz/Takequiz.sc

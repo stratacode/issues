@@ -6,57 +6,57 @@ set -e
 (cd test/refreshQuiz; ./run)
 
 # Run this one compile only, without the interpreter
-sc -a test.misc.q1 test.addr.addrFormSub -ni -c
+scc -a test.misc.q1 test.addr.addrFormSub -ni -c
 
 # Now run it from the script
 sh test/addr/addrFormSub/build/swingmain &
 
 # prompt for start dialog
-sc -a -dynone example/quiz/swing/swingui -i < example/quiz/swingTest.txt -r sc.swing.Main Science
-sc -a example/quiz/swing/swingui -i < example/quiz/swingTest.txt -r sc.swing.Main Science
+scc -a -dynone example/quiz/swing/swingui -i < example/quiz/swingTest.txt -r sc.swing.Main Science
+scc -a example/quiz/swing/swingui -i < example/quiz/swingTest.txt -r sc.swing.Main Science
 
 #(cd test/simpleComponent; sc -ni -a .)
 
 cp test/refreshUC/UC0.txt test/refreshUC/UnitConverter.sc
-sc -a test/refreshUC < test/refreshUC/script.txt -r sc.swing.Main
+scc -a test/refreshUC < test/refreshUC/script.txt -r sc.swing.Main
 
-sc -a example.unitConverter.adjust -i < example.unitConverter/test/swingTest.txt -r "sc.*"
+scc -a example.unitConverter.adjust -i < example.unitConverter/test/swingTest.txt -r "sc.*"
 
-sc -a -dynone example.quiz.swing.makequiz < example/quiz/makequizTest2.txt
+scc -a -dynone example.quiz.swing.makequiz < example/quiz/makequizTest2.txt
 
 # A few other random samples
-sc -ni -a test.temp.tempConverterAdjust < test/temp/tempConverterAdjust/script.txt -i -r sc.swing.Main
+scc -ni -a test.temp.tempConverterAdjust < test/temp/tempConverterAdjust/script.txt -i -r sc.swing.Main
 # Nat's make quiz sample both with the -r or with the script
-sc -a example.quiz.swing.makequiz < example/quiz/makequizTest1.txt
+scc -a example.quiz.swing.makequiz < example/quiz/makequizTest1.txt
 #sh example/quiz/makequiz/build/swingmain newquiz
 
-sc -a example.quiz.swing.takequiz -r sc.swing.Main
-sc -a -dynone example.quiz.swing.takequiz
+scc -a example.quiz.swing.takequiz -r sc.swing.Main
+scc -a -dynone example.quiz.swing.takequiz
 
 # generates the android samples - go into example/quiz/androidui/build - a normal android dir.  type: ant debug/install etc. 
 # First install the android SDK.  make a link from androidLayer/lib -> your SDK/platforms directory
-sc -ni -a example.quiz.android.androidui
+scc -ni -a example.quiz.android.androidui
 (cd example/quiz/android/androidui/build; ant debug)
-sc -ni -a example.unitConverter.androidui
+scc -ni -a example.unitConverter.androidui
 (cd example/unitConverter/androidui/build; ant debug)
 
-sc -a example/extendedHelloWorld < wicket/bookExamp/script.txt
+scc -a example/extendedHelloWorld < wicket/bookExamp/script.txt
 
 # Needs system classes in classpath or some hack to pull them out of bootstrap
 #sc -cc -a test.GetSet simpleBinding example.unitConverter.adjust example.quiz.data.science example.quiz.swingui -r "sc.*"
 
-sc -a example/unitConverter/adjust -i < unitConverter/test/script.txt -r sc.swing.Main
-sc -a -dynone example/unitConverter/adjust -i < unitConverter/test/script.txt -r sc.swing.Main
+scc -a example/unitConverter/adjust -i < unitConverter/test/script.txt -r sc.swing.Main
+scc -a -dynone example/unitConverter/adjust -i < unitConverter/test/script.txt -r sc.swing.Main
 
-sc -a wicket/bookExamp < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a wicket/annotExamp < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a example/unitConverter/wicketui < wicket/bookExamp/script.txt -i -rb sc.jetty.CServer
-sc -a -dynone example/unitConverter/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a example/unitConverter/wicketAjax < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a -dynone example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a wicket/bookExamp < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a wicket/annotExamp < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a example/unitConverter/wicketui < wicket/bookExamp/script.txt -i -rb sc.jetty.CServer
+scc -a -dynone example/unitConverter/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a example/unitConverter/wicketAjax < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a -dynone example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
 # Test where all of the quiz layers are dynamic
-sc -a -dynone example/quiz/model example/quiz/wicket/model example/quiz/wicket/common example/quiz/data example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a example/quiz/wicket/takequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
-sc -a -dynone example/quiz/wicket/takequiz example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a -dynone example/quiz/model example/quiz/wicket/model example/quiz/wicket/common example/quiz/data example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a example/quiz/wicket/takequiz < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
+scc -a -dynone example/quiz/wicket/takequiz example/quiz/wicket/wicketui < wicket/bookExamp/script.txt -i -r sc.jetty.CServer
 

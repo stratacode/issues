@@ -17,6 +17,6 @@ cp makequiz/EQ0.txt makequiz/EditQuestion.sc
 cp makequiz/EQH0.txt makequiz/EditQuestion.html
 
 echo "Running wicketMQ"
-sc -a . < script.txt
+scc -a . < script.txt
 
 rm -f persist/QuizDataManager.sc wicket/QuizWebPage.sc wicket/DataManagedWebPage.sc wicket/OnclickConfirmation.sc makequiz/MakeQuizApp.sc makequiz/NameQuiz.sc makequiz/NameQuiz.html makequiz/QuizList.sc makequiz/QuizList.html makequiz/QuestionList.sc makequiz/QuestionList.html makequiz/EditQuestion.sc makequiz/EditQuestion.html

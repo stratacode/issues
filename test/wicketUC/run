@@ -5,6 +5,6 @@ cp UCH0.txt UnitConverter.html
 cp UCA0.txt UnitConverterApp.sc
 
 echo "Running wicketUC"
-sc -a . < script.txt
+scc -a . < script.txt
 
 rm UnitConverter.sc UnitConverter.html UnitConverterApp.sc

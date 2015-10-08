@@ -2,39 +2,39 @@
 
 set -e
  
-sc -a -ta example/simpleSync/main < test/scripts/wait10.txt
+scc -a -ta example/simpleSync/main < test/scripts/wait10.txt
 
-sc -a -ta example/remoteMethod/main < test/scripts/wait10.txt
+scc -a -ta example/remoteMethod/main < test/scripts/wait10.txt
 
-sc -a -ta example/unitConverter/jsui < test/scripts/wait10.txt
+scc -a -ta example/unitConverter/jsui < test/scripts/wait10.txt
 
-sc -a -ta -dyn example/unitConverter/jsui < test/scripts/wait10.txt
+scc -a -ta -dyn example/unitConverter/jsui < test/scripts/wait10.txt
 
-sc -a -ta -ni js/schtml example/todo/data
+scc -a -ta -ni js/schtml example/todo/data
 
 # This case not yet implemented but it would not be hard if anyone cared.  
 #sc -a jetty/schtml example/todo/data
 
-sc -a -ta js/template jetty/schtml example/todo/data < test/scripts/wait10.txt
+scc -a -ta js/template jetty/schtml example/todo/data < test/scripts/wait10.txt
 
-sc -a -ta js/template jetty/schtml -dyn example/todo/data < test/scripts/wait10.txt
+scc -a -ta js/template jetty/schtml -dyn example/todo/data < test/scripts/wait10.txt
 
-sc -a -ta -ni test/js/unitConverter/replaceError
+scc -a -ta -ni test/js/unitConverter/replaceError
 
-sc -a -ta -ni test/js/unitConverter/swapLabels
+scc -a -ta -ni test/js/unitConverter/swapLabels
 
-sc -a -ta -ni test/js/hwDisabled
+scc -a -ta -ni test/js/hwDisabled
 
-sc -a -ta -ni test/js/simpleBinding
+scc -a -ta -ni test/js/simpleBinding
 
-sc -a -ta -ni test/js/simpleMerge/subLayer
+scc -a -ta -ni test/js/simpleMerge/subLayer
 
-sc -a -ta -ni test/js/simplePerson
+scc -a -ta -ni test/js/simplePerson
 
-sc -a -ta -ni test/js/interfacePerson
+scc -a -ta -ni test/js/interfacePerson
 
-sc -a -ee -ta editor/js/app < test/scripts/wait10.txt
+scc -a -ee -ta editor/js/app < test/scripts/wait10.txt
 
-sc -a -ta test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
+scc -a -ta test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
 
-sc -a -ta -dyn test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt
+scc -a -ta -dyn test/js/helloWorld editor/js/mixin < test/scripts/wait10.txt

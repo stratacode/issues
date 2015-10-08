@@ -4,5 +4,5 @@
 
 set -e
 
-sc -ni -a test/js/nestedExpr
+scc -ni -a test/js/nestedExpr
 

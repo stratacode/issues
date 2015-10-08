@@ -2,22 +2,22 @@
 
 set -e
 
-sc -ni -a -ta test/ifaceField/ibase
-sc -ni -a -ta test/ifaceField/ibind
+scc -ni -a -ta test/ifaceField/ibase
+scc -ni -a -ta test/ifaceField/ibind
 
-sc -ni -a test/componentInner
+scc -ni -a test/componentInner
 
-sc -ni -dynone -a -ta test/ifaceField/ibase
-sc -ni -dynone -a -ta test/ifaceField/ibind
+scc -ni -dynone -a -ta test/ifaceField/ibase
+scc -ni -dynone -a -ta test/ifaceField/ibind
 
 sh test/scripts/run-compiled-demo
 
 
 rm -rf unitDemo
 rm -rf temp/build/unitDemo_*
-sc < test/scripts/ds-swingui2.txt
+scc < test/scripts/ds-swingui2.txt
 
-sc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swing.Main
+scc -a test/emptySwing -i < example/unitConverter/test/buildScript.txt -r sc.swing.Main
 
 #  Annoying tests that pop up lots of windows
 

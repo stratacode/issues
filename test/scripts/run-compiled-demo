@@ -1,9 +1,9 @@
 rm -rf unitDemo
 rm -rf .stratacode/build/unitDemo
 rm -rf .stratacode/dynbuild/unitDemo
-sc < test/scripts/compiled-script.txt
+scc < test/scripts/compiled-script.txt
 # swingui is dynamic in this version - use run-all-compiled-demo for one which generates swingui entirely as compiled
-sc unitDemo/extendedModel < test/scripts/compiled-script2.txt
+scc unitDemo/extendedModel < test/scripts/compiled-script2.txt
 # this one fails when we load the compiled class from extendedModel before 
 # the one built for swingui.
-sc unitDemo/swingui < test/scripts/compiled-script3.txt
+scc unitDemo/swingui < test/scripts/compiled-script3.txt

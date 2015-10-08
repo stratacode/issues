@@ -18,6 +18,6 @@ cp makequiz/QTL0.txt makequiz/QuestionList.sc
 cp makequiz/EQ0.txt makequiz/EditQuestion.sc
 
 echo "Running refreshMQ"
-sc -a . < script.txt
+scc -a . < script.txt
 
 rm -f persist/QuizDataManager.sc swing/PopupMenuListener.sc makequiz/MakeQuiz.sc makequiz/MakeQuizInit.sc makequiz/MakeQuizState.sc makequiz/NameQuiz.sc makequiz/QuestionList.sc makequiz/EditQuestion.sc makequiz/QuizList.sc

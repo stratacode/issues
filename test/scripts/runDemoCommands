@@ -5,10 +5,10 @@ set -e
 
 STARTTIME=`date "+%s"`
 
-sc -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait20.txt
-sc -ta -ni example/todo/clientOnly
-sc -ta -ee -dyn editor/js/mixin example/todo/clientServer < test/scripts/wait20.txt
-sc -ta example/todo/clientServer editor/js/options/windowScope < test/scripts/wait20.txt
+scc -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait20.txt
+scc -ta -ni example/todo/clientOnly
+scc -ta -ee -dyn editor/js/mixin example/todo/clientServer < test/scripts/wait20.txt
+scc -ta example/todo/clientServer editor/js/options/windowScope < test/scripts/wait20.txt
 
 ENDTIME=`date "+%s"`
 RUNTIME=`expr $ENDTIME - $STARTTIME`
