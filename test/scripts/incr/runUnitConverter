@@ -7,7 +7,7 @@ OPTS=
 set -e
 
 # first build it from scratch
-sc $OPTS -a -ta editor/js/mixin -dyn example/unitConverter/jsui  < test/scripts/wait10.txt
+scc $OPTS -a -ta editor/js/mixin -dyn example/unitConverter/jsui  < test/scripts/wait10.txt
 
 FULLENDTIME=`date "+%s"`
 FULLTIME=`expr $FULLENDTIME - $STARTTIME`
@@ -16,7 +16,7 @@ echo 'Full unit converter compile time: ' `date -j -f "%s" $FULLTIME "+%M:%S"`
 touch example/unitConverter/extendedModel/UnitConverter.sc
 
 # now do the incremental build 
-sc $OPTS -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait10.txt
+scc $OPTS -ta editor/js/mixin -dyn example/unitConverter/jsui < test/scripts/wait10.txt
 
 ENDTIME=`date "+%s"`
 INCRTIME=`expr $ENDTIME - $FULLENDTIME`

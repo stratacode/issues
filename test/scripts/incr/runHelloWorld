@@ -9,7 +9,7 @@ set -e
 # Start: hello world js ------
 
 # first build it from scratch
-sc $OPTS -a -ta test.js.helloWorld  < test/scripts/wait10.txt
+scc $OPTS -a -ta test.js.helloWorld  < test/scripts/wait10.txt
 
 FULLENDTIME=`date "+%s"`
 FULLTIME=`expr $FULLENDTIME - $STARTTIME`
@@ -18,7 +18,7 @@ echo 'Full hello world compile time: ' `date -j -f "%s" $FULLTIME "+%M:%S"`
 touch test/js/helloWorld/helloWorld.schtml
 
 # now do the incremental build 
-sc $OPTS -ta test.js.helloWorld < test/scripts/wait10.txt
+scc $OPTS -ta test.js.helloWorld < test/scripts/wait10.txt
 
 ENDTIME=`date "+%s"`
 INCRTIME=`expr $ENDTIME - $FULLENDTIME`

@@ -8,7 +8,7 @@ set -e
 # Start: FormView/CodeView js-editor ------
 
 # first build it from scratch
-sc -a -ta editor.js.app editor/test/simpleModel < test/scripts/wait10.txt
+scc -a -ta editor.js.app editor/test/simpleModel < test/scripts/wait10.txt
 
 FULLENDTIME=`date "+%s"`
 FULLTIME=`expr $FULLENDTIME - $STARTTIME`
@@ -17,7 +17,7 @@ echo 'Full compile time: ' `date -j -f "%s" $FULLTIME "+%M:%S"`
 touch editor/js/core/FormView.schtml
 touch editor/js/core/CodeView.schtml
 # now do the incremental build 
-sc -ta editor.js.app editor/test/simpleModel < test/scripts/wait10.txt
+scc -ta editor.js.app editor/test/simpleModel < test/scripts/wait10.txt
 
 ENDTIME=`date "+%s"`
 INCRTIME=`expr $ENDTIME - $FULLENDTIME`
