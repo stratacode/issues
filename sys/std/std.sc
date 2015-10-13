@@ -45,6 +45,7 @@ sys.std {
       templateResourceLang.resultSuffix = "xml";
       templateResourceLang.useSrcDir = false;
       templateResourceLang.prependLayerPackage = false;
+      templateResourceLang.srcPathTypes = new String[] {null, "web", "resource", "config"};
 
       registerLanguage(templateResourceLang, "scxml");
 

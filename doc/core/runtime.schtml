@@ -10,9 +10,9 @@
 
 ## StrataCode Build and Runtime Overview
 
-The sc command generates any changed code, compiles changed java, and runs main methods and starts processes, or opens urls pulled in by dependent layers.  It's goal is to be an easy way to validate and run any configuration of layers efficiently.  It maintains an index of all generated code so it can validate itself and clean up after itself from run to run.  
+The scc command generates any changed code, compiles changed java, and runs main methods and starts processes, or opens urls pulled in by dependent layers.  It's goal is to be an easy way to validate and run any configuration of layers efficiently.  It maintains an index of all generated code so it can validate itself and clean up after itself from run to run.  
 
-You provide the sc command the layer or set of layers you want to run.  Each layer includes its dependent layers automatically.  If you run "sc a b c" it applies the layers in that order - so c is the last layer.  This is called "the build layer".  The results are by default stored in the last layer's build or dynbuild directories depending on whether the last layer is compiled or dynamic. 
+You provide the scc command the layer or set of layers you want to run.  Each layer includes its dependent layers automatically.  If you run "scc a b c" it applies the layers in that order - so c is the last layer.  This is called "the build layer".  The results are by default stored in the last layer's build or dynbuild directories depending on whether the last layer is compiled or dynamic. 
 
 If your layers are stored under different root directories, set the layerPath to include each root using the -lp option.  When searching for a layer directory, the directories in the layer path are searched in order like Java's classpath.  You can then use layer names relative to the directory in the layer path.  
 
@@ -26,13 +26,13 @@ Using the -dyn option helps you temporarily run the system with one or more laye
 
 ## Running StrataCode Applications With the Interpreter
 
-To run any StrataCode application, just run sc with the relative path name of the layers involved.  You set the -lp (layer path) option to include the layer root directories.  StrataCode searches for the first layer definition file which matches the layer name you provide.  It then figures out what needs to be compiled, compiles it if necessary and then runs the main all in the same JVM.  If you specify the -dyn option, any layer names you provide are treated as dynamic layers even if they do not have the dynamic keyword.
+To run any StrataCode application, just run scc with the relative path name of the layers involved.  You set the -lp (layer path) option to include the layer root directories.  StrataCode searches for the first layer definition file which matches the layer name you provide.  It then figures out what needs to be compiled, compiles it if necessary and then runs the main all in the same JVM.  If you specify the -dyn option, any layer names you provide are treated as dynamic layers even if they do not have the dynamic keyword.
 
-Be careful when you save changes using either the editor or the command line interpreter.  It's possible that you've just changed source files in your layers folder.  If you run sc with the -i option, by default all changes go into a new temporary layer, a safe sandbox for making any change.
+Be careful when you save changes using either the editor or the command line interpreter.  It's possible that you've just changed source files in your layers folder.  If you run scc with the -i option, by default all changes go into a new temporary layer, a safe sandbox for making any change.
 
 ## The StrataCode Classpath
 
-When you start the sc command, you specify a classpath used to find precompiled classes.  These core classes can be used by any of the layers using Java's normal import mechanism.  You can't use the modify operator with these classes except to set annotations in explicitly designated annotation layers.
+When you start the scc command, you specify a classpath used to find precompiled classes.  These core classes can be used by any of the layers using Java's normal import mechanism.  You can't use the modify operator with these classes except to set annotations in explicitly designated annotation layers.
 
 Layers can add to the system classpath to include any classes they require for their runtime.
 
@@ -40,9 +40,9 @@ As a convenience, if you use the @MainSettings annotation to specify a run scrip
 
 ## StrataCode Initialization
 
-If you are customizing a StrataCode framework, you might be interested in the gory details of how layers are initialized.  For everyone else, you run "sc <list-of-layers>".  Your code gets called when it should by the framework.
+If you are customizing a StrataCode framework, you might be interested in the gory details of how layers are initialized.  For everyone else, you run "scc <list-of-layers>".  Your code gets called when it should by the framework.
 
-The sc process goes through the following initialization phases:
+The scc process goes through the following initialization phases:
 
 * Finds all layer definition files, and the extended layers computes the list of initial system layers
 * Sorts the list in dependency order - detects and flags cycles as errors.  When there are no dependencies between two layers, compiled layers are put in front of dynamic layers, and framework layers are put ahead of application layers.
@@ -58,8 +58,8 @@ The sc process goes through the following initialization phases:
 * All changed files are compiled by javac or the internal java compiler.
 * Any processing specific to the current runtime is performed - e.g. generating Javascript files from the Java
 * This process is repeated for each build layer in each runtime until the final build layer in each runtime reached.  Once each buildLayer is compiled, it's buildDir is added to the system classpath in front of any previous build layers.  SC only loads the compiled version for a class once it's determined that class will no longer be modified in a subsequent build layer.  That way, it is ensured it always has the right compiled version of each class.
-* If any errors have occurred sc exits (or optionally prompts to retry the build to speed up the fix-recompile process)
-* Upon a successful build, sc starts the interpreter and any Main methods and postBuild commands that were registered in the framework layers.  If you use the -c option, it compiles but does not run your application.  It's easy to have StrataCode generate a shell script and the requisite jar file to run and deploy your app as a standard Java application.
+* If any errors have occurred scc exits (or optionally prompts to retry the build to speed up the fix-recompile process)
+* Upon a successful build, scc starts the interpreter and any Main methods and postBuild commands that were registered in the framework layers.  If you use the -c option, it compiles but does not run your application.  It's easy to have StrataCode generate a shell script and the requisite jar file to run and deploy your app as a standard Java application.
 
 ## Options
 
@@ -71,13 +71,13 @@ The -lp option specifies the layer path.
 
 The -v family of options: -vs, -vsa, -vb, -vba, -vh, -vha turn on verbose for sync, data binding, and html respectively.
 
-By default, sc runs all main classes defined in framework layers, after compiling by loading the generated classes into the same VM.  The -rs option execs the scripts generated by the main commands.  The -r pattern option lets you only run main methods matching a specific pattern.  Each of the -r options consumes the remaining options and provides them to the executed command.  If you use -nr it suppresses running of main.
+By default, scc runs all main classes defined in framework layers, after compiling by loading the generated classes into the same VM.  The -rs option execs the scripts generated by the main commands.  The -r pattern option lets you only run main methods matching a specific pattern.  Each of the -r options consumes the remaining options and provides them to the executed command.  If you use -nr it suppresses running of main.
 
 If you use the -nw option, it suppresses the opening of the default browser window for a Javascript application.
 
 The -t option is like -r but runs tests.  You can specify an individual class name, or a pattern matching all test classes (e.g. -t .* to run all tests or just use -ta)
 
-More information can be found in the Javadoc for the LayeredSystem class or with sc -help.
+More information can be found in the Javadoc for the LayeredSystem class or with scc -help.
 
 ## Layer Properties
 
@@ -99,7 +99,7 @@ Specifies the directory where generated .java files go.
 
 ### buildLayer
 
-Any layer which has a build directory is considered to have buildLayer=true by default.  Any layer without a build directory has buildLayer=false unless set explicitly in the layer definition file, or built explicitly (sc [-c] layerName).  Any buildLayer=true layer compiles all files that have changed since any previous buildLayer.  In other words, buildLayers are themselves chained, the latter inheriting the contents of the former.  This lets you share compiled versions of some layers with subsequent layers so you can optimize what gets built when you change a given layer.
+Any layer which has a build directory is considered to have buildLayer=true by default.  Any layer without a build directory has buildLayer=false unless set explicitly in the layer definition file, or built explicitly (scc [-c] layerName).  Any buildLayer=true layer compiles all files that have changed since any previous buildLayer.  In other words, buildLayers are themselves chained, the latter inheriting the contents of the former.  This lets you share compiled versions of some layers with subsequent layers so you can optimize what gets built when you change a given layer.
 
 ### buildSeparate
 

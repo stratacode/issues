@@ -114,11 +114,11 @@ With Android, you also include the AndroidManifest.xml file to declare your acti
 
 To compile your application, from the layers directory run: 
 
-    sc example/unitConverter/androidui
+    scc example/unitConverter/androidui
 
 This generates and android project in the directory: 
 
-    sc example/unitConverter/androidui/build
+    scc example/unitConverter/androidui/build
 
 Change to that directory and type:
 

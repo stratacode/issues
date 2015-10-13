@@ -120,6 +120,7 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
       htmlLang.defaultExtendsType = "sc.lang.html.Page";
       // Do not try to generate .html files for types which do not have <html> or otherwise indicate they are addressed by a URL or have MainInit set on them.
       htmlLang.processOnlyURLs = true;
+      htmlLang.srcPathTypes = new String[] {null, "web"};
       // The .sc and .schtml files replace each other in the type system - i.e. not part of the "processed id" which lets one file in a subsequent layer from processing that file in the next layer
       // the suffix will be .java when compiledTemplate is true and one of process or postBuild template
       //htmlLang.processByUniqueSuffix = true;

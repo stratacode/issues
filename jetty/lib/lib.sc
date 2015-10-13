@@ -19,7 +19,7 @@ jetty.lib extends log4j {
    }
 
    public void init() {
-      // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses JS
+      // Exclude the javascript, android, and gwt runtimes.  All layers which extend this layer explicitly will also be excluded, unless they explicitly include a layer which uses an excluded runtime
       excludeRuntimes("js", "android", "gwt");
 
       // Jetty requires the default runtime - Server process

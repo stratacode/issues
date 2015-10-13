@@ -88,15 +88,15 @@ To change the port just extend this layer and override the httpConnector.port pr
 
 Extend the junit.main layer.  Add the normal @Test annotations for junit.  To run your tests, use:
 
-    sc yourLayer -t "<testClassPattern>"
+    scc yourLayer -t "<testClassPattern>"
 
 for example:
 
-    sc test/GetSet -t "sc.*"
+    scc test/GetSet -t "sc.*"
 
 or just use -ta to run all tests:
 
-    sc test/GetSet -ta
+    scc test/GetSet -ta
 
 StrataCode provides facilities to gather all tests registered.  In this case, junit registers itself as a test provider when you include the junit layer.  It's annotation processor for Test accumulates test objects at build time.  This index is used to make running all tests easy - a one step compile and run process.
 

@@ -16,7 +16,7 @@ Let's get started:
 
 Download and install StrataCode.  Put the 'bin' directory into your path or create an alias for bin/sc.   Go to the layers folder and run:
 
-    sc example/simpleSync/main
+    scc example/simpleSync/main
 
 This runs a simple hello world application that uses both client and server.
 
@@ -153,7 +153,7 @@ In the example.todo.jsui layer, which extends the model layer, the template page
 
 ## One-Step Build/Run
 
-The sc command does it all.  Even with client/server applications, it will do all code generation and compilation necessary, start processes, open browser windows, and implement restart, so you have full life-cycle control over the application.  This will make it easy to deliver SC as both a SaaS and OnPremise solution.  Let you support client-only, server-only, and client/server mixed solutions.
+The scc command does it all.  Even with client/server applications, it will do all code generation and compilation necessary, start processes, open browser windows, and implement restart, so you have full life-cycle control over the application.  This will make it easy to deliver SC as both a SaaS and OnPremise solution.  Let you support client-only, server-only, and client/server mixed solutions.
 
 The layer architecture will let you start or attach to a server, start any necessary processes and run any necessary main methods based on the current layer set.  Any SC process can change any object or model and sync with the other federated processes, allowing them to update both runtime views and development time views "in sync".
 

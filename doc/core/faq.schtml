@@ -26,13 +26,17 @@ Thirdly, StrataCode offers live programming with code-patching in a client/serve
 
 ### Why are layers better than just plain inheritance?
 
-Use of inheritance always defines a new name in the name space.  Sometimes that's what you want, but other times you really want to customize the existing type.  To do that with Java today you can use dependency injection, create a new class which extends the original class, then point the component definition to your new class.  That's more work and requires up front planning which you have to get right for compatibility.
+Of course lots of times object inheritance is what you want, but other times you really want code to be a customization to an existing type - a mixin or plugin etc.  
 
-And you've created a whole new name space which adds a constant multiplier to your code complexity.  You're now doing runtime mapping of those references which adds a multiplier to your testing burden and startup overhead.  And you need new tools to manage those references.
+When you use inheritance, e.g. "A extends B" you always create a new type name, in this case "A".  Because inheritance is our only way to refine a component, creating a new type is design-wise expensive.  It's generally a bad idea to create lots of classes, one per feature as it can make code more verbose, harder to read and manage.   A layer however can group multiple related and interdependent refinements with a single name.  The layer may represent a feature, or an aspect of behavior like user-interface, persistence.  It helps you break up large files and navigate code.  It's easy to merge them for viewing and debugging.
 
-Layers provide a more powerful and flexible, in-language mechanism for customization after the fact without breaking compatibility.  They work at compile time and runtime depending on how you configure them.  There's one integrated language model for seamless tooling.
+The main pattern for refinements, and plugins in Java today is to use dependency injection: create a new class which extends the original class, then point the component definition to the new class.  Compared to a layer, that's more work and requires up front planning which you have to get right for compatibility.
 
-And if you don't want to use layers to modify types, they act just like modules.  
+And you've created a whole new name space - the component name-space  which adds a constant multiplier to your code complexity.  You're now doing runtime mapping of those references which adds a multiplier to your testing burden and startup overhead.  And you need new tools to manage those references.
+
+Layers provide a more powerful and flexible, in-language mechanism for customization.  One name-space, statically-typed references - find-usages, refactoring all work reliably just as in Java.  You can change things and customize things without refactoring and without breaking compatibility.  They work at compile time and/or at runtime depending on how you configure them.  There's one integrated language model for seamless tooling - where the program can edit the program in a nice contained sandbox.
+
+And when you don't want to use layers to modify types, they act just like modules.  You can only use layers to make your build system more powerful.   
 
 A few languages let you modify types either using dynamic types or extension points.  When you let any piece of code modify any other piece of code, it makes tooling and tracing the origin of the code more difficult.  Layers give you flexibility with the right structure to make it maintainable as the code base grows large.
 
@@ -44,12 +48,11 @@ There will be some bumps along with using StrataCode now but projects with a yea
 
 ### What about IOS?  
 
-We are tracking efforts to bridge Java to IOS.  There are two which are becoming relatively mature.  Another option is to convert StrataCode to Swift.
+We are tracking efforts to bridge Java to IOS.  There are three which are becoming relatively mature.  Another option is to convert Java/StrataCode to Swift.
 
 ### What about .NET?
 
-It's very feasible to convert SC to .NET.  It could be very useful in a heterogenous Java/.NET system given that layers can tease apart platform dependencies and synchronize overlapping parts.
-
+It's very feasible to convert SC to .NET.  It could be useful in a heterogenous Java/.NET system given that layers can tease apart platform dependencies and synchronize overlapping parts.
 
 <% ) %>
 

@@ -4,6 +4,10 @@ import sc.obj.Sync;
 import sc.obj.SyncMode;
 import sc.lang.html.Element;
 
+/** 
+   The main view model object for viewing and editing of the program model.  It exposes
+   the current selection and provides access to the currently selected property, types and layers. 
+   */
 class EditorModel implements sc.bind.IChangeable {
    /** Specifies the list of types for the model */
    String[] typeNames = new String[0];

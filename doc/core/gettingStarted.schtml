@@ -16,33 +16,33 @@ Prerequisites: Java, Git, Unix (linux or mac)
 
 Get the StrataCode (sc) command and runtime libraries from Jeff 
 
-Run the command bin/sc in the directory you downloaded.  Follow the command line prompt to install the standard StrataCode layers directory using git.
+Run the command bin/scc in the directory you downloaded.  Follow the command line prompt to install the standard StrataCode layers directory using git.
 
 Some examples you can run:
 
 * Program editor and the expert system:
 
-    sc editor/swing/main example/expertSystem/main
+    scc editor/swing/main example/expertSystem/main
 
 * Unit converters on swing
 
-    sc example/unitConverter/swingui
+    scc example/unitConverter/swingui
 
 * With the program editor:
 
-    sc editor/swing/main example/unitConverter/swingui
+    scc editor/swing/main example/unitConverter/swingui
 
 * Unit converter in the web framework:
 
-    sc example/unitConverter/jsui
+    scc example/unitConverter/jsui
 
 * With the program editor:
 
-    sc editor/js/mixin example/unitConverter/jsui 
+    scc editor/js/mixin example/unitConverter/jsui 
 
 If you have problems, use the '-a' option to do a clean build or remove the layer's build directory in .stratacode/build/layer_name     
 
-There's a usage for the sc command and type "help" at the command line.
+There's a usage for the scc command and type "help" at the command line.
 
 See [known issues](https://github.com/stratacode/layers/issues?state=open).
 

@@ -8,6 +8,7 @@ import sc.layer.LayeredSystem;
 
 import java.util.HashMap;
 
+/** UI resources for the editor application (the part shared by the js and swing components) */
 class GlobalResources {
    @sc.obj.Sync(syncMode=sc.obj.SyncMode.Disabled)
    static HashMap<String,UIIcon> iconCache = new HashMap<String,UIIcon>();

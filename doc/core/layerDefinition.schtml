@@ -24,22 +24,22 @@ and:
     foo.bar {
     }
 
-## Running the sc Command
+## Running the scc Command
 
-When you run the sc command, you specify a list of layers to run: e.g.
+When you run the scc command, you specify a list of layers to run: e.g.
 
-    sc foo
+    scc foo
 
 or 
  
-    sc foo/bar
+    scc foo/bar
 
 That list maps to layers in your layerPath.  By default the layer path includes the current directory or you can set it via the -lp option.
 
 As a convenience, you can also run a specific layer when you are in that layer's directory using . as the name of the layer.
 
     % cd foo/bar
-    % sc .
+    % scc .
 
 ## Layer Packages
 

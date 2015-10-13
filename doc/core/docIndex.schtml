@@ -166,18 +166,18 @@ in a "template string".
                   <div id="capsuleTitle">Tools</div>
                   <div id="toolMenu" class="capsuleMenu">
                       <ul id="toolMenuList">
-                          <li id="scCmdMenu" menuContent="= scCmdContent" extends="CapsuleMenuItem">sc command</li>
+                          <li id="scCmdMenu" menuContent="= scCmdContent" extends="CapsuleMenuItem">scc command</li>
                           <li id="scProgEdMenu" menuContent="= scProgEdContent" extends="CapsuleMenuItem">Program editor</li>
                           <li id="scCmdlineMenu" menuContent="= scCmdlineContent" extends="CapsuleMenuItem">Command line</li>
                       </ul>
                   </div>
                   <div id="scCmdContent" extends="CapsuleContent">
-                     <div class="capsuleContentTitle">sc command</div>
+                     <div class="capsuleContentTitle">scc command</div>
                      <p/>
                      <pre class="qcode">
 % sc editor/js/mixin example/unitConverter/jsui
 </pre>
-                     The sc command is a build, run, refresh, restart tool all in one.  You supply the list of layers and it compiles, and runs
+                     The scc command is a build, run, refresh, restart tool all in one.  You supply the list of layers and it compiles, and runs
                      the resulting application and can refresh, and restart itself as needed to update based on code you change.  The last layer in the chain of the ones you supply is designated the build layer and it's often wise to designate a special layer for that purpose.  The results go into that layer's build or dynbuild directories depending on whether that layer is
                      compiled or dynamic. (<a href="runtime.html">more</a>)
                   </div>
