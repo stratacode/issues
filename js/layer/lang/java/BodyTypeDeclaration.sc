@@ -44,11 +44,19 @@ class BodyTypeDeclaration {
    public void setPackageName(String pn) {
       packageName = pn;
    }
-
    public String getPackageName() {
       return packageName;
    }
- 
+
+   private String extendsTypeName;
+   @Constant
+   public void setExtendsTypeName(String etn) {
+      extendsTypeName = etn;
+   }
+   public String getExtendsTypeName() {
+      return extendsTypeName;
+   }
+
    private boolean dynamicType;
    @Constant
    public void setDynamicType(boolean dt) {

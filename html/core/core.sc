@@ -92,6 +92,11 @@ html.core extends sys.std {  // Extending sys.std because we override the standa
    }
 
    public void init() {
+      // If we allow this layer on desktop it adds potentially conflicting rules for some file types so
+      // excluding it for now.  We might need to split this up in case we ever need html template features
+      // in the desktop.
+      excludeProcesses("Desktop");
+
       LayeredSystem system = getLayeredSystem();
      
       // We use a singleton here for the IDE in particular so we can match parselets by identity
