@@ -44,7 +44,6 @@ import sc.wicket.BoxBorder;
 import sc.wicket.ApplicationPath;
 import sc.wicket.WicketApplication;
 
-import org.apache.wicket.util.resource.locator.ResourceStreamLocator;
 import org.apache.wicket.util.resource.*;
 
 import org.apache.wicket.settings.*;
