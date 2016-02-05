@@ -40,4 +40,4 @@ scc -a -cc -dyn editor/swing/threeD editor/swing/vim example/expertSystem/swingu
 scc -a -ni -ta test/jool
 scc -a -ni -ta -cc test/jool 
 
-scc -a -ta spring/example/petclinic < test/scripts/wait20.txt
+

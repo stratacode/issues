@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+scc -a -ta spring/example/petclinic < test/scripts/wait20.txt
+scc -a -ta test/petclinic < test/scripts/wait20.txt
+scc -a -ta -ni ticketmonster/core
+scc -a -ta -ni broadleaf/core
+scc -a -ta -ni killbill/core
+
+
