@@ -6,4 +6,9 @@ broadleaf.core {
 
       srcPaths = {"src/main/java", "src/main/resources"};
    }
+
+   {
+      // Broadleaf currently only compiles with javac -source 1.7
+      layeredSystem.javaSrcVersion = "1.7";
+   }
 }

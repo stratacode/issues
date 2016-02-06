@@ -9,6 +9,8 @@ test/scripts/runJava8
 
 test/scripts/runDemoAll
 
+test/scripts/runMaven
+
 test/scripts/runJS
 
 test/scripts/runSelect
