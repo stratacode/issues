@@ -14,7 +14,7 @@ Why another web framework?  Here are the [advantages](webFrameworkAdvantages.htm
 
 Let's get started:
 
-Download and install StrataCode.  Put the 'bin' directory into your path or create an alias for bin/sc.   Go to the layers folder and run:
+Download and install StrataCode.  Put the 'bin' directory into your path or create an alias for bin/scc.   Go to the layers folder and run:
 
     scc example/simpleSync/main
 

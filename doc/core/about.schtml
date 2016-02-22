@@ -38,9 +38,9 @@ There are still a couple of high priority bugs that need fixing for the project 
 
 The compile times are fairly good - about 25 seconds to compile the program editor and a small sample including all of the framework layers, for both server and client runtimes from scratch.  It is faster with incremental recompilation but that is still buggy.   When you change leaf classes, the incremental times are pretty fast.  When you change classes which are used by lots of other classes, it right now compiles all of those dependent classes but probably does not have to in most cases.  
 
-Builds are down in layers, so you can isolate dependencies and thus isolate compile times as you add more code.  This is not fully exploited in the build system but should help improve both the speed and reliability of the incremental builds.
+You can pre-build a group of layers, then reuse those files for layers added.  This keeps build times small, even as the code sizes grow large.  
 
-Use the -a option to build all if necessary and send me the -v log if you can catch it.
+Use the -a option to build all files for a clean build. 
 
 #### HTML/JS UIs
 

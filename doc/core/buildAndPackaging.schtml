@@ -1,0 +1,28 @@
+<html extends="ArticlePage">
+<head title="Layered Build and Packaging"/>
+
+<body>
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+## Layered Build and Packaging 
+
+Layers are a great way to manage builds, packages, versions, tests, deployment configurations, etc.  Like Gradle, using a full featured language to manage build configuration makes builds more flexible and easier to maintain.  The layered, component framework in StrataCode reduces copying while improving customization potential for your builds. 
+
+Layer's can include maven libraries in one of two ways.  You can use maven itself to build or install your package, or you can use StrataCode's built-in support for the maven system.  Either way, you can use maven projects in source or installed form and swap back and forth between them layer-by-layer. 
+
+To start a new project with most systems, you use a "create project" wizard and it generates a bunch of files from the configuration you specify.  It's your job to manage those files by hand.  The next time you upgrade your tool you may be required to manually update those files for your package to even work.  With StrataCode, you create a new layer which extends a base-layer to pick up all of the default.  You only need to specify files or settings you need to change.
+
+Where maven provides a fairly intricate system to specify, inherit, exclude and resolve conflicts between the versions you inherit from transitive dependencies, layers do that all in a much simpler way.  Each layer specifies the verions it needs to specify and inherits the rest.  Each layer can override versions in any previous layer.  Layers can share configuration by extending the same layer which only specifies configuration.  The order in which you include your transitive dependencies determines their relative precedence and all of that is readily visible and controllable by changing the order in which your layer extends other layers, or by adding a new missing dependency.
+
+Read more and see examples in the [documentation](runtime.html).
+<% ) %>
+   </div>
+
+   </div>
+</body>
+
+</html>
+
+

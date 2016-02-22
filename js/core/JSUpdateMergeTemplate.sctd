@@ -9,12 +9,12 @@
    for (JSStatement initStatement:initStatements) {
    %>   <%= initStatement %><%
    } %>
-}
+};
 <% } %><% if (needsClassInit) { %><%=
    runtimeTypeName %>_c._clUpdate = function() {
 <% for (JSStatement initStatement:staticInitStatements) {
    %>   <%= initStatement %><% }
-%>}
+%>};
 <%= runtimeTypeName %>_c._clUpdate();
 <% }
    if (needsInit) { %>

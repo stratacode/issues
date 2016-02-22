@@ -10,7 +10,7 @@
 
 ## Modifying Types
 
-One of the most subtle and important features of StrataCode is for one layer to modify the types in a layer it extends.  
+One of the most subtle and important features of StrataCode is the ability for one layer to modify the types in a layer it extends.  
 
 The rules for modifying a type work just like the rules for overriding a type in a base class. 
 

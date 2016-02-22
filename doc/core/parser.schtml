@@ -10,17 +10,19 @@
 
 ## StrataCode Parsing, Modelling and Code Generation/Formatting Framework
 
-The StrataCode language framework, called "Parselets" has been engineered from the ground up to make it faster and easier to do operations which require parsing code, modifying the resulting model, and reformatting or regenerating the code again.  This makes it efficient for building code-preprocessors, structured code editing features like those found in IDEs, and language converters (e.g. Java to Javascript). 
+The StrataCode language framework, called "Parselets" has been engineered from the ground up to make it faster and easier to write code which parses and updates code.  This makes it efficient for building code analysis tools, code-preprocessors (like StrataCode), structured code editing features like those found in IDEs, and language converters (e.g. Java to Javascript).  It contains all of the core features so you can build an IDE for your language in way less code than other approaches.
 
 With parselets, your grammars are written in Java using a declarative syntax.  This makes reusing grammars very flexible for extending one grammar from another, embedding one grammar inside of another, modifying a grammar for a different purpose etc.  Unlike many parsing solutions out there, there's no generated code for the parsing phase.  This makes it easy to customize your parser for special purposes.  This makes it a much more flexible parser that can parse grammars with lots of context.
 
 The features of parsing, building rich model of the code (ASTs), transformation of these code models from one language variant to the other, and re-generation (or formatting) of the code in the new language easier to implement with less code.  It's also perhaps the only code parsing engine which let's you make incremental changes to the code model, and have those changes incrementally update the resulting code.
 
+Parselets implements many features to make it's grammars parse efficiently, including indexing choices where possible, and caching of results that may be re-parsed.
+
 Here's an image of the StrataCode architecture showing parselets and the languages that use it.  
 
 <br><img src="images/arch.jpg" width="640" style="border: solid 1px #0">
 
-Parselets are completely independent of the layers, data binding, dynamic/compiled runtime but have been heavily tested through the implementation of this features:
+Parselets do not depend on layers, data binding, dynamic/compiled runtime but have been heavily tested through the implementation of this features.
 
 Parselets are built using a type of recursive descent grammar, known as a "parsing expression grammar" or PEG.  In addition to the PEG grammar used for parsing, you can provide class and slot mappings for matched entities which are to be retained in the model.  Parselets use those mappings to construct the code model from the parsed output: the semantic model of the language.  These objects are high level types like "ClassDeclaration", "IdentifierExpression" and though somewhat constrained by the parser are relatively natural in how these language properties are expressed in the underlying language.  During an initialization phase, you can compute other properties from these language properties to provide a more natural API.  This is done for expressions for example which are parsed into a linear list, then sorted into a tree after parsing.
 

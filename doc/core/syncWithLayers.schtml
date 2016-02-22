@@ -1,0 +1,34 @@
+<html extends="ArticlePage">
+<head title="Synchronization with Layers"/>
+
+<body>
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Synchronization Using Layers
+
+Today client/server programmers commonly use remote procedure calls (RPC) with a serialization protocol like JSON to communicate with the server.  They write code to convert to and from JSON objects  or use a framework to generate that code from their classes. 
+
+The sync framework starts out supporting this type of object level serialization.  Like others it is directed by annotations to control the generated code for classes and properties.  
+
+But you can also invoke remote methods transparently using data binding expressions.  This gives you declarative/functional access to data you retrieve asynchronously, or cleanly invoke remote methods in response to events.  The same data binding expressions will work in either a client/server environment, or desktop environment making it easier to reuse code.  This is particularly valuable when a business user is editing a data-binding expression.
+
+But the reason the sync framework got it's name is that StrataCode let's you synchronize objects automatically.  You annotate classes, objects and properties as [synchronized](/javadoc/sc/sync/Sync), or put them in a shared layer and annotate the layer with @Sync.  Simple calls are inserted into your code to track instance creation, and property changes.  Those events are recorded and sent to the client or server on the next sync. 
+
+The synchronization framework lets you build rich, interative apps, with complex graph-based data models with little to no remote procedure calls and no data transfer objects.  
+The declarative pattern supports the most common uses cases - create, update, delete, lazily fetching of references and collections, and more.  When you need more, you can manually set annotations to fine-tune the behavior or use RPC.
+
+For ease of debugging and richness of features, the serialization format today is a StrataCode layer.  Before being sent to the browser, the layer is converted to JS so it loads and executes quickly.  We intend to build adapters to various serialization formats so you can choose JSON, and a more efficient binary protocol.
+
+Read more in the [documenttion](http://localhost:8080/syncFramework.html).
+
+<% ) %>
+   </div>
+
+   </div>
+</body>
+
+</html>
+

@@ -38,7 +38,7 @@
             <p>
             Here's the code generated when you run this layer (i.e. sc example/unitConverter/model):
 
-   <%= sc.lang.JavaLanguage.INSTANCE.styleFile("example/unitConverter/model", "build/java/sc/example/unitConverter/UnitConverter.java", false, false) %>
+   <%= sc.lang.JavaLanguage.INSTANCE.styleBuildFile("example/unitConverter/model", "java", "sc/example/unitConverter/UnitConverter.java", false, false, false) %>
 
             Notice a few things StrataCode did for you.  It implemented value1 and value2 using standard Java getX/setX methods, where the setX method makes a call to the sendEvent method.  The fields unit1, unit2 and title were left alone because they are not used in binding expressions (yet).  StrataCode's build system ensures all fields and their uses line up and gives you annotations to control it when you are using this code from Java. 
             <p>

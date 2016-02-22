@@ -147,13 +147,13 @@ if (needsConstructor) {
             paramMeth.getMethodBody(2) %>}<% methCt++;  
         }
      }
-   %>}
+   %>};
 <% } %><% if (needsInstInit) { %>
 _c._<%= typeName%>Init = function() {
 <%
    for (JSStatement initStatement:initStatements) {
       %><%= replaceIndent(1, initStatement.toString()) %><%
-   } %>}<% } %><% if (needsClassInit) { %>
+   } %>};<% } %><% if (needsClassInit) { %>
 _c._clInit = function() {
    if (<%= typeName %>_c.hasOwnProperty("_clInited")) return;
    <%= typeName %>_c._clInited = true;
@@ -165,5 +165,5 @@ _c._clInit = function() {
 <% for (JSStatement initStatement:staticInitStatements) {
      %>   <%= initStatement %><%
    }
-%>}
+%>};
 <% } %>

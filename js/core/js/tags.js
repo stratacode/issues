@@ -380,10 +380,13 @@ js_HTMLElement_c.setDOMElement = function(newElement) {
       this.element = newElement;
       if (newElement !== null) {
 
+               
          //sc_id(newElement); enable for debugging to make it easier to identify unique elements
-
-         if (newElement.scObj !== undefined)
-             console.log("Warning: replacing object associated with element: " + newElement);
+        
+         // This can happen if 
+         if (newElement.scObj !== undefined) {
+             console.log("Warning: replacing object: " + sc_DynUtil_c.getInstanceId(newElement.scObj) + " with: " + sc_DynUtil_c.getInstanceId(this) + " for tag: " + this.tagName); 
+         }
          newElement.scObj = this;
       }
       this.domChanged(orig, newElement);

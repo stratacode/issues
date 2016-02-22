@@ -15,16 +15,16 @@
 
       <div id="pageIndex" class="pageIndex" exec="server">
          <div extends="DocIndex" title="Understanding StrataCode" url="understandingSC.html"/>
-         <div extends="DocIndex" title="Getting started" url="gettingStarted.html"/>
+         <div extends="DocIndex" title="Getting Started" url="gettingStarted.html"/>
          <div extends="DocIndex" title="Components" url="components.html"/>
          <div extends="DocIndex" title="Layers: Modifying Types" url="modify.html"/>
          <div extends="DocIndex" title="Data Binding" url="dataBinding.html"/>
          <div extends="DocIndex" title="Defining Layers" url="layerDefinition.html"/>
-         <div extends="DocIndex" title="Web framework" url="webFramework.html"/>
+         <div extends="DocIndex" title="Web Framework" url="webFramework.html"/>
          <div extends="DocIndex" title="Synchronization" url="syncFramework.html"/>
-         <div extends="DocIndex" title="Android framework" url="gettingStartedAndroid.html"/>
+         <div extends="DocIndex" title="Android Framework" url="gettingStartedAndroid.html"/>
          <div extends="DocIndex" title="Java Compatibility" url="javaCompat.html"/>
-         <div extends="DocIndex" title="Build Runtime" url="runtime.html"/>
+         <div extends="DocIndex" title="Build and Package System" url="runtime.html"/>
          <div extends="DocIndex" title="Template Language" url="templateLang.html"/>
          <div extends="DocIndex" title="Generated Code" url="genCode.html"/>
          <div extends="DocIndex" title="Debugging" url="debugging.html"/>

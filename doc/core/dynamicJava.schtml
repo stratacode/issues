@@ -1,0 +1,39 @@
+<html extends="ArticlePage">
+<head title="StrataCode - The Language That Changes Everything"/>
+
+<body>
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Dynamic Java
+
+StrataCode is built on top of a tooling platform that is able to manage the full-lifecycle of your code's evolution.  This includes the ability to watch for code changes and let you refresh changes made to source files.  If the changes only include configuration changes to reactively aware components, these changes can be applied "on the fly" - without restarting.  If you happen to be running in the browser in a client/server environment, a patch is sent to update the client after the server has been updated.  If you have made changes that require a recompile and restart, StrataCode lets you know and manages that process.  In many cases, an incremental build is performed so the build/restart takes only a few seconds.
+
+You can also programmatically make a change to the code - for example, to change the initializer for a property or to change the expression in a data binding rule.  Using the parselets framework, it makes an incremental change to the source file maintaining this change.  This works even if the original source was provided by a developer.  Comments and formatting are preserved.
+
+These capabilities offer a wide-range of tooling possibilities for management UIs to be built which empower technical users to make customizations. 
+
+StrataCode also supports dynamic layers - a full simulation environment for running Java code directly from the language mode (the AST).  It is optimized for "run once" code, or small amounts of code that do not have large loops or operate on large data sets.  You can use dynamic layers when you want to reconfigure components without recompiling or change code quickly without restarting.  It's also a great engine for running untrusted code because you have complete control over the runtime environment from simple Java code.
+
+The dynamic runtime is also used for bootstrapping the system, to parse and run the layer definition files.  It's an accurate Java simulation that has been tested on about 50K lines of code without workarounds.
+
+## Interpreted or Compiled? 
+
+There's a tradeoff - small system prototyping is faster with interpreted languages.  Large systems are more efficient with compiled systems.  Rearchitecting at any stage of a business is usually not desirable for many reasons.
+
+In addition to modularity, layers provide a way to place a moveable boundary between interpreted and compiled code.  You have compiled layers which generate a typical .jar representation of your Java application.  As you develop, or in production when you need dynamic code, you use dynamic layers on top of those compiled layers.  These are read from disk and interpreted using dynamic types for any classes you define.  Any classes modified by any dynamic layers are automatically made dynamic.  Dynamic types can be modified at runtime.  Property changes are propagated to the affected instances.  When frameworks support changing properties at runtime, this provides an excel-like experience for declarative programmers.  But when you need production code, remove the dynamic attribute and compile these layers. 
+
+Most interpreted languages also do not do strong type checking.  You do not have to declare your data types and can add attributes on a per-instance basis.  StrataCode currently only supports strong type checking, even in dynamic mode.
+
+Some changes made to dynamic types may require a recompilation.  For example, extending a new compiled class, or overridding a compiled method for the first time.  Since StrataCode uses Java's runtime, when a compiled class changes, a restart is needed to pick up this change.  In these cases, StrataCode detects that a recompile is needed and alerts the programmer.  
+
+<% ) %>
+   </div>
+
+   </div>
+</body>
+
+</html>
+

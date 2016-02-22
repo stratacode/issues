@@ -87,13 +87,13 @@ A simple component class:
 <%= sc.lang.SCLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","SimpleComponentClass.sc") %>
 
 compiles to:
-<%= sc.lang.JavaLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","build/java/SimpleComponentClass.java") %>
+<%= sc.lang.JavaLanguage.INSTANCE.styleBuildFile("example/simpleComponent", "java", "SimpleComponentClass.java", false, false, false) %>
 
 <% ) %>
 
 A simple component object compiles to something similar but with a get<i>Name</i> method instead of a new<i>Name</i>:
 
-<%= sc.lang.JavaLanguage.INSTANCE.styleFileNoTypeErrors("example/simpleComponent","build/java/SimpleComponentObject.java") %>
+<%= sc.lang.JavaLanguage.INSTANCE.styleBuildFile("example/simpleComponent","java", "SimpleComponentObject.java", false, false, false) %>
 
      </div>
    </div>

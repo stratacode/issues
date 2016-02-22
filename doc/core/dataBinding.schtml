@@ -6,22 +6,39 @@
    <div id="content">
        <div id="pageContent" exec="server">
 
-<h3>Data Binding</h3>
-Powerful, simple, intuitive data binding based on Java expressions for attaching user interface to model, business rules, workflow, and configuration.
-Easy to debug [implementation](dataBindingImpl.html).
+<%= MarkDownPage.markDown(%>
+# Data Binding
+StrataCode adds powerful, simple, intuitive data binding based on Java expressions for attaching user interface to model, business rules, workflow, and configuration.  Data binding expressions are converted into static method calls on the [Bind](/javadoc/sc/bind/Bind.html) class during the transformation from StrataCode to Java.  One of the challenges of data binding frameworks is making complex expressions efficient and easy to debug so this design focuses on those goals.
 
+There are three types of bindings:
+<% ) %>
+    <span class='highlight'>:=</span> &nbsp;forward: sets disabled based on the length of entryText<br>
+    <span class='highlight'>=:</span> &nbsp;reverse: calls addEntry when the form is submitted and submitCount is incremented<br>
+    <span class='highlight'>:=:</span> bidirectional: keeps entryText and value in sync.<br>
+
+<%= MarkDownPage.markDown(%>
+Here's a simple example which uses:
+
+* A forward binding to set the "submitEnabled" property when there's a non-empty entry
+* A reverse binding to call FormManger.submitForm(entry) method when the submitEvent changes
+<% ) %>
+
+<div class="code">
+    <span class='keyword'>class</span> UserForm {<br>
+ &nbsp;&nbsp;&nbsp;      String <span class="member">entry</span>;<br>
+ &nbsp;&nbsp;&nbsp;      boolean <span class='member'>submitEnabled</span> <span class='highlight'>:=</span> <span class="member">entry</span> != null && TextUtil.length(<span class="member">entry</span>) &gt; 0;<br>
+ &nbsp;&nbsp;&nbsp;      SubmitEvent <span class='member'>submitEvent</span>;<br>
+ &nbsp;&nbsp;&nbsp;      <span class='member'>submitEvent</span> <span class='highlight'>=:</span> FormManager.submitEntry(<span class="member">entry</span>);<br>
+    }<br>
+</div>
+
+Here's an example using schtml which includes a bi-directional binding:
 <div class="code">
      &lt;form submitEvent="<span class='highlight'>=:</span> addEntry()"&gt;<br>
      &nbsp;&nbsp;&nbsp;   &lt;input type="text" value="<span class='highlight'>:=:</span> entryText" disabled="<span class='highlight'>:=</span> TextUtil.length(entryText) == 0"&gt;<br>
      &lt;/form&gt;<br>
 </div>
 <br>
-Three types of bindings:
-<br>
-    <span class='highlight'>=:</span> &nbsp;reverse: calls addEntry when the form is submitted and submitCount is incremented<br>
-    <span class='highlight'>:=:</span> bidirectional: keeps entryText and value in sync.<br>
-    <span class='highlight'>:=</span> &nbsp;forward: sets disabled based on the length of entryText<br>
-
 <%= MarkDownPage.markDown(%>
 
 ## Excel-like formula for Java

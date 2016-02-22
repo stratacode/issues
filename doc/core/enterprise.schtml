@@ -1,0 +1,28 @@
+<html extends="ArticlePage">
+<head title="Motivation for Layers"/>
+
+<body>
+   <div id="content">
+       <div id="pageContent" exec="server">
+
+<%= MarkDownPage.markDown(%>
+
+## Customizable Enterprise Systems
+
+Typically enterprise software companies need to heavily customize the software they buy.  It can be a challenge update that application to take advantage of a new version or feature that is released.  It's very likely that some files they copied and modified have been changed.  Though sometimes simple 'diff' application will work, other times you need the original developer and need knowledge of what changed on the other end.  A successful enterprise software company can afford to put those two programmers in the same room but when that's not possible, it can be more work to upgrade than to have reimplemented the feature in the first place.
+
+With layers, you do much less copying to implement your customizations in the first place.  Secondly, enterprise vendors have more flexibility for adding new features in new layers.  That lets' them offer more highly customized packages from the start and require that fewer customers make changes which are specific to their copy.  It's quite possible for the enterprise vendor to put these layers into their test database and possibly deliver updated versions of them when changes are necessary.  The original developer who implements the feature has the ability to take ownership of how that feature is deployed across a large number of customer sites, all from their test suite.
+
+Secondly, these systems tend not to completely separate framework code from business domain specific code.  Today, good frameworks and platforms do a better job of making domain specific code free of platform dependencies.  But even modern frameworks like JPA, Spring and hibernate tie your domain model code to their framework code.  Your models are glued together using XML which has dependencies on framework specific classes.  The developer may still manage cross-cutting concerns like transactions, caching, etc. with code or annotations to the code.  In either case, they are not cleanly separated from the domain logic itself.  When framework dependencies are added to the code, that code can only be used with that framework.  The developer working on that code must know that framework or know they can ignore the framework annotations.
+
+Over time frameworks change and evolve as our IT landscape evolves.  New features are always in demand: real time, mobile, better transparency, better performance, etc.  Separating framework from domain logic will let you reuse that logic with current and future platforms.  Logic running on the server today, may need to run on a mobile device tomorrow.  Spring and Hibernate may never be suitable technologies for the mobile platform because they took too many shortcuts and rely on lots of runtime introspective code.  The real question is not how to fix spring and hibernate but how you properly tease apart the dependencies on such systems from the code you really care about - the part that defines how your business runs.
+
+StrataCode's design provides the basic structure to separate dependencies in your code naturally, without complex code refactoring.  Once you learn the tricks to separate layers cleanly, your designs become cleaner and easier to read by separating concerns.  You eliminate needless code copies so models can't drift out of sync.  
+
+<% ) %>
+   </div>
+
+   </div>
+</body>
+
+</html>

@@ -6,7 +6,7 @@
 <div id="content" extends="DocContent">
 
    <div class="tagBox">
-      <div class="tagline">A New Life For Java</div>
+      <div class="tagline">Beautifully manage your code's complexity</div>
       <div class="taglineTwo">StrataCode is the language that changes everything.</div>
       <div class="intro">
         It enables universal customization and the deepest level of integration - all with easy to use layers.
@@ -225,7 +225,7 @@
 
    <div class="defaultDetailBox">
    <p>
-<a href="about.html">Jeff Vroom</a> (jeff@jvroom.com) began realizing his vision for StrataCode five years ago.  It's now just over 100K lines of readable, easy-to-follow code, with a public preview coming soon.
+<a href="about.html">Jeff Vroom</a> (jeff@jvroom.com) began realizing his vision for StrataCode five years ago.  It's now just under 120K lines of readable, easy-to-follow code, with a public preview coming soon.  Support 100% of Java is challenging but StrataCode can currently parse and validate 375K lines of code from 8 large open source projects directly from git and maven.  This includes one project heavily focused on lambda expressions.
    <p>
  It enables easy integrations.  We've already integrated with <a href="webFramework.html">Javascript</a>, <a href="webFramework.html">HTML</a>, <a href="swingCommandLine.html">Swing</a>, <a href="gettingStartedAndroid.html">Android</a>, OpenGL, <a href="moreFrameworks.html">JUnit, Servlets, Jetty</a>, OpenJPA, Hibernate, ATG, <a href="gwt.html">GWT</a>, and <a href="wicket.html">Wicket</a>.  
    <p>

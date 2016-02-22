@@ -63,9 +63,7 @@ Note that a layer with no package is effectively global and can customize any ty
 
 ## Processes and Runtimes
 
-StrataCode supports multiple runtimes - 'java', 'js', 'android', and 'gwt'.   Some layers are suitable for any runtime but some have restrictions.   Layers can include or exclude runtimes from the set.  By default a layer picks up the constraints from it's base types unless those constraints conflict - in which case it's put in the overlapping set.  So if a layer extends both 'js' and 'java' base layers, it's run in both. 
-
-Layers can inherit the runtime constraints or set their own to override these defaults.  
+StrataCode supports multiple runtimes - 'java', 'js', 'android', and 'gwt'.   Some layers are suitable for any runtime but some have restrictions.   Layers can set constraints by including or exclude runtimes.  By default a layer picks up the constraints from it's base layers unless those constraints conflict - in which case it's put in any runtime allowed by one of it's base layers.  So if a layer extends both 'js' and 'java' base layers, without including or excluding runtimes on its own, it's put in both runtimes. 
 
 In some cases a given runtime will have more than one process.  For example "Desktop_Java" versus "Server_Java".  Just as a layer specified runtime constraints, it can specify process constraints.  
 
@@ -79,7 +77,7 @@ The Layer.start method will never be called on an excluded layer.
 
 ## Configuring Builds
 
-In StrataCode, layer definition files also specify build and other properties but typically only for framework layers.  They are interpreted Java files, run in the order in which the layers are present in the system.  They are initialized in two phases, via initialize and start methods which lets them set and override properties in a layered order.
+In StrataCode, layer definition files also specify build and other properties but typically only for framework layers.  They are interpreted Java files, run in the order in which the layers are present in the system.  They are initialized in three phases, via initialize, start and validate methods which lets them set and override properties in a layered order.
 
 These layer definition files configure the file types which are processed by the system, add to the classpath, add src folders, specify inherited imports, and set defaults for the code that run in the layers: e.g. public, and enable/disable system features per-layer.
 
@@ -91,9 +89,9 @@ Layers are loaded either in the inactive or active state.  An inactive layer is 
 
 Inactive layers are started like regular active layers but the activated flag is set to false.  Do register file processors and class path entries for inactive layers but do not adjust properties of the LayeredSystem that apply to build or your inactive layer will have unwanted side effects.
 
-## APIs For Controlling Build
+For more info, see the documentation on the [build and runtime system](runtime.html);
 
-See the JavaDoc for the Layer class.  You primarily use methods on the Layer to customize the build though sometimes use features from the Layer's layeredSystem property.  
+For Java apis, see [Layer](/javadoc/sc/layer.html), and [LayeredSystem](/javadoc/sc/LayeredSystem.html).
 
 <% ) %>
 
