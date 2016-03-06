@@ -27,9 +27,9 @@ As modules grow in size, they tend to develop circular dependencies.  For exampl
 
 With layers, a downstream layer cannot refer to an upstream layer.  Code dependencies only go one way to preserve modularity as systems grow.  Instead, when you would need to add a cyclic dependencies, due to the addition of that minor feature, this code is added in a separate layer that extends both of the previous A and B layers.  It separates that minor dependency from the bulk of the code.  You retain the independence of the rest of the code without breaking APIs or compatibility.  If you want existing clients to see this new module, the new layer is named "A" and the old "A" is renamed.  If you want to offer this as an opt-in feature, you give the new layer a new name and tell clients to point to that layer to get that feature.
 
-Languages like OCaml do not allow cyclic references between modules.  Unfortunately that inflexibility often requires refactoring that breaks compatibility when you need to refactor.  Layers give you the best of both worlds: enforcement of one-way dependencies in the core modular structure, and the ability to incrementally add cyclic relationships to types while keeping the code modular.  
+Languages like OCaml do not allow cyclic references between modules.  As your system grows over time though, some change may require refactoring to move code from one type to another to avoid an upstream dependency.  That will inevitably break any code using the code that has to move, causing unnecessary work, headache, and overall friction for the consumers of technology.   Layers give you the best of both worlds: enforcement of one-way dependencies in the core modular structure, and the ability to incrementally add cyclic relationships to types while keeping the code modular.  
 
-The differences between modules and layers are shown in this diagram:
+Here's as attempt to illustrate:
 <% ) %>
 
 <img style="margin:0px auto;display:block" src="images/deps.png" alt="Dependencies between Modules and Layers"/>
@@ -47,21 +47,23 @@ Like modules, layers may extend one or more other layers which they depend upon.
 
 You typically run one layer which pulls in dependent layers automatically.  You might however specify a list of layers to run and all dependent layers are automatically sorted and included in the application.   Ultimately each collection of layers - a layered system - maintains a single ordered list of layers at any given time which are merged to form the "runtime view" of the application.
 
-Some may see layers as being too powerful.  Each layer has too much control over the vast environment of the system.  Do you have to search all layers to find who might be changing a particular type?  To avoid this uncontrolled flexibility and help modularize layers, they have a package which is prepended onto the package of all files in the layer.   Layers can only create or modify types in their package.  Files do not specify the empty directories generally required by Java, nor do they need a package operator.  A final layer will not let you modify types in that layer, essentially turning it into a module to the outside world.
+Although layers can modify any type, in any package it's often convenient to specify a base package for the layer.  When you do, files in the layer's directory use that package without the extra directories for each package name.  This is particularly nice when layers are edited by non-programmers, or when you can infer categorization by context.   Instead of a "one size fits all" project directory structure, framework developers can create simpler project types, customized for different groups of users: e.g. deployment-configuration, application-configuration, source code, localization, user-interface style, etc.
 
-Layers can be delivered in compiled form or source form.  The dynamic and modify type features require layers in the source form.
+Certain layers are designed as "build layers".  These layers are validated and compiled to produce Java classes or applications which can be run or tested.  When you compile a stack of layers, you might have more than one build layer in the stack.  In that case, the build is done incrementally - so only the changed types from one stack to the next are re-generated and recompiled.  This makes it efficient to define incremental builds - so only the source you are changing gets recompiled from one build to the next.
 
 ## Why Layers?
 
-Why objects, why methods, etc.  It's hard to describe why you should adopt a new language paradigm.  I came upon this design after 20+ years of refinement after building three large systems I was involved with for a long time.  ATG's nucleus, layers it's configuration system for runtime components ala spring but has no compiled component support.  
+Why objects, why methods, etc.  I think object-oriented design missed a key hinge point - the ability to refine types.   Some languages add this, but in an ad-hoc way.  Perhaps the lack of layers has fueled the growth for dynamically typed languages.   It's hard to describe why you should adopt a new language paradigm.  
 
 The most important benefits of layers show up when maintaining large customized systems, like those commonly found in enterprise development.  Layers help manage workflows for enterprise systems, separating design, administration, business rules, workflow, and code. 
 
-When combined with StrataCode's declarative features, layers provide a hinge point for customizing any property of any object.  You can replace any DOM element of any HTML file.  Append to or replace any component.  Override any formula.  Though layers require some conceptual understanding, the IDE and management UI frameworks make it easy to build powerful, customizable applications.
+When combined with StrataCode's declarative features, layers provide a hinge point for customizing any property of any object.  You can replace any DOM element of any HTML file.  Append to or replace any component.  Override any formula.  Though layers add a new concept, the IDE and management UI frameworks make it easy to build powerful, customizable applications.
 
 ## Pure Domain Models   
 
-Your domain model specifies the data and core business rules.  Ideally this model is simple and independent from the rest of the system as it needs to be used where you are coding up a business process using that model.  But these are rich objects that collect code and dependencies rapidly.  Layering helps you preserve an independent version of your domain model.  Runtime dependencies likely will exist for in the generated code for your model classes - just not in the source.  Using annotations, base layers, base classes, etc. you can write powerful framework features to manipulate the code of your domain model so it's properly serialized, stored in a database, etc.  When necessary, you can modify your types using platform specific layers of your domain model.
+Among software architects, the term "domain model" refers to the core business code, independent of it's dependencies on the user-interface, database, etc.  It specifies the types of objects involved in the business, the properties of those objects, configuration of the objects, operations performed on them, and rules that should be applied or enforced.  Ideally this model is mostly declarative and as independent from the rest of the system as it needs to be used where you are coding up a business process using that model.  The speed you can evolve your domain model is a major contributor to your overall efficiency.
+
+But when expressed as types in your programming languages, your domain model becomes rich types that collect code and dependencies rapidly.  Each dependency limits your ability to reuse that code in other contexts.  Layering helps you preserve an independent version of your domain model which is expressed in all of the contexts in which it's required.  Runtime dependencies exist only in the generated code for your model classes - not in the domain model source.  Using annotations, base layers, base classes, etc. you can write powerful framework features to manipulate the code of your domain model so it's properly serialized, stored in a database, etc.  When necessary, you can modify your types using platform specific layers of your domain model.
 
 Here's a simple domain model object:
 
@@ -87,7 +89,7 @@ Quiz {
    override @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER) questions;
 }
 <% ) %>
-We could have added these annotations using a framework layer automatically but here you see how to add annotations to existing properties and methods from a layer. 
+We could have added these annotations using a framework layer automatically using sensible defaults but here you see how to add annotations to existing properties and methods from a layer. 
 Just referring to a property in a layer adds that property to a list that's accessible to the framework.  This lets you set properties for the layer that apply to all properties in the layer.
 
 To use a quiz, you might also initialize it:
@@ -111,13 +113,21 @@ ScienceQuiz {
    }
 }
 <% ) %>
-Each layer is stored in a separate directory with parallel file names and path structure which can be swapped in and out of the application for different purposes.
+This is a nice example of a configuration layer you could hand-off to someone else.
 
-Not only do you use layers to separate dependencies, you also use them to partition assets among people: business analysts, designers etc.  One person defines the data model, another manages persistence, a third manages business data and rules.  Layers help separate assets along role boundaries for better workflows.
+To make that easy, each layer is stored in a separate directory with parallel file names and path structure which can be swapped in and out of the application for different purposes.  You can map where source files in a layer end up in the build configuration by extending base layers which define the context.
+
+So layers help partition assets among people: business analysts, designers etc.  One person defines the data model, another manages persistence, a third manages business data and rules.  Layers help separate assets along role boundaries for better workflows. 
+
+Just as layers separate code by their dependencies, so do they separate code by the individuals who manage them.  These two are commonly related for essential reasons, so why not use an environment which supports that separation.
  
 ## Styles and Design Elements
 
-Style sheets separate configuration from code in a clean way and are very powerful but sometimes overkill and overly complicated.  How do you find and isolate the effects of a code change?  In a simpler model, the developer or framework provides specific customization hooks for a certain set of properties of either the types of UI components or specific instances.  Layers make this separation easier for both the programmer and designer.  The programmer exposes just the properties or components they think need customization.  If they are on classes, they are inherited.  If they are instances they are set on that specific widget instance.  The designer just needs to know the names of the class or object and property.  All of this is toolable because of strong typing, and Java's visibility rules.  
+Style sheets separate configuration from code in a clean way and are very powerful but sometimes overkill and overly complicated.  How do you find and isolate the effects of a code change?  Style sheets do not have the equivalent of a "find usages" at development time.  Fortunately good debuggers help us trace that down at runtime or we'd be lost.   
+
+Sometimes it's better to constrain things and not use the more flexible selector types in CSS.  If you use a simpler model for style management with standard types, layers and multiple inheritance you retain the ability to find all usages and make changes using static typing for more reliability and control.
+
+Layers by themselves provide separation between code and styles.  The code exposes the customizable properties - on both classes and instances through the same name-space.   Designers deal with a single tree of types and properties.  All of this is toolable because of strong typing, and Java's visibility rules.  
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>UnitConverter {
@@ -131,13 +141,15 @@ Style sheets separate configuration from code in a clean way and are very powerf
 
 StrataCode's multiple inheritance feature lets you apply properties across the class hierarchy as well.  This gives you a strongly typed version of stylesheet's "class" selector.  Object names are analagos to the "id" selector.  
 
-Designers require immediate updates to be applied so they can dial in the perfect colors, spacing, and overall appearance.
-
-When it comes to deployment, styles may be compiled in for runtime efficiency or applied dynamically for flexibility by making the layer dynamic.
+The design phase pratically requires immediate updates so you can experiment with different looks quickly and dynamic layers let you do that without compromising on runtime performance.
 
 ## Testing/Monitoring 
 
-Customize classes to add logging, monitoring, performance hooks.  Inject test code and diagnostics into system classes in a maintainable way.  Make it easy to build with and without these hooks.  Though this code is separated, compile time errors and good tools will make it easy to keep the code in sync.  Separating it unclutters the program logic.  Here's a simple example of inserting monitoring code before and after some servlet:
+It's common to want to instrument your code in various ways to improve it's testability and monitorability.  In some cases, there are hard tradeoffs to make for performance or readability.   Aspect oriented programming for a while was viewed as a viable approach to this problem for inserting code involved in "cross-cutting" concerns: logging, assertions, timing, etc.  While it did reduce the quantity of code you had to write, it did not use traceable or debuggable patterns and so never gained widespread traction. 
+
+Layers let you inject code from separate files so that you can add this code in a way that preserves these code paths.  For example, you could modify the core 'process()' method with a method that does timing around that method, then called super.process().  When you include this layer, you'd have a monitored version of the application and when it was excluded you'd avoid that overhead and any dependencies it created to the monitoring package.  The layer itself would be a directory tree that showed all monitoring hinge points.  If you renamed the "process" method, this layer would be updated automatically... if you deleted it, you'd get an error reminding you that you need to update the monitoring hook.
+
+Here's a simple example of inserting monitoring code before and after some servlet:
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>MainProductionServlet {
@@ -159,9 +171,13 @@ Behind the scenes, StrataCode will create a new MainProductionServlet class when
 
 ## Localization
 
-You might create a layer for each locale variation.  With StrataCode, programmers define strings with static final/const variables and initialize them as they might normally.  You simply override those strings in sublayers.  At compile time, a new class is generated which replaces the original strings with the new strings.  You get a new efficient localized executable.
+Localization is one of the most common and most important forms of application customization.  Layers give you some new tools and benefits as with other forms of customization.   
 
-Strings can be compiled in for the smallest footprint or applied at runtime to allow dynamic language applications without code change.  Most systems that are localized use resource bundle implementations which are dynamic objects.  That adds to the library size, application code size, and data size required.  Particularly for mobile or internet apps, this can be significant as apps grow in size.  It also means resource bundles are not resolved until they are used.  It's safer to use normal language constructs and the code is easier to read.
+For programmers, the easiest way to develop code is to hardcode the strings so it's easiest to change them and understand the code.  Localization typically involves putting a resource identifier into the code and moving the string into a separate file.  Some systems let you use one language in the code and then provide a separate file that maps strings in that language to another based on string-name.  
+
+Both of these schemes have problems.  Most of the time, you are debugging the program in one locale so the resource identifier schema adds overhead to something you do a lot - go from error message to source code.  But that's just an annoyance.  You also lose static typing for compile time errors.   Instead you find out about missing resources at runtime... which means you have to run everything in each locale.  Given the number of possible locales and the breadth of your test suite, that inevitably leads to error messages you fail to localize.
+
+programmers define strings with static final/const variables and initialize them as they might normally.  You simply override those strings in sub-layers, one for each locale.  At compile time, a new class is generated which replaces the original strings with the new strings.  You get a new efficient localized executable for a smaller download size.  Or use a dynamic layer and apply it at runtime for a resource bundle approach.
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>MainAppPanel {
@@ -169,7 +185,7 @@ Strings can be compiled in for the smallest footprint or applied at runtime to a
 }
 <% ) %>
 
-You might need to adjust UI spacing for a given language.  With StrataCode, one layer can manage all of these aspects making it easy to manage and build localized systems.
+Localization does not stop at changing strings.  You might also need to adjust UI spacing for a given language, or re-arrange menu items to preserve case-sensitive order.  With StrataCode, one layer can manage all of these aspects by providing one modularization structure that can modify code and configuration  making it easy to manage and build localized systems.
 
 <%= sc.lang.SCLanguage.INSTANCE.styleNoTypeErrors(
 %>MainAppPanel {

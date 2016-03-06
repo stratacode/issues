@@ -7,7 +7,7 @@
 
 <%= sc.doc.MarkDownPage.markDown(%>
 
-## Copy or Not
+## Avoiding Copies for Customizations
 
 by Jeff Vroom
 
@@ -15,9 +15,13 @@ Question: Have you ever had to copy lots of code to customize it, then struggled
 
 I've seen this strategy bury more than one company.  They copied and changed large amounts of code to quickly make changes for each new customer.  When you don't have time to make a nice plugin, refactor using object oriented principles to share the code, you can generate technical debt quickly.  Pretty soon, your small engineering team can no longer maintain feature demands for existing customers while making customized copies for new customers.  If you follow this "slash and burn" style development, at some point you'll lose your competitive advantage and no amount of lock-in advantage can keep your customers long term.  The more competitive the situation, the faster the product evolution, the more likely you'll lose in the long run.
 
-Today's state-of-the-art is to use one or two basic framework patterns - plugins and inversion-of-control.  Wordpress is a great example of a plugin framework.  A plugin framework has built-in "hinge points": specific API contracts used you can follow to extend or modify the behavior of the UI from separate code.  They are carefully designed to solve specific use cases and typically give your plugin control over specific regions of the screen, ability to add new fields, document types, etc.  You control layout, styles, separately and so this pattern is great as long as your requirements are matched by the contracts supported by the plugin.
+More engineers take the simpler approach and use flags, or [feature toggles](http://martinfowler.com/articles/feature-toggles.html#WhereToPlaceYourToggle) in the code.  Even if you engineer your feature toggles to allow them to be configured externally, without modifying the core application code, this approach runs into limits as you add more customers with disparate needs.
+
+To support more customization without layers you'd use some mixture of plugins, object-oriented development, and inversion-of-control containers (or IOC).
 
 ## Plugin Frameworks
+
+Wordpress is a great example of a plugin framework.  A plugin framework has built-in "hinge points": specific API contracts used you can follow to extend or modify the behavior of the UI from separate code.  They are carefully designed to solve specific use cases and typically give your plugin control over specific regions of the screen, ability to add new fields, document types, etc.  You control layout, styles, separately and so this pattern is great as long as your requirements are matched by the contracts supported by the plugin.
 
 It takes a lot of work to design and maintain a great plugin framework.  It's like a mini-application framework by itself with install, upgrade, compatibility constraints, uninstall, etc.  Plugin-frameworks are so successful it's worth the effort for some application areas where there's a lot of custom requirements (e.g. content management and e-commerce).  Still it is very common to run into the limits of what you can customize in a plugin, or have version problems upgrading.  It takes a lot of coding on both sides to make it work.
 
@@ -27,7 +31,7 @@ When you can't find a plugin platform that matches your needs, your next option 
 
 ## Inversion of Control
 
-In the Java world, the most common and powerful factory pattern is an inversion-of-control container such as Guice or Spring.  They make it easy to configure the instance class used for any given purpose.  Through the configuration (either annotations, properties or markup) the IOC container builds a graph of component instances, wiring everything up.
+In the Java world, the most common and powerful factory pattern is an IOC container such as Guice or Spring.  They make it easy to configure the instance class used for any given purpose.  Through the configuration (either annotations, properties or markup) the IOC container builds a graph of component instances, wiring everything up.
 
 To customize with an IOC container, only the configuration is copied and updated for each new type of use.  As long as you maintain the compatibility of the published APIs (which includes any APIs used in your configuration) you won't break applications that use your code as you go.  When you get a new version of the configuration you copied, you need to merge in any changes which are now required by the contract.  
 
@@ -35,13 +39,17 @@ That's a lot to think about on each code change so it's no wonder that rigorous 
 
 ## StrataCode Layers
 
-StrataCode provides a new option that lets you code rapidly - essentially like you do with Java, Spring, JPA, etc. today but less verbose, easier to read code.   You use simple classes and objects for your application code.  It uses well-structured code-generation to give you more control over how your application code can be used.  Configuration initially starts out in the code - only split out as needed.  Your plugin contract consists of exposing types, properties, and methods to downstream layers for overriding.  You can split and join internal layers without changing downstream code.  It's trivial to support multiple contracts from different layers so it's much easier to maintain compatibility from release to release.  Client applications can opt in or out of new features by changing which layer they extend, not be rewriting configuration.
+StrataCode provides a new option that lets you code rapidly - essentially like you do with Java, Spring, JPA, etc. today but less verbose, easier to read code.   You use simple classes and objects for your application code.  Just like Java classes, objects can be nested to form trees.  StrataCode's code-generation will convert this all to a nice readable, debuggable Java file via incremental code-transformations.   
 
-StrataCode let's you structure your customizations in a better way, leveraging concepts you already know.  When you learn how to use layers, you can customize code faster and more efficiently.  You do not have to plan for future customizations with an inversion-of-control container.  There's no decision as to what's in code versus configuration.  Code is traceable via normal Java IDE-like tools - find usages, etc, not by parsing configuration at runtime and setting properties.  After each code change, you can quickly validate all layers that use that code to detect problems.
+For simplicity, you can configure fields by directly initializing them.  At some point, you might split that initialization out into a separate layer or simply override those values in customized layers.  This works for object instance or subclasses.  To define a plugin interface, you just choose which types, properties and methods to expose.   Layers complement the standard object-oriented design patterns that can be used with your code.  When clients are given the ability to modify a type, they can redefine the behavior of that component - including inserting new children or even replacing a child component.  Plugin developers see a static-typed set of APIs that can use, override and extend with much less work on your part.
 
-With layers, knowing you can make customizations later, you write code in Java with some tweaks to the syntax and code processing happens behind the scenes.  If you encounter a recursive reference in your component graph, you can solve that by simply adding the @Component annotation.  No need to move a lot of code into configuration to handle that.
+There's less planning for future customizations during design and fewer design decisions about what's in code versus what's in configuration.  All code and these configuration layers are traceable in the IDE for easy find and replace.  After each code change, you can quickly validate all layers that use that code to detect structural integrity problems without running the code.
 
-Most IOC systems have some runtime overhead - parsing and applying the configuration.  With StrataCode, you can use dynamic layers when you want configuration applied at runtime, and compiled layers when you want to avoid that overhead (and ship without the StrataCode dynamic code engine in your application).   This organization provides tunable runtime-efficiency and coding-time agility.  You have less code which is easier to navigate. 
+With layers, knowing you can make customizations later, you write code that's easier to read.  
+
+One of the reasons developers use an IOC framework is to allow configuration of arbitrary graphs of components.  Sometimes, as you make references between objects, you need to create a cyclic or upstream reference.  You can't express that with Java's field initialization.  With StrataCode, you can add the @Component annotation to the class (or a sub-class).  Lots of code will "just work" but sometimes you'll need to move code from the constructor into the init method if it depends on a field which cannot be initialized because of the cyclic reference.  
+
+Most IOC systems have some runtime overhead - parsing and applying the configuration.  With StrataCode, you can use dynamic layers when you want configuration applied at runtime, and compiled layers when you want to avoid that overhead (or don't want to include the StrataCode dynamic runtime library in your application).   This organization provides tunable runtime-efficiency and coding-time agility.  You have less code which is easier to navigate. 
 
 <% ) %>
       </div>

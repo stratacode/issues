@@ -7,49 +7,100 @@
 
 <%= MarkDownPage.markDown(%>
 
-## StrataCode: Looking to Make Programmers Better
+## StrataCode: Leverage Your Code for Everyone's Productivity
 
 by Jeff Vroom
 
-Are you a programmer looking to increase your leverage with code?  I've spent my career building application frameworks for companies looking to improve the productivity of everyone in the business, not just the programmers.  I want clients to be self sufficient so they can do more on their own.  Some of the most powerful language constructs make code harder to read which makes it harder for someone else to manage.  Yes, it's job security for us, but that's not my end goal.  Instead, what if we could do more by improving code organization simply by generalizing the concept of inheritance?  What if the organizational metaphor was built on a new build/runtime system which let you read, modify, and write code more easily?
+Are you a programmer looking to increase your leverage with code?  If so, should you choose the most powerful programming language, or will you get more leverage by coding in a way that improves the productivity of everyone else?  In my experience, your clienta and users are happier and more productive when they are self sufficient.  Programmers can do more when they code in a way that improve the readability and flexibility of their code.  
 
-Unlike tranditional systems, StrataCode let's you organize your code using layers.  Each new layer can modify or override types, methods, and properties.  With eac new layer, you can create new versions of your system that are incremental, and maintainable.  There are only a few small [syntax extensions](docIndex.html) so if you know Java, you can read StrataCode.  As requirements grow, the value of layers grows - whether it's more people making changes, more code, more products, more customizations, or more versions you need to support.
+This reasoning has inspired my search for programming techniques that allow:
 
-The underlying engine makes it easy for framework developers to process code in a structured way.  Components, data-bindings, layers, and other language features are all implemented using sn incremental read-modify-write code processing system which means that processed code looks a lot like the source code so you can debug it.  Application code stays independent of framework code, remaining easy to read.  Framework code is maintained by framework developers using code-processing, giving great programmers more leverage over how application code gets deployed.
+* everyone to find and make changes they need 
+* programmers to build and maintain frameworks which support application code that can be written and managed by diverse teams, 
+* frameworks to adapt to new requirements with less friction - improving the quantity of these changes which occur in framework layers, rather than application code.
 
-## Why Layers?
+This search started more than 20 years ago when I built a reactive, declarative application framework geared for scientists ([AVS](http://www.avs.com)).  The applications built on AVS were more concise, more declarative and easier to manageso it became a successful product for it's niche.  Through experience, I learned how quickly applications grew to be hard to navigate and how difficult it was to implement bigger resuable parts.  Any customizations required copying the application, then making changes to the copy.  That's easy to do in the short-term but often too difficult to manage in the long run.  Object-oriented patterns for reusing code were not enough.
 
-After building a reactive, declarative application framework [AVS](http://www.avs.com) more than 20 years ago, I saw the potential of this type of programming for improving the code development for programmers and technical users, but I also saw how quickly the "web of objects" grew making it difficult to understand and reuse code.   References between components quickly become a tangled web for even moderately complex applications.  That experience inspired the design of the layered component configuration we built for the [ATG Commerce Platform](http://www.oracle.com/commerce) (formerly Dynamo).  By merging layers of component configuration, we broke complex applications into manageable slices.  Each layer became a major feature in the application, which you ran as a list of layers.  The lessons learned from watching hundreds of enterprise applications built on ATG inspired the design of StrataCode layers.
+That experience inspired the design of the layered component configuration for the [ATG Commerce Platform](http://www.oracle.com/commerce) (aka Dynamo)).  By merging layers of component configuration, [Dynamo's nucleus](https://docs.oracle.com/cd/E23095_01/Platform.93/ATGProgGuide/html/s0201nucleusorganizingjavabeancompone01.html) breaks complex applications into manageable slices, making it easier to configure families of application environments and maintain complex software systems.  
 
-At ATG, I also learned that using layers to organize code is a new pattern that takes some time to learn and skill to apply.  For many developers, even object oriented concepts are too abstract to be used effectively.  Still, a skilled team of O/O developers will be way more effective at solving problems with a certain complexity.  Like objects, layers extend the skills required but I believe extend the benefits even further.. 
+The lessons learned from watching hundreds of enterprise applications built on ATG inspired the design of StrataCode layers.  I came to see this layering pattern is a missing organizational abstraction in how we organize information systems.  If you look at nature, you see the fundamental layers and layered processes  We use layered structures all of the time in computing as well, and even as a way of organizing executables with the system path, and classes in your class path but what if layers were the fundamental way to organize code and assemble programs?
 
-As the needs for your system become more complicated, instead of refactoring objects, you can cut and paste code into layers with less work and without changing published APIs.  With layers, you have flexibility to split classes or component instance configuration based on the dependencies in those slices of functionality.  When we organize code based on dependencies we increase our ability to reuse that code and can also improve readability.
+## Introducing StrataCode
 
-For example, let's say you combined persistence into your domain model objects.  The first time you need to use your domain model without a database, or use it with a different database, you will need to refactor.  With layers, you just move the code the depends on the database into a new layer which extends the core layer.  That's frequently a quick copy/paste task and gives you two versions of your code - one which depends on the database, and one which does not.  You also just made the code more modular and easier to navigate by localizing all of the aspects of persistence into one file.  You can also improved the reusability of your code.
+StrataCode let's you organize your Java code using layers, an extension of the traditional patterns used by object oriented programmers to organize code as modules.   Each new layer can modify or override types, methods, and properties defined in previous layers.  By adding and removing layers from the stack, you create new versions of your application incrementally.  You still benefit from static typing and compile layers into one Java program so the runtime view is not changed.  There are only a few small [syntax extensions](docIndex.html) so if you know Java, you can read StrataCode.  As requirements grow, the value of layers grows - whether it's more people making changes, more code, more products, more customizations, or more versions you need to support.
+
+The underlying code-processing tools make it easy for framework developers to process code.  Components, data-bindings, layers, and other language features are all implemented using an incremental read-modify-write code processing system which means that processed code looks like the source code, except where it's been transformed (e.g. a field converted to get and set methods) or several layers merged into one file.  Comments are preserved and inserted so you can debug it in either source form or the generated form.  
+
+When you use code-generation in this way, application source code can stay independent of framework code, remaining easy to read.  Framework dependencies are commonly injected during code-generation.  Framework code is maintained by framework developers using easy-to-learn and use code-processing tools, giving programmers and architects more leverage over how application code gets deployed.
+
+## Learning to Code with Layers
+
+Learning layers can be a lot like learning object-oriented programming.  Not all programmers take to that metaphor for designing their code, but everyone can code against a well designed object-oriented API.  The same should hold true for layers.  You can use them like modules and start out using StrataCode as a build tool, and use APIs and applications built with layers just like Java.
+
+## Refactoring
+
+As the needs for your system become more complicated, instead of refactoring objects, you can cut and paste code into layers with less work and without changing published APIs.  With layers, you have flexibility to split classes or component instance configuration based on the dependencies in those slices of functionality.  When programmers organize code based on dependencies, that code can be reused in more contexts, and can be easier to navigate.
+
+<% ) %>
+
+<img style="margin:0px auto;display:block;width:75%" src="images/layersByDep.png" alt="Dependencies between Modules and Layers"/>
+
+<%= MarkDownPage.markDown(%>
+
+For example, let's say you have a class called UserAccount which both defines the properties and persistence for that class.  The first time you need to use that class without a database, or use it with a different database, you will need to refactor it into two classes, then change all references to use the right class.  With layers, you just move the code that depends on the database into a new layer which extends the base layer.  That's frequently a quick copy/paste task and gives you two versions of your code - one which depends on the database, and one which does not.  You also just made the code more modular by localizing all of the aspects of persistence into one file, and the persistence code of that module in one directory.  Annotations set on the persistence layer can change the default behavior of the fields and methods which means less for you to specify.    Similar code ends up in the same layer, making it easier to read and maintain as well.
+
 
 ## Layer Basics
 
-At it's core StrataCode layers are combined into one Java class using code-generation - merging properties, methods using the rules of inheritance at code-gen time.   Layers do not change the nature of a type at runtime, just how it's assembled.  Your code still adheres to the [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design) principles of O/O design (unlike aspect oriented programming, which I would argue is too flexible to be maintainable).  
+To build and run any StrataCode application just specify a layer, or the set of layers you want to run.  Any code-generation or compilation that is required is performed, and all processes involved in that application are started.  
 
-The IDE and management UIs organize the layers so that all code paths are traceable.  The list of layers used for a given property, method or type are all visible and accessible in the same way you navigate from a sub-class to it's base class.  You can find all usages to an identifier and change names just like with Java.
+Each layer has a definition file, which is itself written in StrataCode.  Layer definition files are parsed, any layers extended by that layer are added, the stack is split into separate, ordered stacks, one for each runtime or process (e.g. client javascript and server).  All layers in each stack are all initialized, then all started.  During the init/start phases, code or components defined in the definition file add source path and class path directories.  Framework layers can add new languages, file types and processors, annotation processors, set the build-paths, and more.  Application layers specify normal source code.  Configuration layers are mostly declarative layers you expose as needed by creating groups of fields on classes or objects.
 
-To keep layers from piling up over time, one layer can be merged into another, either by hand or programmatically.  This lets you use them temporarily, to isolate some changes from the rest of your code.   
+After the layers are validated, StrataCode builds each build layer in the stack. The build directory for that layer is updated to reflect the merged state of the layer's dependencies.  For simple source files, like a .jpg, this just means choosing the last file in the stack with a given path name.  For other source files that are processed, the source files can be merged, replaced or constructs might be transformed (e.g. a field into getX/setX methods, an 'object' operator into a getX method).
 
-## Not Just Layers
+Layers do not change the nature of a type at runtime - just how the code in that class is assembled.  Your code in both source and generated form still adheres to the [SOLID](https://en.wikipedia.org/wiki/SOLID_(object-oriented_design)) principles of O/O design and passes the normal Java type checking rules during both phases.  
 
-For a lot of reasons, StrataCode has evolved over the years into a rich project.  The power of code-generation opens up lots of opportunities for framework development and I have had lots of ideas for frameworks over the years.
+## StrataCode IDE
 
-Back in '92 I designed a reactive, data binding system, in '96 helped design a component and persistence frameworks (ATG), and in 2002 helped design a client/server synchronization framework (BlazeDS/Flex Data Services).  As part of the development and testing of StrataCode, I implemented a seamless end-to-end system using lessons learned from my experience with these platforms.  You can use StrataCode with other frameworks easily - in fact, it's been integrated with many standard Java frameworks already.  
+The IntelliJ IDE for StrataCode supports main features of Java IDEs: navigation, refactoring, and edit-time errors that prove the integrity of your code, so you are debugging fewer runtime errors.
 
-But if you look at the complete platform, you'll see how it can simplify your Java code, separate framework code from application code, eliminate many platform dependencies, make applications more declarative and empower everyone in the organization, not just developers.
+## Code-Processing and Management UIs
 
-The major framework features built on StrataCode today are:
+One part of improving code accessibility is improving the management UIs in your system.  Developers can easily create layers for specific slices of configuration, rules, queries, or even simple methods.  In that way, they can delegate assets as well as create new variants without redesigning or refactoring their code.. 
+
+The same dynamic code framework which powers the IDE, also is available in the dynamic runtime for creating these management UIs: code completion, syntax highlighting, edit-time errors for all formats.  This includes the ability to patch code on the fly and detect when a restart is required.
+
+Management UIs can support immediate viewing of changes for rapid prototyping - whether you are changing styles in a stylesheet, or segmentation rules for your customers..  You can also isolate or group interrelated changes to code, data, files by grouping them into the same layer, or stack of layers.  It's easy to turn them all on or off for workflow and testing, or merge them for deployment. 
+
+For a given user of your system, they might have a set of "layer templates" - each of which can change a selected set of types and properties.  A template might physically copy some code slices, or it may start out empty - only extending a base layer to define the template of what's available.  As changes are made to this layer, source files for the affected types are incrementally updated.  At any given time, the management UI can show the "diff" of changes made in the source files, as well as the changes made from the previous layer.  
+
+All types, properties, and methods are fully traceable with the tools.  All layers for a given type, property, or method are available in an index.  You can find all usages to an identifier and change names just like with Java.  Read, modify, and write any source file in any layer without being a language expert using the provide APIs.
+
+## Layers and Source Control
+
+Different bundles of layers can be managed by different source control repositories and the incremental nature of the code-processing makes diffs just as valuable as if you edited the code by hand.  Even code that's edited by your management UI is readable and manageable by developers.  The nature of layers means that moving some code into a new repository, managed with a separate lifecycle is easy.  Two developers could even work on different overlapping parts of the same type, in two separate layers.
+
+To keep layers from piling up over time, one layer can be merged into another and discarded, either by hand or programmatically.  This lets you use them temporarily, to isolate some changes from the rest of your code.   
+
+If you've used monkey patching, overlays, or written a patch-script you've worked your way around the lack of this essential metaphor when you need it.  Instead you can do it in a more manageable way by adding a layer.  
+
+## Frameworks Built on Layers
+
+StrataCode has evolved into a rich, well designed tool code-processing framework with a relatively small, clean, easy-to-read-and-debug code base.  The power of code-generation combined with layers opens up opportunities for framework development and I have had lots of experience building frameworks.  It's natural that a lot of testing has been done with framework building that leverages the design of layers.  
+
+Back in '92 I was a lead designer of a reactive, data binding system, in '96 a component and persistence frameworks (ATG), and in 2002 a client/server synchronization framework (Adobe BlazeDS/Flex Data Services).  StrataCode includes a layered component-oriented, data-binding and synchronization system built using lessons learned from my experience with these platforms.  You can use StrataCode with other frameworks easily - in fact, it's been integrated with several standard Java frameworks already and adding more is easy.
+
+If you look at the complete platform, you'll see how it can simplify your Java code, separate framework code from application code to remove platform dependencies, make applications more declarative and easier to customize.  
+
+If you want to use StrataCode with your existing projects, just point a layer at your maven or git repo and see if it can replace your existing build/run toolset.  How fast can you create new customized versions of your system?  You can try out any other features easily by plugging them into a new layer.  Replace a file, add new fields, override methods, etc.  Use it for testing, development, deployment configurations as you like.
+
+For brief introductions to the frameworks read these articles or for details, consult the [documentation](docIndex.html).
 
 * [Layered Build and Packaging System](buildAndPackaging.html)
 * [Java to Javascript](javaToJavascript.html)
 * [Synchronization Using Layers](syncWithLayers.html)
 * [Persistence Using Layers](persistWithLayers.html)
-* [Dynamic Java](dynamicJava.html)
+* [Dynamic Java/StrataCode](dynamicJava.html)
 * [Parsing and Modifying Code](parseletsIntro.html)
 
 <% ) %>

@@ -23,8 +23,10 @@ Currently, your entire JS app is downloaded after the page is rendered but we wi
 
 Read more in the [documentation](webFramework.html).
 
+Here's an example.  This java implementation of selection sort:
 <% ) %>
-
+   <%= sc.lang.JavaLanguage.INSTANCE.styleFile("example/simple", "SortTest.java", false, false, false) %>
+   is converted to this javascript:
    <%= sc.lang.js.JSLanguage.INSTANCE.styleBuildFile("example/simple", "js", "js/types/example_simple_SortTest.js", false, false, false) %>
 
    </div>
