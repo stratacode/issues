@@ -10,7 +10,7 @@
 
 Parsing code is a well understood problem.  Grammar rules match the input text and when matched produce values created from the text they match.  These values are assembled into an "abstract syntax tree" (or AST) which stores the information you need in a structured representation.  
 
-But when it comes to taking the AST and turning it back into code, you start from scratch and write a whole new set of rules using most language frameworks today.  That process produces a new file which works the same way but is often very different from the original since it omits comments, and whitespace - information not preserved in the AST. 
+But when it comes to taking the AST and turning it back into code, with most parsers you start from scratch and write new code that expresses the inverse of those rules.  That process produces a new file which works the same but looks different since it omits comments, and whitespace - information not preserved in the AST. 
 
 Parselets grammars contain a mapping between the grammar and the model objects, so it is able to produce the AST directly from the code.  Additionally, it listens for changes made to the AST and updates the code incrementally.  Since parselets was written, the paper on [Object Grammars](http://www.cs.utexas.edu/~wcook/Drafts/2012/ensogrammars.pdf) was published which uses a similar approach for generating the AST directly from the grammar.  Object grammars does not appear to be incremental in how it does the formatting.
 

@@ -10,7 +10,9 @@
 
 # StrataCode Build and Packaging System 
 
-Layers are a very suitable abstraction to manage build and run configurations in the same way you customize application code.  You can:
+Layers make a great way to manage build and run configurations.  The stack of layers defines a way to run code in the right order to assemble your source path, and classpath.  You can use components in your layers to work more declaratively and override settings in a base-layer just as you can properties in your application classes.
+
+With layers as your build and packaging system, you can:
 
 * Share code and configuration in different environments without copying.
 * Use one syntax for all types of modularization, code and configuration controlled by the same IDE .

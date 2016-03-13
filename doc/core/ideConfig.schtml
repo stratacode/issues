@@ -81,18 +81,20 @@ NOTE:
    might end up with the wrong run.  Whe installed a simple shell script to workaround this problem - the run configuration
    for the sc4idea
 
-     #!/bin/sh
+<% ) %>
 
+<pre>
+            #!/bin/sh
             PLUGINDIR=/Users/jvroom/Library/Caches/IntelliJIdea13/plugins-sandbox/plugins/sc4idea/classes
             BUILDDIR=/jjv/vroomsys/out/production/fullRuntime
 
             cp $BUILDDIR/sc/type/PTypeUtil*.class $PLUGINDIR/sc/type/
             cp $BUILDDIR/sc/type/Type*.class $PLUGINDIR/sc/type/
+</pre>
 
 * There are cases where you need to clean out this directory, like if you rename the module - the one for the old module
    might still get loaded into the classpath and precede the one you are building.
 
-<% ) %>
 
      </div>
    </div>
