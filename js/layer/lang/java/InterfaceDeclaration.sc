@@ -1,2 +1,0 @@
-class InterfaceDeclaration extends TypeDeclaration {
-}

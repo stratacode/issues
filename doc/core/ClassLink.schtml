@@ -1,1 +1,0 @@
-<a href='= "/javadoc/" + className + ".html"'><%! String className; %>api</a>

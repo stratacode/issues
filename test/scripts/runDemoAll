@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo 'Starting demo tests: ' `date`
-set -e
-
-./test/scripts/setupDemo
-./test/scripts/runDemoCommands
-

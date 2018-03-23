@@ -1,8 +1,0 @@
-/**
- * Implements a dialog which lets you name a new quiz to be added, and
- * creates the quiz in the database.
- */
-public class NameQuiz {
-   QuizDataManager dataManager;
-   String quizName;
-}

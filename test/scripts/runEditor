@@ -1,5 +1,0 @@
-#!/bin/sh
-
-set -e
-
-scc -a gui/editor/swing/threeD example/expertSystem/style < editor/test/editorScript.txt

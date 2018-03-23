@@ -1,3 +1,0 @@
-menuStyle {
-   windowState = 3;
-}

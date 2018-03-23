@@ -1,9 +1,0 @@
-<html xmlns:wicket="http://wicket.apache.org/">
-<head>
-  <title wicket:id="pageTitle">Sesame Street: Question 1</title>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-Edit Question: version 1
-</body>
-</html>

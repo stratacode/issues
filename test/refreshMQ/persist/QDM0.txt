@@ -1,7 +1,0 @@
-/**
- * Manages quiz data via an EntityManager.  Like EntityManager, this
- * class is not thread-safe; a QuizDataManager instance is meant to be
- * used by a single thread.
- */
-public class QuizDataManager {
-}

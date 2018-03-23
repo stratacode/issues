@@ -1,6 +1,0 @@
-/**
- * A MakeQuiz instance which gets created on initialization.
- */
-@MainInit 
-object MakeQuizInit {
-}

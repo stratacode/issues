@@ -1,2 +1,0 @@
-interface UCTextFieldStyle extends UCComponentStyle {
-}

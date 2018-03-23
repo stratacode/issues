@@ -1,3 +1,0 @@
-<span extends="ToolbarButton" class="menubarButton">
-   <%! size = 16; %>
-</span>

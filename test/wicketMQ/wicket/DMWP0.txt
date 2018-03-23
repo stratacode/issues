@@ -1,6 +1,0 @@
-/**
- * A QuizWebPage which has an associated QuizDataManager, used to
- * access quiz data.  
- */
-public class DataManagedWebPage extends QuizWebPage {
-}

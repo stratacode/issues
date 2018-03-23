@@ -1,6 +1,0 @@
-enum FactorValue { 
-   ;
-
-   String displayName;
-}
-

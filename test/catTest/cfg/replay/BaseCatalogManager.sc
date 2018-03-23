@@ -1,4 +1,0 @@
-
-BaseCatalogManager {
-   replaySameSession = true;
-}

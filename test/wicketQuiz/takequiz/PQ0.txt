@@ -1,9 +1,0 @@
-/**
- * The top level WebPage which lists all the available quiz names,
- * allowing the user to pick one.
- */
-public class PickQuiz extends QuizWebPage {
-   object displayVersion extends CLabel {
-      textValue := TakeQuizApp.version;
-   }
-}

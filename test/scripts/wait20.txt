@@ -1,2 +1,0 @@
-cmd.sleep(20000);
-cmd.quit();

@@ -1,4 +1,0 @@
-class SimpleInnerObject {
-   object innerObject {
-   }
-}

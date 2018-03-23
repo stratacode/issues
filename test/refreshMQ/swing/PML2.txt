@@ -1,7 +1,0 @@
-/**
- * A MouseAdapter which listens for mouse events, and brings up a
- * popup menu when necessary.
- */
-public class PopupMenuListener extends MouseAdapter {
-   JPopupMenu popupMenu;
-}

@@ -1,6 +1,0 @@
-
-
-@Component
-Base {
-   int foo;
-}

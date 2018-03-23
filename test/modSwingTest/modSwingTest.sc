@@ -1,3 +1,0 @@
-test.modSwingTest extends simpleSwingTest {
-
-}

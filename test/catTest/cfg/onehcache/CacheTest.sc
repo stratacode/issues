@@ -1,3 +1,0 @@
-CacheTest {
-   itemCacheSize=100;
-}

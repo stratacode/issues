@@ -1,2 +1,0 @@
-class ClassDeclaration extends TypeDeclaration {
-}

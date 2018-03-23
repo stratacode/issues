@@ -1,9 +1,0 @@
-<html xmlns:wicket="http://wicket.apache.org/">
-<head>
-  <title>Quiz List</title>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-Quiz List: version <span wicket:id="displayVersion">0</span>
-</body>
-</html>

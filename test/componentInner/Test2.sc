@@ -1,4 +1,0 @@
-@Component 
-class Test2 {
-
-}

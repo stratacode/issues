@@ -1,3 +1,0 @@
-enum EnumType {
-   ONE, TWO;
-}

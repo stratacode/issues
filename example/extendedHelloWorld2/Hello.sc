@@ -1,3 +1,0 @@
-Hello {
-   message = "Hello StrataCode";
-}

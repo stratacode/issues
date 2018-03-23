@@ -1,6 +1,0 @@
-/**
- * The main application frame, which contains the QuizList,
- * QuestionList, and EditQuestion panels.  
- */
-public class MakeQuiz {
-}

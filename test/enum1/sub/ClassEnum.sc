@@ -1,5 +1,0 @@
-ClassEnum {
-   THREE {
-
-   }
-}

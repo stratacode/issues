@@ -1,7 +1,0 @@
-/**
- * Some predefined Quiz data.
- */
-public class QuizData {
-
-}
-

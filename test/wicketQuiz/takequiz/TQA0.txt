@@ -1,5 +1,0 @@
-@ApplicationPath("/*")
-class TakeQuizApp extends WicketApplication {
-   static String version = "0";
-   homePage = PickQuiz.class;
-}

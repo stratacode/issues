@@ -1,6 +1,0 @@
-/**
- * Application state shared by all the UI elements.
- */
-public class MakeQuizState {
-}
-

@@ -1,5 +1,0 @@
-/**
- * A WebPage class used by all quiz pages.
- */
-public class QuizWebPage extends WebPage {
-}

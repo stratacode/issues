@@ -1,6 +1,0 @@
-/**
- * An onclick attribute modifier that inserts the javascript needed to
- * pop up a confirmation dialog.
- */
-public class OnclickConfirmation extends AbstractBehavior {
-}

@@ -1,9 +1,0 @@
-<html xmlns:wicket="http://wicket.apache.org/">
-<head>
-  <title>Make a Quiz: Sesame Street</title>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-Question List: version 0
-</body>
-</html>

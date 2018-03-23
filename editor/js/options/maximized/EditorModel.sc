@@ -1,3 +1,0 @@
-EditorModel {
-   windowState = 3;
-}

@@ -1,8 +1,0 @@
-<html>
-<body>
-  <form id="unitConverterForm">
-     <span id="unit1Label" addAfter="unit1Field"/>
-     <span id="unit2Label" addAfter="unit2Field"/>
-  </form>
-</body>
-</html>

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# These tests are expected to generate nice errors
-
-set -e
-
-scc -ni -a test/js/nestedExpr
-

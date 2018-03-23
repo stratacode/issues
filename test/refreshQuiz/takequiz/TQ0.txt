@@ -1,6 +1,0 @@
-/**
- * The swing AppFrame which leads you through taking a particular
- * quiz.
- */
-public class TakeQuiz {
-}

@@ -1,9 +1,0 @@
-<html xmlns:wicket="http://wicket.apache.org/">
-<head>
-  <title>Name Your Quiz</title>
-  <link rel="stylesheet" type="text/css" href="style.css"/>
-</head>
-<body>
-Name Quiz: version 0
-</body>
-</html>

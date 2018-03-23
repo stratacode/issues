@@ -1,7 +1,0 @@
-/**
- * A panel which allows you to fill in the data for a particular
- * question.  This may be a new question which has just been created,
- * or an existing question which is being modified.
- */
-public class EditQuestion {
-}
